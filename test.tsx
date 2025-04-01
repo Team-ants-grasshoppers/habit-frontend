@@ -1,2 +1,2 @@
-const   testVar=   "hello"
+const   testVar=                "hello"
 console.log(testVar )
