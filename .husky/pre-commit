@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname "$0")/_/husky.sh"
-
+echo "🧪 [HUSKY] pre-commit hook 실행됨!"
 yarn lint-staged
