@@ -10,17 +10,15 @@ export default tseslint.config(
   {
     ignores: ['dist'],
   },
-
-  // ✅ 타입 정보 기반 설정 추가
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
-      parserOptions: {
-        project: './tsconfig.json', // 타입 정보 경로 추가
-        tsconfigRootDir: process.cwd(), // 루트 디렉토리 명시 (특히 monorepo일 때 중요)
-      },
       globals: globals.browser,
+      parserOptions: {
+        project: './tsconfig.app.json', // 타입 정보 기준 tsconfig
+        tsconfigRootDir: process.cwd(), // 루트 디렉토리 설정
+      },
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
@@ -59,8 +57,6 @@ export default tseslint.config(
       'no-console': 'warn',
     },
   },
-
-  // ✅ Prettier 룰 적용
   {
     rules: {
       ...prettier.rules,
