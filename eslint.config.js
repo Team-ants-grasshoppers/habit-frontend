@@ -16,7 +16,7 @@ export default tseslint.config(
       ecmaVersion: 2020,
       globals: globals.browser,
       parserOptions: {
-        project: './tsconfig.app.json', // 타입 정보 기준 tsconfig
+        project: './tsconfig.json', // 타입 정보 기준 tsconfig
         tsconfigRootDir: process.cwd(), // 루트 디렉토리 설정
       },
     },
