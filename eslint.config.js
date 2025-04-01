@@ -1,9 +1,10 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
-import prettier from 'eslint-config-prettier'
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import tseslint from 'typescript-eslint';
+import prettier from 'eslint-config-prettier';
+import * as tsPlugin from '@typescript-eslint/eslint-plugin'; // ⬅️ 이거 추가!
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -14,15 +15,13 @@ export default tseslint.config(
       globals: globals.browser,
     },
     plugins: {
+      '@typescript-eslint': tsPlugin, // ⬅️ 여기 추가!
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       '@typescript-eslint/naming-convention': [
         'error',
         {
@@ -47,17 +46,14 @@ export default tseslint.config(
           format: ['PascalCase'],
         },
       ],
-      // ✅ JSDoc 스타일을 허용
-      'require-jsdoc': 'off', // 기본값 off지만 켜고 싶으면 설정 가능
-      // 기타 규칙
+      'require-jsdoc': 'off',
       'no-unused-vars': 'warn',
       'no-console': 'warn',
     },
   },
-  // ✅ Prettier 지원
   {
     rules: {
       ...prettier.rules,
     },
   },
-)
+);
