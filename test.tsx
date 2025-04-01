@@ -1,2 +1,2 @@
-const   testVar=    "hello"
-console.log(testVar )
+Const Test_var =    'hello'
+Console.Log( Test_var )
