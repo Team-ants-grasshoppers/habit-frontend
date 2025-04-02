@@ -44,6 +44,16 @@ export default await tseslint.config(
           },
         },
         {
+          selector: 'variable',
+          modifiers: ['const'],
+          types: ['function'],
+          format: ['camelCase'], // ✅ 훅은 camelCase 유지
+          filter: {
+            regex: '^use[A-Z].*', // ✅ use로 시작하는 이름은 camelCase 허용
+            match: true,
+          },
+        },
+        {
           selector: 'typeAlias',
           format: ['PascalCase'],
         },
