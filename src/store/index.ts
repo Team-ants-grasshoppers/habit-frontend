@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import checkboxSelectionReducer from '../common/components/ui/hooks/checkboxSelectionSlice';
+import userReducer from '../features/user/hooks/userSlice';
 
 export const store = configureStore({
   reducer: {
     checkboxSelection: checkboxSelectionReducer,
+    user: userReducer,
   },
 });
 
