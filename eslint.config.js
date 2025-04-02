@@ -86,6 +86,22 @@ export default await tseslint.config(
       'no-unused-vars': 'warn',
       'no-console': 'warn',
     },
+    // style 폴더 하위 파일에서는 camelCase와 PascalCase 허용
+    overrides: [
+      {
+        files: ['style/**/*.{js,ts,tsx}'],
+        rules: {
+          '@typescript-eslint/naming-convention': [
+            'error',
+            {
+              selector: 'default',
+              format: ['camelCase', 'PascalCase'],
+              leadingUnderscore: 'allow',
+            },
+          ],
+        },
+      },
+    ],
   },
   {
     rules: {
