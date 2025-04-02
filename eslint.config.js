@@ -44,19 +44,24 @@ export default await tseslint.config(
           },
         },
         {
-          selector: 'function',
+          selector: 'typeAlias',
           format: ['PascalCase'],
         },
         {
+          // ✅ React 컴포넌트 (export된 const 함수형 변수)만 PascalCase 허용
+          selector: 'variable',
+          modifiers: ['const', 'exported'],
+          types: ['function'],
+          format: ['PascalCase'],
+        },
+        {
+          // ✅ 나머지 일반 변수, 함수는 camelCase 유지
           selector: 'variableLike',
           format: ['camelCase'],
           leadingUnderscore: 'allow',
         },
-        {
-          selector: 'typeAlias',
-          format: ['PascalCase'],
-        },
       ],
+
       'require-jsdoc': 'off',
       'no-unused-vars': 'warn',
       'no-console': 'warn',
