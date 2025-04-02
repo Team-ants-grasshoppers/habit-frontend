@@ -10,6 +10,8 @@ export default await tseslint.config(
   {
     ignores: ['dist'],
   },
+
+  // ✅ 기본 TypeScript 파일 설정
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
@@ -56,20 +58,28 @@ export default await tseslint.config(
           leadingUnderscore: 'allow',
         },
       ],
-
-      'react/function-component-definition': [
-        'error',
-        {
-          namedComponents: 'pascal-case',
-          unnamedComponents: 'pascal-case',
-        },
-      ],
-
       'require-jsdoc': 'off',
       'no-unused-vars': 'warn',
       'no-console': 'warn',
     },
   },
+
+  // ✅ 컴포넌트 경로에만 PascalCase 적용 (오버라이드처럼 작동)
+  {
+    files: ['src/**/components/**/*.tsx'],
+    rules: {
+      '@typescript-eslint/naming-convention': [
+        'error',
+        {
+          selector: 'variable',
+          modifiers: ['const', 'exported'],
+          types: ['function'],
+          format: ['PascalCase'],
+        },
+      ],
+    },
+  },
+
   {
     rules: {
       ...prettier.rules,
