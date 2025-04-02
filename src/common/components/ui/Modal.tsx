@@ -28,6 +28,11 @@ interface ModalProps {
   checked?: string[];
   /** checkbox 모드일 때 외부로 선택 변경을 알리는 함수 */
   onCheckedChange?: (checked: string[]) => void;
+  /**
+   * 모달 하단에 렌더링할 추가 요소 (예: 하단 버튼들)
+   * 예: <Modal> 안에 직접 버튼, 링크 등을 넣고 싶을 때 사용
+   */
+  children?: React.ReactNode;
 }
 
 /**
@@ -72,6 +77,7 @@ const Modal: React.FC<ModalProps> = ({
   errorText,
   checked = [],
   onCheckedChange,
+  children,
 }) => {
   const [formState, setFormState] = useState<Record<string, string>>({});
 
@@ -139,6 +145,7 @@ const Modal: React.FC<ModalProps> = ({
             {confirmText && onConfirm && <button onClick={handleConfirm}>{confirmText}</button>}
           </div>
         ) : null}
+        {children && <div>{children}</div>}
       </div>
     </div>
   );
