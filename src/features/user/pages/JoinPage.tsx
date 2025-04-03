@@ -1,7 +1,12 @@
-import React from 'react';
+import Join from '../components/Join';
 
-function JoinPage() {
-  return <div>JoinPage</div>;
-}
+const JoinPage = () => {
+  return (
+    <div>
+      <h1>회원가입</h1>
+      <Join />
+    </div>
+  );
+};
 
 export default JoinPage;
