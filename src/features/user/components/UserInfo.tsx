@@ -8,7 +8,7 @@ import UserForm from './UserForm';
 
 interface UserInfoProps {
   initialData: {
-    user_id: string;
+    userId: string;
     nickname: string;
     email: string;
   };
@@ -56,7 +56,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit, checkEmailDu
             label: '아이디',
             name: 'userId',
             type: 'text',
-            value: initialData.user_id,
+            value: initialData.userId,
             onChange: () => {}, // 수정 불가
           },
           {
