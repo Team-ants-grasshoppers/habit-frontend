@@ -79,7 +79,21 @@ export default await tseslint.config(
       ],
     },
   },
-
+  // ✅ pages 경로에 PascalCase 적용 (오버라이드처럼 작동)
+  {
+    files: ['src/**/pages/**/*.tsx'],
+    rules: {
+      '@typescript-eslint/naming-convention': [
+        'error',
+        {
+          selector: 'variable',
+          modifiers: ['const', 'exported'],
+          types: ['function'],
+          format: ['PascalCase'],
+        },
+      ],
+    },
+  },
   {
     rules: {
       ...prettier.rules,
