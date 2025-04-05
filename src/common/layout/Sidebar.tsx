@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import Modal from '../components/ui/Modal';
 import Login from '../../features/user/components/Login';
+import InterestModal from '../components/utils/InterestModal';
+import RegionModal from '../components/utils/RegionModal';
 
 const Sidebar: React.FC = () => {
   const userState = useSelector((state: RootState) => state.user);
@@ -53,37 +54,19 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* 관심사 모달 */}
-      <Modal
+      <InterestModal
         isOpen={isInterestOpen}
-        mode="checkbox"
-        title="관심사 설정"
-        checkboxItems={['운동', '독서', '게임', '여행']}
-        checked={selectedInterests}
-        onCheckedChange={setSelectedInterests}
-        onCancel={() => setInterestOpen(false)}
-        onConfirm={() => {
-          setInterestOpen(false);
-          console.log('선택된 관심사:', selectedInterests);
-        }}
-        confirmText="저장"
-        cancelText="취소"
+        selected={selectedInterests}
+        onChange={setSelectedInterests}
+        onClose={() => setInterestOpen(false)}
       />
 
       {/* 지역 모달 */}
-      <Modal
+      <RegionModal
         isOpen={isRegionOpen}
-        mode="checkbox"
-        title="지역 설정"
-        checkboxItems={['서울', '부산', '광주', '대전']}
-        checked={selectedRegions}
-        onCheckedChange={setSelectedRegions}
-        onCancel={() => setRegionOpen(false)}
-        onConfirm={() => {
-          setRegionOpen(false);
-          console.log('선택된 지역:', selectedRegions);
-        }}
-        confirmText="저장"
-        cancelText="취소"
+        selected={selectedRegions}
+        onChange={setSelectedRegions}
+        onClose={() => setRegionOpen(false)}
       />
 
       {/* 로그인 모달 */}
