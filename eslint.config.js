@@ -54,7 +54,7 @@ export default await tseslint.config(
         },
         {
           selector: 'variableLike',
-          format: ['camelCase'],
+          format: ['camelCase', 'PascalCase'],
           leadingUnderscore: 'allow',
         },
       ],
