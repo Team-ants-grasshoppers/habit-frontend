@@ -35,13 +35,13 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
   return (
     <Modal
       isOpen={isOpen}
+      mode="input"
       title="로그인"
+      // cancelText="닫기"
+      errorText={apiError}
       onCancel={onClose}
       onConfirm={handleLogin}
       confirmText="로그인"
-      cancelText="닫기"
-      errorText={apiError}
-      mode="input"
     >
       <UserForm
         onSubmit={handleLogin}

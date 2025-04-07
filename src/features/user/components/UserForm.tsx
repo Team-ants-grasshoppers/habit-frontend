@@ -20,14 +20,14 @@ interface Field {
 
 interface UserFormProps {
   fields: Field[];
-  onSubmit: () => void;
-  submitLabel?: string;
+  onSubmit: (isValid: boolean) => void;
 }
 
-const UserForm: React.FC<UserFormProps> = ({ fields, onSubmit, submitLabel = '제출' }) => {
+const UserForm: React.FC<UserFormProps> = ({ fields, onSubmit }) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [validHints, setValidHints] = useState<Record<string, string>>({});
 
+  // 중복검사
   const values = fields.map((f) => f.value).join(',');
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -50,10 +50,18 @@ const UserForm: React.FC<UserFormProps> = ({ fields, onSubmit, submitLabel = '�
     return () => clearTimeout(timeout);
   }, [values]);
 
-  const validate = () => {
+  // 유효성 검사
+  useEffect(() => {
+    const isValid = validate();
+    onSubmit(isValid);
+  }, [values]);
+
+  const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
     fields.forEach((f) => {
-      if (f.required && !f.value) newErrors[f.name] = `${f.label}을(를) 입력해주세요`;
+      if (f.required && !f.value) {
+        newErrors[f.name] = `${f.label}을(를) 입력해주세요`;
+      }
       if (f.matchWith) {
         const matchField = fields.find((other) => other.name === f.matchWith);
         if (matchField && f.value !== matchField.value) {
@@ -65,16 +73,13 @@ const UserForm: React.FC<UserFormProps> = ({ fields, onSubmit, submitLabel = '�
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
-    if (validate()) onSubmit();
-  };
-
   return (
     <div>
       {fields.map((field) => (
         <div key={field.name}>
           <label>{field.label}</label>
           <input
+            placeholder={field.label}
             name={field.name}
             type={field.type}
             value={field.value}
@@ -86,9 +91,6 @@ const UserForm: React.FC<UserFormProps> = ({ fields, onSubmit, submitLabel = '�
           )}
         </div>
       ))}
-      <button type="button" onClick={handleSubmit}>
-        {submitLabel}
-      </button>
     </div>
   );
 };
