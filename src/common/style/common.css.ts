@@ -1,44 +1,38 @@
 // common.css.ts
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import searchIcon from '../assets/icons/search.png';
-import searchIconOrg from '../assets/icons/search-org.png';
-import { AppTheme, theme as defaultTheme } from './theme.css';
 
-type ThemeType = typeof defaultTheme;
-export const globalStyles = (t: ThemeType) => css`
+export const commonStyle = css`
   input[type='text'],
   input[type='password'],
   input[type='email'],
   input[type='number'],
   input[type='address'],
   input[type='tel'] {
-    border: 1px solid ${t.colors.border};
-    color: ${t.colors.text};
-    border-radius: ${t.border.radius};
-    padding: ${t.spacing.xs} ${t.spacing.md};
-    background: ${t.backgrounds.white};
-    height: 2.5rem;
+    border: var(--border);
+    color: var(--textColor);
+    border-radius: var(--radius);
+    padding: 1rem 2rem;
+    background: #fff;
+    height: 4rem;
     width: 100%;
-    margin-bottom: ${t.spacing.md};
   }
   button {
-    border: ${t.border.width} ${t.border.style} ${t.colors.border};
-    color: ${t.colors.text};
-    border-radius: ${t.border.radius};
-    padding: 0 ${t.spacing.xl};
-    background: ${t.backgrounds.light};
-    height: 2.5rem;
+    border: var(--border);
+    color: var(--textColor);
+    border-radius: var(--radius);
+    padding: 0 2rem;
+    background: #fff;
+    height: 4rem;
   }
   button[type='submit'] {
     width: 100%;
-    font-weight: ${t.fontWeights.medium};
-    color: ${t.colors.white || '#ffffff'};
+    font-weight: 500;
+    color: #fff;
     border: 0;
-    background: ${t.colors.primary};
+    background: var(--primary);
   }
 
-  /* 나머지 스타일들 동일하게 t를 사용하여 참조 */
   .dn {
     display: none;
   }
@@ -77,45 +71,13 @@ export const globalStyles = (t: ThemeType) => css`
     margin-left: 0.2rem;
     vertical-align: top;
     border-radius: 100%;
-    background: ${t.colors.primary};
+    background: var(--primary);
   }
 
   .inner {
     position: relative;
     width: 100%;
     margin: 0 auto;
-  }
-
-  h2.headline {
-    font-size: ${t.fontSizes.xl};
-    font-weight: ${t.fontWeights.bold};
-  }
-
-  .chk_box {
-    display: inline-block;
-    position: relative;
-    line-height: 1.8rem;
-  }
-  .chk_box label {
-    display: inline-block;
-    padding-left: 2.4rem;
-  }
-  .chk_box input[type='checkbox'] {
-    position: absolute;
-    top: 0.4rem;
-    left: 0;
-  }
-  .chk_box label:before {
-    content: '';
-    position: absolute;
-    top: 0.4rem;
-    left: 0;
-    width: 1.8rem;
-    height: 1.8rem;
-    background: url(../images/ic_chk.png) no-repeat 0 0;
-  }
-  .chk_box input[type='checkbox']:checked + label:before {
-    background: url(../images/ic_chk_on.png) no-repeat 0 0;
   }
 `;
 
@@ -131,6 +93,9 @@ export const fullSize = css`
 
 export const flexStyle = css`
   display: flex;
+`;
+export const fc = css`
+  flex-direction: column;
 `;
 export const jc = css`
   justify-content: center;
@@ -166,19 +131,19 @@ export const iconBtn = css`
   background-color: initial;
 `;
 
-export const input01 = styled.input<{ theme: AppTheme }>`
-  border: 1px solid ${(props) => props.theme.colors.border};
+export const input01 = styled.input`
+  border: 1px solid var(--border);
   width: 100%;
 `;
 
 export const section = styled.div`
   ${sectionStyle}
 `;
-export const sectionTitle = styled.h2<{ theme: AppTheme }>`
+export const sectionTitle = styled.h2`
   text-align: center;
   margin: 3rem 0;
-  font-size: ${(props) => props.theme.fontSizes.md};
-  font-weight: ${(props) => props.theme.fontWeights.medium};
+  font-size: 2rem;
+  font-weight: 500;
 `;
 export const containImg = styled.img`
   ${fullSize}
@@ -190,10 +155,8 @@ export const coverImg = styled.img`
 `;
 
 export const searchBtn = styled.button`
-  background-image: url(${searchIcon});
   ${iconBtn}
 `;
 export const searchBtnOrg = styled.button`
-  background-image: url(${searchIconOrg});
   ${iconBtn}
 `;

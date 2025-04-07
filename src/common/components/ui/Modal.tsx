@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import styled from '@emotion/styled';
+import React, { useEffect, useState } from 'react';
 
 /**
  * 입력 필드의 구성 정보
@@ -81,6 +82,27 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   const [formState, setFormState] = useState<Record<string, string>>({});
 
+  // 모달 상태에 따라 body에 클래스 onModal 추가/제거
+  useEffect(() => {
+    isOpen ? document.body.classList.add('onModal') : document.body.classList.remove('onModal');
+    return () => {
+      document.body.classList.remove('onModal');
+    };
+  }, [isOpen]);
+
+  // esc로 모달창 닫기
+  useEffect(() => {
+    if (!isOpen || !onCancel) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onCancel();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onCancel]);
+
   if (!isOpen) return null;
 
   const handleCheckboxChange = (item: string) => {
@@ -103,8 +125,8 @@ const Modal: React.FC<ModalProps> = ({
   };
 
   return (
-    <div>
-      <div>
+    <>
+      <ModalStyle>
         {title && <h2>{title}</h2>}
         {description && <p>{description}</p>}
 
@@ -139,16 +161,49 @@ const Modal: React.FC<ModalProps> = ({
           </div>
         )}
 
+        {children && <div>{children}</div>}
         {(confirmText && onConfirm) || (cancelText && onCancel) ? (
           <div>
             {cancelText && onCancel && <button onClick={onCancel}>{cancelText}</button>}
             {confirmText && onConfirm && <button onClick={handleConfirm}>{confirmText}</button>}
           </div>
         ) : null}
-        {children && <div>{children}</div>}
-      </div>
-    </div>
+
+        {/* 닫기 버튼 */}
+        {onCancel && (
+          <div>
+            <CloseModal onClick={onCancel} aria-label="모달 닫기">
+              ×
+            </CloseModal>
+          </div>
+        )}
+      </ModalStyle>
+    </>
   );
 };
 
 export default Modal;
+
+const ModalStyle = styled.div`
+  position: fixed;
+  width: 80%;
+  background: white;
+  border: var(--border);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 70rem;
+  min-width: 32rem;
+  padding: 2rem;
+  min-height: 30rem;
+`;
+
+const CloseModal = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2rem;
+  height: 2rem;
+  border: var(--border);
+  font-size: 2rem;
+`;
