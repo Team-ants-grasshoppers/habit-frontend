@@ -23,6 +23,9 @@
     "noFallthroughCasesInSwitch": true,
     // "noUncheckedSideEffectImports": true
   },
-  "include": ["src"],
+  "include": ["src",
+              ".storybook/vitest.setup.ts",
+              ".storybook/**/*.ts",
+              "vitest.workspace.ts"],
   "exclude": ["node_modules", "dist"]
 }
