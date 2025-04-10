@@ -1,53 +1,115 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
+import { HTMLAttributes, ReactNode } from 'react';
 
-// 모달 열기 버튼
-interface ModalButtonProps {
-  onClick: () => void;
-  children: React.ReactNode;
-}
-export const ModalButton: React.FC<ModalButtonProps> = ({ onClick, children }) => {
-  return <DefaultBtn onClick={onClick}>{children}</DefaultBtn>;
-};
+/**
+ * Button 스타일 타입
+ */
+type ButtonMode = 'base' | 'confirm' | 'cancel' | 'more' | 'text';
 
-// 확인/제출 (Submit) 버튼
-interface SubmitButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
-}
-export const SubmitButton: React.FC<SubmitButtonProps> = ({ children, ...rest }) => {
+/**
+ * ButtonUnit props 타입
+ */
+type ButtonUnitProps = {
+  mode: ButtonMode;
+  isModal?: boolean;
+  onCloseModal?: () => void;
+  onMore?: () => void;
+  children: ReactNode;
+} & HTMLAttributes<HTMLButtonElement>;
+
+/**
+ * 통합 버튼 컴포넌트
+ *
+ * - 버튼 내부에는 children요소가 필수 포함입니다.
+ *
+ * - mode에 따라 3가지 유형의 버튼을 지원합니다:
+ *   - 'base': 기본 버튼
+ *   - 'text': 텍스트형 버튼
+ *   - 'more': 리스트 더보기 버튼
+ *   - 'confirm': 적용/확인/강조 버튼
+ *   - 'cancel': 취소 버튼 - 뒤로가기
+ *      - cancel 모드 전용 :
+ *        - isModal?: boolean(기본값: false)
+ *        - 모달일 경우: isModal={true}
+ */
+const ButtonUnit = ({
+  mode = 'base',
+  isModal = false,
+  onCloseModal,
+  onMore,
+  children,
+  ...rest
+}: ButtonUnitProps) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (mode === 'cancel') {
+      if (isModal && onCloseModal) {
+        onCloseModal();
+      } else {
+        navigate(-1);
+      }
+    } else if (mode === 'more' && onMore) {
+      onMore();
+    }
+
+    // 기타 onClick은 rest로 위임
+    rest.onClick?.(new MouseEvent('click') as any);
+  };
+
+  const ButtonComponent =
+    mode === 'confirm'
+      ? ConfirmButton
+      : mode === 'cancel'
+        ? CancelButton
+        : mode === 'more'
+          ? MoreButton
+          : mode === 'text'
+            ? TextButton
+            : BaseButton;
+
   return (
-    <DefaultBtn type="submit" {...rest}>
+    <ButtonComponent onClick={handleClick} {...rest}>
       {children}
-    </DefaultBtn>
+    </ButtonComponent>
   );
 };
 
-// 페이지 이동 버튼
-interface NavigationButtonProps {
-  to: string;
-  children: React.ReactNode;
-}
-export const NavigationButton: React.FC<NavigationButtonProps> = ({ to, children }) => {
-  const navigate = useNavigate();
-  const handleClick = () => navigate(to);
+export default ButtonUnit;
 
-  return <DefaultBtn onClick={handleClick}>{children}</DefaultBtn>;
-};
+// ===================== 🎨 스타일 정의 =====================
+const BaseButton = styled.button``;
 
-// 삭제,추방,거부,탈퇴 버튼
-export const DeleteButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = (props) => {
-  return <DefaultBtn {...props}>{props.children}</DefaultBtn>;
-};
+const TextButton = styled.button`
+  background: none;
+  border: none;
+  border-radius: 0;
+  font-size: 1.4rem;
+  padding: 0 0.2rem;
+  height: fit-content;
+  color: var(--textColor_dark);
+  line-height: 1.6;
+  border-bottom: 1px solid var(--textColor_dark);
+`;
 
-export default {
-  ModalButton,
-  SubmitButton,
-  NavigationButton,
-  DeleteButton,
-};
+const ConfirmButton = styled.button`
+  background: var(--black, #000);
+  color: #fff;
+  border: none;
+`;
 
-export const DefaultBtn = styled.button`
-  border: var(--border);
-  padding: 0.5rem 2rem;
+const CancelButton = styled.button`
+  background: var(--light_gray);
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+`;
+
+const MoreButton = styled.button`
+  width: 100%;
+  border: 1px solid var(--black);
+  background: #fff;
+  font-size: 1.4rem;
 `;

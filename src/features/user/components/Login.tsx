@@ -4,6 +4,7 @@ import UserForm from './UserForm';
 import { loginUser } from '../hooks/useUser';
 import { useAppDispatch } from '../../../store/hook';
 import { loginSuccess } from '../hooks/userSlice';
+import ButtonUnit from '../../../common/components/ui/Buttons';
 
 interface LoginProps {
   isOpen: boolean;
@@ -65,8 +66,12 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
         ]}
       />
       <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'space-between' }}>
-        <button onClick={() => console.log('id/pw 찾기 클릭')}>id/pw 찾기</button>
-        <button onClick={() => console.log('회원가입 클릭')}>회원가입</button>
+        <ButtonUnit mode="text" onClick={() => console.log('id/pw 찾기 클릭')}>
+          id/pw 찾기
+        </ButtonUnit>
+        <ButtonUnit mode="base" onClick={() => console.log('회원가입 클릭')}>
+          회원가입
+        </ButtonUnit>
       </div>
     </Modal>
   );
