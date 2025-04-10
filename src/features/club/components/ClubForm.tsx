@@ -71,6 +71,9 @@ const ClubForm: React.FC<ClubFormProps> = ({ mode, initialData, onSubmit }) => {
         <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
       </div>
 
+      {/* 이미지 URL 입력 필드 추가 */}
+      {/* 실제로는 파일 업로드 기능을 구현해야 하지만, 여기서는 URL 입력으로 대체합니다. */}
+      {/* 이 부분은 나중에 수정 필요요.*/}
       <div>
         <label>이미지 URL</label>
         <input type="text" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
