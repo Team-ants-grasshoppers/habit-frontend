@@ -84,9 +84,13 @@ const BaseButton = styled.button``;
 const TextButton = styled.button`
   background: none;
   border: none;
+  border-radius: 0;
   font-size: 1.4rem;
   padding: 0 0.2rem;
-  border-bottom: 1px solid var(--textColor);
+  height: fit-content;
+  color: var(--textColor_dark);
+  line-height: 1.6;
+  border-bottom: 1px solid var(--textColor_dark);
 `;
 
 const ConfirmButton = styled.button`

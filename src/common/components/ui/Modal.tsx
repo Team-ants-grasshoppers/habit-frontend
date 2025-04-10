@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
+import ButtonUnit from './Buttons';
 
 /**
  * 입력 필드의 구성 정보
@@ -164,8 +165,16 @@ const Modal: React.FC<ModalProps> = ({
         {children && <div>{children}</div>}
         {(confirmText && onConfirm) || (cancelText && onCancel) ? (
           <div>
-            {cancelText && onCancel && <button onClick={onCancel}>{cancelText}</button>}
-            {confirmText && onConfirm && <button onClick={handleConfirm}>{confirmText}</button>}
+            {cancelText && onCancel && (
+              <ButtonUnit mode="cancel" onClick={onCancel}>
+                {cancelText}
+              </ButtonUnit>
+            )}
+            {confirmText && onConfirm && (
+              <ButtonUnit mode="confirm" onClick={handleConfirm}>
+                {confirmText}
+              </ButtonUnit>
+            )}
           </div>
         ) : null}
 
