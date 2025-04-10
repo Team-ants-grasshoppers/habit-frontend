@@ -21,16 +21,9 @@ export const commonStyle = css`
     border: var(--border);
     color: var(--textColor);
     border-radius: var(--radius);
-    padding: 0 2rem;
+    padding: 1rem 2rem;
     background: #fff;
     height: 4rem;
-  }
-  button[type='submit'] {
-    width: 100%;
-    font-weight: 500;
-    color: #fff;
-    border: 0;
-    background: var(--primary);
   }
 
   .dn {
