@@ -9,6 +9,7 @@ import RegionModal from '../components/utils/RegionModal';
 import styled from '@emotion/styled';
 import { fc, flexStyle, jb, sectionStyle } from '../style/common.css';
 import { layoutTheme } from './layoutStyle.css';
+import ButtonUnit from '../components/ui/Buttons';
 
 const Sidebar: React.FC = () => {
   const userState = useSelector((state: RootState) => state.user);
@@ -39,13 +40,16 @@ const Sidebar: React.FC = () => {
       <div>
         <ul>
           <li>
-            <button onClick={() => setInterestOpen(true)}>관심사 설정</button>
+            <ButtonUnit mode="base" onClick={() => setInterestOpen(true)}>
+              관심사 설정
+            </ButtonUnit>
           </li>
           <li>
             <button onClick={() => setRegionOpen(true)}>지역 설정</button>
           </li>
           <li>
-            <button
+            <ButtonUnit
+              mode="base"
               onClick={() => {
                 if (userState.isLogin) {
                   window.location.href = '/profile';
@@ -55,7 +59,7 @@ const Sidebar: React.FC = () => {
               }}
             >
               {userState.isLogin ? userState.nickname : '로그인'}
-            </button>
+            </ButtonUnit>
           </li>
         </ul>
       </div>
