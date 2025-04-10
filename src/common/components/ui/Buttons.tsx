@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 
 // 모달 열기 버튼
 interface ModalButtonProps {
