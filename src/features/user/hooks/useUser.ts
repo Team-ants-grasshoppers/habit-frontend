@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 로그인
 export const loginUser = async (userId: string, password: string) => {
-  const res = await axios.post('/members/login', {
+  const res = await axios.post('/auth/login', {
     user_id: userId,
     password,
   });
@@ -21,7 +21,7 @@ export const joinUser = async ({
   email: string;
   password: string;
 }) => {
-  const res = await axios.post('/members/join', {
+  const res = await axios.post('/auth/join', {
     user_id: userId,
     nickname,
     email,
@@ -32,7 +32,7 @@ export const joinUser = async ({
 
 // 아이디 중복 확인
 export const checkUserIdDuplicate = async (userId: string) => {
-  const res = await axios.get(`/members/check-id`, {
+  const res = await axios.get(`/auth/check-id`, {
     params: { userId },
   });
   return !res.data.exists;
@@ -40,7 +40,7 @@ export const checkUserIdDuplicate = async (userId: string) => {
 
 // 이메일 중복 확인
 export const checkEmailDuplicate = async (email: string) => {
-  const res = await axios.get(`/members/check-email`, {
+  const res = await axios.get(`/auth/check-email`, {
     params: { email },
   });
   return !res.data.exists;
@@ -48,7 +48,7 @@ export const checkEmailDuplicate = async (email: string) => {
 
 // 현재 로그인된 사용자 정보 가져오기
 export const getMyInfo = async () => {
-  const res = await axios.get('/members/profile');
+  const res = await axios.get('/auth/profile');
   return res.data;
 };
 
@@ -59,12 +59,12 @@ export const updateMyInfo = async (data: {
   region?: string;
   interests?: string[];
 }) => {
-  const res = await axios.patch('/members/profile', data);
+  const res = await axios.patch('/auth/profile', data);
   return res.data;
 };
 
 // 로그아웃
 export const logoutUser = async () => {
-  const res = await axios.post('/members/logout');
+  const res = await axios.post('/auth/logout');
   return res.data;
 };
