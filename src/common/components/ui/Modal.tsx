@@ -24,7 +24,8 @@ interface ModalProps {
   confirmText?: string;
   cancelText?: string;
   onConfirm?: (data?: any) => void;
-  onCancel?: () => void;
+  onCancel?: () => void; // "거절" 버튼 클릭 시 실행
+  onClose?: () => void; // 닫기(X), ESC 키 등 단순 닫기 처리용 (✅ 추가됨)
   errorText?: string;
   /** checkbox 모드일 때 외부에서 관리되는 선택값 */
   checked?: string[];
@@ -53,7 +54,8 @@ interface ModalProps {
  *   - title, description: 모달 제목과 설명 텍스트
  *   - confirmText, cancelText: 확인 및 취소 버튼 텍스트
  *   - onConfirm: 확인 버튼 클릭 시 실행할 콜백 (모드에 따라 전달되는 데이터 달라짐)
- *   - onCancel: 취소 버튼 클릭 시 실행할 콜백
+ *   - onCancel: 취소(거절) 버튼 클릭 시 실행할 콜백
+ *   - onClose: X 버튼 클릭 또는 ESC 입력 시 실행되는 닫기 콜백 (✅ 추가됨)
  *   - errorText: input 모드에서 입력값 하단에 표시할 에러 텍스트
  *
  * - checkbox 모드 전용:
@@ -76,6 +78,7 @@ const Modal: React.FC<ModalProps> = ({
   cancelText,
   onConfirm,
   onCancel,
+  onClose,
   errorText,
   checked = [],
   onCheckedChange,
@@ -91,18 +94,17 @@ const Modal: React.FC<ModalProps> = ({
     };
   }, [isOpen]);
 
-  // esc로 모달창 닫기
+  // ESC 키로 모달 닫기 (✅ onClose로 분리 처리)
   useEffect(() => {
-    if (!isOpen || !onCancel) return;
+    if (!isOpen || !onClose) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onCancel();
+      if (e.key === 'Escape') onClose();
     };
-
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, onCancel]);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -163,6 +165,7 @@ const Modal: React.FC<ModalProps> = ({
         )}
 
         {children && <div>{children}</div>}
+
         {(confirmText && onConfirm) || (cancelText && onCancel) ? (
           <div>
             {cancelText && onCancel && (
@@ -178,10 +181,10 @@ const Modal: React.FC<ModalProps> = ({
           </div>
         ) : null}
 
-        {/* 닫기 버튼 */}
-        {onCancel && (
+        {/* 닫기 버튼 (✅ onClose로 분리 처리) */}
+        {onClose && (
           <div>
-            <CloseModal onClick={onCancel} aria-label="모달 닫기">
+            <CloseModal onClick={onClose} aria-label="모달 닫기">
               ×
             </CloseModal>
           </div>

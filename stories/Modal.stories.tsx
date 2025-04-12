@@ -23,14 +23,21 @@ const meta: Meta<typeof Modal> = {
 export default meta;
 type Story = StoryObj<typeof Modal>;
 
-// ✅ 공통 템플릿
+// ✅ 공통 템플릿 (onClose 추가됨)
 const Template = (args: any) => {
   const [isOpen, setIsOpen] = useState(true);
   return (
     <Modal
       {...args}
       isOpen={isOpen}
-      onCancel={() => setIsOpen(false)}
+      onCancel={() => {
+        alert('❌ 취소(거절) 동작');
+        setIsOpen(false);
+      }}
+      onClose={() => {
+        alert('🛑 닫기(X 또는 ESC)');
+        setIsOpen(false);
+      }}
       onConfirm={(data) => {
         alert(JSON.stringify(data, null, 2));
         setIsOpen(false);
