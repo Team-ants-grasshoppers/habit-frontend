@@ -29,7 +29,7 @@ const Sidebar: React.FC = () => {
             <Link to="/clubs">내 모임</Link>
           </li>
           <li>
-            <Link to="/schedule">일정</Link>
+            <Link to="/calendar">일정</Link>
           </li>
           <li>
             <Link to="/recent">최근 본 모임</Link>
