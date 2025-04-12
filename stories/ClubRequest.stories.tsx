@@ -10,6 +10,7 @@ const meta: Meta<typeof ClubRequest> = {
 export default meta;
 type Story = StoryObj<typeof ClubRequest>;
 
+// ✅ 샘플 유저 데이터
 const sampleUsers = [
   {
     id: 'user1',
@@ -23,9 +24,11 @@ const sampleUsers = [
   },
 ];
 
+// ✅ 기본 스토리 (승인 + 거절 둘 다 확인 가능)
 export const Default: Story = {
   args: {
     pendingUsers: sampleUsers,
-    onApprove: (userId) => alert(`가입 승인됨: ${userId}`),
+    onApprove: (userId) => alert(`✅ 가입 승인됨: ${userId}`),
+    onReject: (userId) => alert(`❌ 가입 거절됨: ${userId}`), // ✅ 거절 콜백 추가
   },
 };
