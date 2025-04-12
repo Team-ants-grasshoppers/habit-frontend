@@ -9,6 +9,7 @@ interface ClubItem {
 
 interface ClubListProps {
   items: ClubItem[];
+  routePrefix: string;
 }
 
 /**
