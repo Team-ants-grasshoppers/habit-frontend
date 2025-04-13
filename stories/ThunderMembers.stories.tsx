@@ -10,13 +10,8 @@ const meta: Meta<typeof ThunderMembers> = {
 export default meta;
 type Story = StoryObj<typeof ThunderMembers>;
 
+// 운영자는 리스트에 포함되지 않으므로 제거
 const sampleMembers = [
-  {
-    memberId: 1,
-    nickname: '리더짱',
-    profileImageUrl: 'https://via.placeholder.com/80x80?text=Admin',
-    isAdmin: true,
-  },
   {
     memberId: 2,
     nickname: '참가자1',
@@ -32,12 +27,14 @@ const sampleMembers = [
 export const Default: Story = {
   args: {
     members: sampleMembers,
+    isViewerAdmin: false, // 일반 사용자 → 추방 버튼 안 보임
   },
 };
 
 export const WithBanButton: Story = {
   args: {
     members: sampleMembers,
+    isViewerAdmin: true, // 운영자 → 추방 버튼 보임
     onBanClick: (id) => alert(`멤버 ${id} 추방됨!`),
   },
 };
@@ -45,5 +42,6 @@ export const WithBanButton: Story = {
 export const Empty: Story = {
   args: {
     members: [],
+    isViewerAdmin: true,
   },
 };
