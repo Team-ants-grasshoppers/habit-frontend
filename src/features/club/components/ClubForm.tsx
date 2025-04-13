@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Modal from '../../../common/components/ui/Modal';
+import ButtonUnit from '../../../common/components/ui/Buttons';
 
 interface ClubMember {
   id: string;
@@ -16,27 +17,33 @@ interface ClubFormProps {
     adims: ClubMember[];
     members: ClubMember[];
   };
-  onSubmit?: (data: { name: string; description: string; imageUrl: string }) => void;
+  onSubmit?: (data: { name: string; description: string; image: File | null }) => void;
+  onImageUpload?: (file: File) => Promise<string>; // 이미지 업로드 콜백 (옵션으로 유지 가능)
 }
 
-/**
- * ClubForm 컴포넌트
- *
- * 클럽 생성/수정 폼을 렌더링하는 컴포넌트
- * - mode: 'create' | 'edit'에 따라 입력 필드의 기본값이 다름
- * - 운영진/멤버 프로필은 직접 렌더링함
- * - 멤버 프로필 옆에는 추방 버튼이 있으며 클릭 시 확인 모달이 열림
- * - 하단 버튼 영역은 포함하지 않음
- * - name, description, imageUrl 값은 onSubmit을 통해 상위로 전달 가능
- */
 const ClubForm: React.FC<ClubFormProps> = ({ mode, initialData, onSubmit }) => {
   const [name, setName] = useState(initialData?.name || '');
   const [description, setDescription] = useState(initialData?.description || '');
-  const [imageUrl, setImageUrl] = useState(initialData?.imageUrl || '');
+  const [image, setImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState(initialData?.imageUrl || '');
   const [adims] = useState<ClubMember[]>(initialData?.adims || []);
   const [members, setMembers] = useState<ClubMember[]>(initialData?.members || []);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
 
   const handleExpelClick = (userId: string) => {
     setSelectedUserId(userId);
@@ -53,7 +60,7 @@ const ClubForm: React.FC<ClubFormProps> = ({ mode, initialData, onSubmit }) => {
 
   const handleSubmit = () => {
     if (onSubmit) {
-      onSubmit({ name, description, imageUrl });
+      onSubmit({ name, description, image });
     }
   };
 
@@ -66,17 +73,21 @@ const ClubForm: React.FC<ClubFormProps> = ({ mode, initialData, onSubmit }) => {
         <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
       </div>
 
+      {/* ✅ 이미지 업로드 영역 */}
+      <div onClick={handleImageClick} style={{ cursor: 'pointer' }}>
+        {previewUrl ? <img src={previewUrl} alt="미리보기" /> : <div>이미지 넣기</div>}
+      </div>
+      <input
+        type="file"
+        accept="image/*"
+        style={{ display: 'none' }}
+        ref={fileInputRef}
+        onChange={handleImageSelect}
+      />
+
       <div>
         <label>모임 소개</label>
         <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-      </div>
-
-      {/* 이미지 URL 입력 필드 추가 */}
-      {/* 실제로는 파일 업로드 기능을 구현해야 하지만, 여기서는 URL 입력으로 대체합니다. */}
-      {/* 이 부분은 나중에 수정 필요요.*/}
-      <div>
-        <label>이미지 URL</label>
-        <input type="text" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
       </div>
 
       <div>
@@ -98,7 +109,9 @@ const ClubForm: React.FC<ClubFormProps> = ({ mode, initialData, onSubmit }) => {
             <div key={member.id}>
               <img src={member.profileImageUrl} alt={member.name} />
               <span>{member.name}</span>
-              <button onClick={() => handleExpelClick(member.id)}>추방하기</button>
+              <ButtonUnit mode="text" onClick={() => handleExpelClick(member.id)}>
+                추방하기
+              </ButtonUnit>
             </div>
           ))}
         </div>
@@ -113,6 +126,13 @@ const ClubForm: React.FC<ClubFormProps> = ({ mode, initialData, onSubmit }) => {
         onConfirm={handleConfirmExpel}
         onCancel={() => setIsModalOpen(false)}
       />
+
+      {/* ✅ 등록/수정 버튼 */}
+      <div>
+        <ButtonUnit mode="confirm" onClick={handleSubmit}>
+          {mode === 'edit' ? '수정 완료' : '등록'}
+        </ButtonUnit>
+      </div>
     </div>
   );
 };

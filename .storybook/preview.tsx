@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
 import { ThemeProvider } from '@emotion/react';
+import { MemoryRouter } from 'react-router-dom';
 import GlobalStyle from '../src/common/style/GlobalStyle';
 import { theme } from '../src/common/style/theme.css';
 import type { Preview } from '@storybook/react';
@@ -16,13 +17,15 @@ const preview: Preview = {
   },
 };
 
-// ✅ 전역 스타일 + 테마 적용
+// ✅ 전역 스타일 + 테마 + 라우터 적용
 export const decorators = [
   (Story: React.FC) => (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <Story />
-    </ThemeProvider>
+    <MemoryRouter>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Story />
+      </ThemeProvider>
+    </MemoryRouter>
   ),
 ];
 

@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import BaseList from '../src/common/components/ui/BaseList';
-import { MemoryRouter } from 'react-router-dom';
 
 // 기본 mock 데이터
 const sampleItems = [
@@ -15,9 +14,7 @@ const meta: Meta<typeof BaseList> = {
   decorators: [
     (Story) => (
       // useNavigate 대응을 위해 Router Provider 필요
-      <MemoryRouter>
-        <Story />
-      </MemoryRouter>
+      <Story />
     ),
   ],
   tags: ['autodocs'],

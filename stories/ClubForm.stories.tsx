@@ -31,10 +31,18 @@ const sampleMembers = [
   },
 ];
 
+// ✅ 공통 업로드 함수 정의 (스토리북용 mock 처리)
+const mockImageUpload = async (file: File): Promise<string> => {
+  console.log('스토리북 이미지 업로드 파일:', file);
+  // 실제 업로드 대신 가짜 URL 반환
+  return Promise.resolve('https://via.placeholder.com/300x150?text=UploadedImage');
+};
+
 export const CreateMode: Story = {
   args: {
     mode: 'create',
     onSubmit: (data) => alert(`제출 데이터: ${JSON.stringify(data, null, 2)}`),
+    onImageUpload: mockImageUpload,
   },
 };
 
@@ -49,5 +57,6 @@ export const EditMode: Story = {
       members: sampleMembers,
     },
     onSubmit: (data) => alert(`수정된 데이터: ${JSON.stringify(data, null, 2)}`),
+    onImageUpload: mockImageUpload,
   },
 };
