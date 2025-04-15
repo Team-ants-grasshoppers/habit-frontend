@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import UserForm from '../components/UserForm';
-import { checkEmailDuplicate, checkUserIdDuplicate, joinUser } from '../hooks/useUser';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../store/hook';
+import { joinUser } from '../hooks/useUser';
 import { loginSuccess } from '../hooks/userSlice';
+import UserForm from './UserForm';
+import ButtonUnit from '../../../common/components/ui/Buttons';
 
 const Join = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const [userId, setUserId] = useState('');
@@ -12,9 +15,21 @@ const Join = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [pwConfirm, setPwConfirm] = useState('');
-  const [apiError, setApiError] = useState('');
+  const [error, setError] = useState('');
 
-  const handleJoin = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!userId || !nickname || !email || !password || !pwConfirm) {
+      setError('모든 항목을 입력해주세요.');
+      return;
+    }
+
+    if (password !== pwConfirm) {
+      setError('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
     try {
       const res = await joinUser({ userId, nickname, email, password });
       dispatch(
@@ -24,18 +39,19 @@ const Join = () => {
           email: res.email,
         }),
       );
-      alert('회원가입 성공!');
+      alert('회원가입 성공! 로그인 페이지로 이동합니다.');
+      navigate('/');
     } catch (error: any) {
-      setApiError(error.response?.data?.message || '회원가입에 실패했습니다.');
+      setError(error.response?.data?.message || '회원가입에 실패했습니다.');
     }
   };
 
   return (
-    <div>
-      {apiError && <p style={{ color: 'red' }}>{apiError}</p>}
+    <form onSubmit={handleSubmit}>
       <UserForm
-        submitLabel="가입하기"
-        onSubmit={handleJoin}
+        mode="join"
+        serverError={error}
+        onSubmit={() => {}}
         fields={[
           {
             label: '아이디',
@@ -44,7 +60,6 @@ const Join = () => {
             value: userId,
             onChange: setUserId,
             required: true,
-            checkDuplicate: checkUserIdDuplicate,
           },
           {
             label: '닉네임',
@@ -61,7 +76,6 @@ const Join = () => {
             value: email,
             onChange: setEmail,
             required: true,
-            checkDuplicate: checkEmailDuplicate,
           },
           {
             label: '비밀번호',
@@ -78,11 +92,14 @@ const Join = () => {
             value: pwConfirm,
             onChange: setPwConfirm,
             required: true,
-            matchWith: 'password',
           },
         ]}
       />
-    </div>
+
+      <div style={{ marginTop: '2rem' }}>
+        <ButtonUnit mode="base">회원 가입 완료하기</ButtonUnit>
+      </div>
+    </form>
   );
 };
 
