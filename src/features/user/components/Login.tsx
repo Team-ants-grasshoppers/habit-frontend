@@ -81,7 +81,13 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
         <ButtonUnit mode="text" onClick={() => navigate('/FindIdPassword')}>
           id/pw 찾기
         </ButtonUnit>
-        <ButtonUnit mode="base" onClick={() => navigate('/join')}>
+        <ButtonUnit
+          mode="base"
+          onClick={() => {
+            onClose();
+            navigate('/join');
+          }}
+        >
           회원가입
         </ButtonUnit>
       </div>

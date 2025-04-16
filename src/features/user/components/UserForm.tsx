@@ -33,7 +33,6 @@ const UserForm: React.FC<UserFormProps> = ({ fields, onSubmit, serverError, mode
             name={field.name}
             type={field.type}
             value={field.value}
-            placeholder={field.label}
             autoComplete={field.name === 'password' ? 'current-password' : 'username'}
             onChange={(e) => {
               field.onChange(e.target.value);
