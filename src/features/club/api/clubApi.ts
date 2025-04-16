@@ -97,7 +97,9 @@ export const fetchClubList = async (
   const response = await axios.get(`/api/clubs?category=${category}&region=${region}`);
   return response.data.clubs;
 };
-// clubApi.ts
+/**
+ * 모임 삭제
+ */
 export const deleteClub = async (clubId: number): Promise<string> => {
   const response = await axios.delete(`/api/clubs/${clubId}`);
   return response.data.message;
