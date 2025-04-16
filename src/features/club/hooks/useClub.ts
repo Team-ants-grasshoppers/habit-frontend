@@ -56,10 +56,21 @@ export const useClubForm = (
     setError(null);
     try {
       if (mode === 'create') {
-        const newClubId = await createClub({ name, description, category, region });
+        const newClubId = await createClub({
+          name,
+          description,
+          category,
+          region,
+          imgId: 0,
+        });
         return newClubId;
       } else if (mode === 'edit' && clubId) {
-        const message = await updateClub(clubId, { description, category });
+        const message = await updateClub(clubId, {
+          description,
+          category,
+          region,
+          imgId: 0,
+        });
         return message;
       }
     } catch (e: any) {
