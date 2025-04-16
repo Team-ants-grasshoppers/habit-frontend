@@ -3,7 +3,8 @@ import UserForm from './UserForm';
 
 /**
  * 회원정보 확인 및 수정 컴포넌트
- * 아이디 수정불가 (읽기 전용)
+ * - 아이디는 수정 불가 (읽기 전용)
+ * - 이메일 중복 확인 기능 제거됨 (API 없음)
  */
 
 interface UserInfoProps {
@@ -13,10 +14,9 @@ interface UserInfoProps {
     email: string;
   };
   onSubmit: (data: { nickname?: string; email?: string; password?: string }) => Promise<any>;
-  checkEmailDuplicate: (email: string) => Promise<boolean>;
 }
 
-const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit, checkEmailDuplicate }) => {
+const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
   const [nickname, setNickname] = useState(initialData.nickname);
   const [email, setEmail] = useState(initialData.email);
   const [password, setPassword] = useState('');
@@ -30,8 +30,9 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit, checkEmailDu
       return;
     }
 
-    const updateData: any = { nickname };
-    if (email) updateData.email = email;
+    const updateData: { nickname?: string; email?: string; password?: string } = {};
+    if (nickname !== initialData.nickname) updateData.nickname = nickname;
+    if (email !== initialData.email) updateData.email = email;
     if (password) updateData.password = password;
 
     try {
@@ -49,15 +50,16 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit, checkEmailDu
       {successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
 
       <UserForm
-        submitLabel="수정하기"
-        onSubmit={handleSubmit}
+        mode="edit"
+        onSubmit={() => handleSubmit()}
+        serverError={apiError}
         fields={[
           {
             label: '아이디',
             name: 'userId',
             type: 'text',
             value: initialData.userId,
-            onChange: () => {}, // 수정 불가
+            onChange: () => {},
           },
           {
             label: '닉네임',
@@ -74,7 +76,6 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit, checkEmailDu
             value: email,
             onChange: setEmail,
             required: true,
-            checkDuplicate: checkEmailDuplicate,
           },
           {
             label: '새 비밀번호',
