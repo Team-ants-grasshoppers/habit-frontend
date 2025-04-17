@@ -1,28 +1,43 @@
-import React from 'react';
-import Modal from '../ui/Modal';
-import { INTERESTS } from '../../../constants/interests';
+/**
+ * @file InterestModal.tsx
+ * @description 관심사 선택 모달 (InputSelect + constants 연동)
+ */
 
-interface InterestModalProps {
+import { useState } from 'react';
+import Modal from '../ui/Modal';
+import InputSelect from '../ui/InputSelect';
+import { INTERESTS } from '../../../constants/interests';
+import ButtonUnit from '../ui/Buttons';
+
+interface Props {
   isOpen: boolean;
-  selected: string[];
-  onChange: (selected: string[]) => void;
-  onClose: () => void;
+  selectedInterests: string[];
+  onConfirm: (selected: string[]) => void;
+  onCancel: () => void;
 }
 
-const InterestModal: React.FC<InterestModalProps> = ({ isOpen, selected, onChange, onClose }) => {
+export const InterestModal = ({ isOpen, selectedInterests, onConfirm, onCancel }: Props) => {
+  const [checked, setChecked] = useState<string[]>(selectedInterests);
+
   return (
-    <Modal
-      isOpen={isOpen}
-      mode="checkbox"
-      title="관심사 설정"
-      checkboxItems={INTERESTS}
-      checked={selected}
-      onCheckedChange={onChange}
-      onCancel={onClose}
-      onConfirm={onClose}
-      confirmText="저장"
-      cancelText="취소"
-    />
+    <Modal isOpen={isOpen} onClose={onCancel}>
+      <h2>관심사 선택</h2>
+      <InputSelect
+        type="checkbox"
+        name="interests"
+        options={INTERESTS} // ✅ constants 연결
+        selected={checked}
+        onChange={setChecked}
+      />
+      <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
+        <ButtonUnit mode="cancel" isModal onClick={onCancel}>
+          취소
+        </ButtonUnit>
+        <ButtonUnit mode="confirm" onClick={() => onConfirm(checked)}>
+          확인
+        </ButtonUnit>
+      </div>
+    </Modal>
   );
 };
 
