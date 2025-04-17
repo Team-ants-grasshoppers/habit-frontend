@@ -68,17 +68,17 @@ const Sidebar: React.FC = () => {
       {/* 관심사 모달 */}
       <InterestModal
         isOpen={isInterestOpen}
-        selected={interests}
-        onChange={(items) => dispatch(setInterests(items))}
-        onClose={() => setInterestOpen(false)}
+        selectedInterests={interests}
+        onConfirm={(items) => dispatch(setInterests(items))}
+        onCancel={() => setInterestOpen(false)}
       />
 
       {/* 지역 모달 */}
       <RegionModal
         isOpen={isRegionOpen}
-        selected={regions}
-        onChange={(items) => dispatch(setRegions(items))}
-        onClose={() => setRegionOpen(false)}
+        selectedRegions={regions}
+        onConfirm={(items) => dispatch(setRegions(items))}
+        onCancel={() => setRegionOpen(false)}
       />
 
       {/* 로그인 모달 */}

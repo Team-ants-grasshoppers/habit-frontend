@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../../../common/components/ui/Modal';
 import UserForm from './UserForm';
@@ -13,15 +13,20 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [userId, setUserId] = useState('');
-  const [password, setPassword] = useState('');
+  const dispatch = useAppDispatch();
   const [apiError, setApiError] = useState('');
 
-  const handleLogin = async () => {
+  const handleLogin = async (formData: Record<string, string>) => {
+    const { id, password } = formData;
+
+    if (!id || !password) {
+      setApiError('아이디와 비밀번호를 입력해주세요.');
+      return;
+    }
+
     try {
-      await loginUser(userId, password);
+      await loginUser(id, password);
       const profile = await getMyInfo();
 
       dispatch(
@@ -34,49 +39,23 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
       setApiError('');
       onClose();
     } catch (error: any) {
-      if (error.message === '필수 항목 누락') {
-        setApiError('아이디와 비밀번호를 입력해주세요.');
-        return;
-      } else {
-        setApiError(error.message || '아이디 또는 비밀번호가 잘못되었습니다.');
-      }
+      setApiError(error.response?.data?.error || '아이디 또는 비밀번호가 잘못되었습니다.');
     }
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      mode="input"
-      title="로그인"
-      errorText={apiError}
-      onCancel={onClose}
-      onClose={onClose}
-      onConfirm={handleLogin}
-      confirmText="로그인"
-    >
+    <Modal isOpen={isOpen} onClose={onClose}>
       <UserForm
         mode="login"
+        fields={['id', 'password']}
         onSubmit={handleLogin}
         serverError={apiError}
-        fields={[
-          {
-            label: '아이디',
-            name: 'userId',
-            type: 'text',
-            value: userId,
-            onChange: setUserId,
-            required: true,
-          },
-          {
-            label: '비밀번호',
-            name: 'password',
-            type: 'password',
-            value: password,
-            onChange: setPassword,
-            required: true,
-          },
-        ]}
-      />
+      >
+        <ButtonUnit mode="confirm" type="submit">
+          로그인
+        </ButtonUnit>
+      </UserForm>
+
       <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'space-between' }}>
         <ButtonUnit mode="text" onClick={() => navigate('/FindIdPassword')}>
           id/pw 찾기
