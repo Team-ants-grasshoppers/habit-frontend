@@ -1,22 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface CheckboxSelectionSlice {
-  selectedItems: string[];
+  interests: string[];
+  regions: string[];
 }
 
 const initialState: CheckboxSelectionSlice = {
-  selectedItems: [],
+  interests: [],
+  regions: [],
 };
 
 const checkboxSelectionSlice = createSlice({
   name: 'checkboxSelection',
   initialState,
   reducers: {
-    setSelectedItems(state, action: PayloadAction<string[]>) {
-      state.selectedItems = action.payload;
+    setInterests(state, action: PayloadAction<string[]>) {
+      state.interests = action.payload;
+    },
+    setRegions(state, action: PayloadAction<string[]>) {
+      state.regions = action.payload;
     },
   },
 });
 
-export const { setSelectedItems } = checkboxSelectionSlice.actions;
+export const { setInterests, setRegions } = checkboxSelectionSlice.actions;
 export default checkboxSelectionSlice.reducer;

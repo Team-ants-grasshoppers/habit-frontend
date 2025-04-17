@@ -19,8 +19,8 @@ const uploadImage = async (file: File): Promise<string> => {
     });
 
     // 서버에서 반환한 성공 메시지
-    if (response.data.message === '이미지 업로드 성공') {
-      return response.data.message; // 성공 메시지 반환
+    if (typeof response.data.id === 'number') {
+      return response.data.id; // 성공 메시지 반환
     }
 
     throw new Error('이미지 업로드 실패');

@@ -1,7 +1,7 @@
 // src/components/layout/Sidebar.tsx
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import Login from '../../features/user/components/Login';
 import InterestModal from '../components/utils/InterestModal';
@@ -10,6 +10,7 @@ import styled from '@emotion/styled';
 import { fc, flexStyle, jb, sectionStyle } from '../style/common.css';
 import { layoutTheme } from './layoutStyle.css';
 import ButtonUnit from '../components/ui/Buttons';
+import { setInterests, setRegions } from '../components/ui/hooks/checkboxSelectionSlice';
 
 const Sidebar: React.FC = () => {
   const userState = useSelector((state: RootState) => state.user);
@@ -18,8 +19,8 @@ const Sidebar: React.FC = () => {
   const [isRegionOpen, setRegionOpen] = useState(false);
   const [isLoginOpen, setLoginOpen] = useState(false);
 
-  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
-  const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
+  const dispatch = useDispatch();
+  const { interests, regions } = useSelector((state: RootState) => state.checkboxSelection);
 
   return (
     <AsideStyle>
@@ -67,16 +68,16 @@ const Sidebar: React.FC = () => {
       {/* 관심사 모달 */}
       <InterestModal
         isOpen={isInterestOpen}
-        selected={selectedInterests}
-        onChange={setSelectedInterests}
+        selected={interests}
+        onChange={(items) => dispatch(setInterests(items))}
         onClose={() => setInterestOpen(false)}
       />
 
       {/* 지역 모달 */}
       <RegionModal
         isOpen={isRegionOpen}
-        selected={selectedRegions}
-        onChange={setSelectedRegions}
+        selected={regions}
+        onChange={(items) => dispatch(setRegions(items))}
         onClose={() => setRegionOpen(false)}
       />
 

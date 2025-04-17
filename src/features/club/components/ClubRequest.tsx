@@ -2,18 +2,28 @@ import React, { useState } from 'react';
 import Modal from '../../../common/components/ui/Modal';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 
+/**
+ * 클럽 가입 요청 유저 정보를 나타내는 인터페이스
+ */
 interface ClubMember {
   id: string;
   name: string;
   profileImageUrl: string;
 }
 
+/**
+ * ClubRequest 컴포넌트 Props
+ * @property pendingUsers - 가입 대기 중인 유저 리스트
+ * @property onApprove - 유저 가입 승인 콜백
+ * @property onReject - 유저 가입 거절 콜백 (선택)
+ * @property isAdmin - 현재 로그인 유저가 운영자인지 여부 (기본값: false)
+ */
 interface ClubRequestProps {
   pendingUsers: ClubMember[];
   onApprove: (userId: string) => void;
-  onReject?: (userId: string) => void; // ✅ 거절 콜백 추가
+  onReject?: (userId: string) => void;
+  isAdmin?: boolean;
 }
-
 /**
  * ClubRequest 컴포넌트
  *
@@ -28,25 +38,43 @@ interface ClubRequestProps {
  * @param {ClubRequestProps} props - 가입 대기자 리스트와 승인/거절 콜백
  * @returns {JSX.Element} 가입 요청자 리스트 UI
  */
-const ClubRequest: React.FC<ClubRequestProps> = ({ pendingUsers, onApprove, onReject }) => {
+const ClubRequest: React.FC<ClubRequestProps> = ({
+  pendingUsers,
+  onApprove,
+  onReject,
+  isAdmin = false,
+}) => {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  /**
+   * 가입 승인 버튼 클릭 시 모달 열기
+   * @param userId - 선택된 유저 ID
+   */
   const handleApproveClick = (userId: string) => {
     setSelectedUserId(userId);
     setIsModalOpen(true);
   };
 
+  /**
+   * 모달 확인 클릭 시 승인 처리
+   */
   const handleConfirm = () => {
     if (selectedUserId) onApprove(selectedUserId);
     closeModal();
   };
 
+  /**
+   * 모달 취소 클릭 시 거절 처리
+   */
   const handleReject = () => {
     if (selectedUserId && onReject) onReject(selectedUserId);
     closeModal();
   };
 
+  /**
+   * 모달 닫기
+   */
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedUserId(null);
@@ -60,9 +88,13 @@ const ClubRequest: React.FC<ClubRequestProps> = ({ pendingUsers, onApprove, onRe
           <div key={user.id}>
             <img src={user.profileImageUrl} alt={user.name} />
             <p>{user.name}</p>
-            <ButtonUnit mode="confirm" onClick={() => handleApproveClick(user.id)}>
-              가입받기
-            </ButtonUnit>
+
+            {/* 운영자일 때만 가입받기 버튼 표시 */}
+            {isAdmin && (
+              <ButtonUnit mode="confirm" onClick={() => handleApproveClick(user.id)}>
+                가입받기
+              </ButtonUnit>
+            )}
           </div>
         ))}
       </div>
@@ -73,9 +105,9 @@ const ClubRequest: React.FC<ClubRequestProps> = ({ pendingUsers, onApprove, onRe
         title="정말 이 회원을 가입받으시겠습니까?"
         confirmText="승인"
         cancelText="거절"
-        onConfirm={handleConfirm} // ✅ 승인
-        onCancel={handleReject} // ✅ 거절 처리 (상위 API 호출 가능)
-        onClose={closeModal} // ✅ 단순 닫기 (X, ESC)
+        onConfirm={handleConfirm}
+        onCancel={handleReject}
+        onClose={closeModal}
       />
     </div>
   );

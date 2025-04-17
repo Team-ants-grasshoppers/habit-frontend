@@ -8,6 +8,7 @@ export const createClub = async (data: {
   description: string;
   category: string;
   region: string;
+  imgId: number;
 }): Promise<number> => {
   const response = await axios.post('/api/clubs', data);
   return response.data.club_id;
@@ -23,6 +24,7 @@ export const fetchClubDetail = async (
   description: string;
   category: string;
   region: string;
+  imageUrl: string;
 }> => {
   const response = await axios.get(`/api/clubs/${clubId}`);
   return response.data;
@@ -36,6 +38,8 @@ export const updateClub = async (
   data: {
     description: string;
     category: string;
+    region: string;
+    imgId: number;
   },
 ): Promise<string> => {
   const response = await axios.put(`/api/clubs/${clubId}`, data);
@@ -66,7 +70,7 @@ export const fetchClubMembers = async (
   }[]
 > => {
   const response = await axios.get(`/api/clubs/${clubId}/members`);
-  return response.data.members;
+  return response.data.members ?? [];
 };
 
 /**
@@ -92,4 +96,11 @@ export const fetchClubList = async (
 > => {
   const response = await axios.get(`/api/clubs?category=${category}&region=${region}`);
   return response.data.clubs;
+};
+/**
+ * 모임 삭제
+ */
+export const deleteClub = async (clubId: number): Promise<string> => {
+  const response = await axios.delete(`/api/clubs/${clubId}`);
+  return response.data.message;
 };
