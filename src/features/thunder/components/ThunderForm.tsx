@@ -13,20 +13,18 @@ interface ThunderFormProps {
     // 수정 시 사용할 초기 데이터
     title: string;
     description: string;
-    region: { city: string; district: string };
+    region: string;
     date: string;
-    hour: number;
-    minute: number;
+    time: string;
     imageUrl?: string;
   };
   onSubmit?: (data: {
     // 제출 시 상위에서 처리할 콜백
     title: string;
     description: string;
-    region: { city: string; district: string };
+    region: string;
     date: string;
-    hour: number;
-    minute: number;
+    time: string;
     image: File | null;
   }) => void;
   onImageUpload?: (file: File) => Promise<string>;
@@ -57,10 +55,9 @@ interface ThunderFormProps {
 const ThunderForm: React.FC<ThunderFormProps> = ({ mode, initialData, onSubmit }) => {
   const [title, setTitle] = useState(initialData?.title || '');
   const [description, setDescription] = useState(initialData?.description || '');
-  const [region, setRegion] = useState(initialData?.region || { city: '', district: '' });
+  const [region, setRegion] = useState(initialData?.region || '');
   const [date, setDate] = useState(initialData?.date || '');
-  const [hour, setHour] = useState(initialData?.hour || 0);
-  const [minute, setMinute] = useState(initialData?.minute || 0);
+  const [time, setTime] = useState(initialData?.time || '');
   const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState(initialData?.imageUrl || '');
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -74,7 +71,7 @@ const ThunderForm: React.FC<ThunderFormProps> = ({ mode, initialData, onSubmit }
   };
 
   const handleSubmit = () => {
-    onSubmit?.({ title, description, region, date, hour, minute, image });
+    onSubmit?.({ title, description, region, date, time, image });
   };
 
   return (
