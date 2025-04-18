@@ -1,12 +1,6 @@
-/**
- * @file UserInfo.tsx
- * @description 내정보 확인/수정 페이지
- * 아이디 수정 불가 (읽기 전용)
- */
-
 import React, { useState } from 'react';
 import UserForm from './UserForm';
-import { validateForm } from '../../../common/components/utils/validateForm';
+import { validateForm } from '../hooks/validateForm';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 
 interface UserInfoProps {

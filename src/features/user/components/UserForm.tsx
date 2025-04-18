@@ -6,17 +6,32 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import InputText from '../../../common/components/ui/InputText';
-import ButtonUnit from '../../../common/components/ui/Buttons';
-import { validateForm } from '../../../common/components/utils/validateForm';
+import { validateForm } from '../hooks/validateForm';
 
 interface UserFormProps {
   mode: 'login' | 'join' | 'edit';
   fields: ('id' | 'nickname' | 'email' | 'password' | 'confirmPassword')[];
+  onSubmit: (formData: Record<string, string>) => void;
   readonly?: boolean;
   children?: React.ReactNode;
-  onSubmit: (formData: Record<string, string>) => void;
   serverError?: string;
 }
+
+/**
+ * 사용자 정보 입력 폼 컴포넌트
+ * - 로그인, 회원가입, 정보수정 페이지에서 사용 사능
+ * - fields에 입력한 값만 노출
+ *
+ * 필수 Props
+ * - mode : 'login' | 'join' | 'edit'
+ * - fields : 'id' | 'nickname' | 'email' | 'password' | 'confirmPassword'
+ * - onSubmit
+ *
+ * 선택 Props
+ * - readonly : 읽기만 가능 수정불가
+ * - children
+ * - serverError : 서버 유효성 검사
+ */
 
 const fieldLabels: Record<string, string> = {
   id: '아이디',

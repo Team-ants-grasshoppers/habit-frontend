@@ -1,22 +1,26 @@
-/**
- * @file InputSelect.tsx
- * @description checkbox 또는 radio 타입을 선택하는 입력 컴포넌트 (타입별 이미지 적용)
- */
-
 import styled from '@emotion/styled';
 
 interface InputSelectProps {
-  type: 'checkbox' | 'radio'; // 타입 지정
+  type: 'checkbox' | 'radio';
   name: string;
-  options: string[]; // 옵션 리스트
-  selected?: string[]; // 선택된 값들
+  options: string[];
+  selected?: string[];
   onChange: (updated: string[]) => void;
 }
 
 /**
- * 선택형 입력 컴포넌트
- * - checkbox/radio 타입별 다른 이미지 스타일 적용
+ * 선택형 input 컴포넌트
+ *
+ * 필수 Props
+ * - type : 'checkbox' | 'radio'
+ * - name : 그룹화 및 id값에 할당
+ * - options : 옵션 리스트
+ * - onChange
+ *
+ * 선택 Props
+ * - selected : 선택된 값
  */
+
 export const InputSelect = ({ type, name, options, selected = [], onChange }: InputSelectProps) => {
   const handleChange = (value: string) => {
     if (type === 'checkbox') {
@@ -65,9 +69,6 @@ const Label = styled.label`
   cursor: pointer;
 `;
 
-/**
- * 타입별 다른 스타일을 적용하는 Styled Input
- */
 const StyledInput = styled.input<{ typeStyle: 'checkbox' | 'radio' }>`
   appearance: none;
   width: 2.4rem;

@@ -1,8 +1,3 @@
-/**
- * @file Modal.tsx
- * @description 기본 모달 레이아웃 컴포넌트 (백드랍 + 컨텐츠 + 닫기 버튼 포함)
- */
-
 import styled from '@emotion/styled';
 import { ReactNode, useEffect } from 'react';
 
@@ -16,10 +11,10 @@ interface ModalProps {
 }
 
 /**
- * 순수 모달 레이아웃 컴포넌트
+ * 모달 레이아웃 컴포넌트
  * - 열림 여부(isOpen)와 닫기 콜백(onClose)만 관리
- * - 컨텐츠(children)는 외부에서 주입
  */
+
 const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   // 모달 상태에 따라 body에 클래스 onModal(스크롤 방지) 추가/제거
   useEffect(() => {

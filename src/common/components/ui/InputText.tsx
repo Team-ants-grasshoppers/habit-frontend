@@ -1,13 +1,5 @@
-/**
- * @file InputText.tsx
- * @description text, password, email, number, tel, url, search 입력을 처리하는 확장형 커스텀 인풋 컴포넌트
- */
-
 import styled from '@emotion/styled';
 
-/**
- * 지원하는 input 타입 목록
- */
 type InputTextType = 'text' | 'password' | 'email' | 'number' | 'tel' | 'url' | 'search';
 
 interface InputTextProps {
@@ -21,9 +13,20 @@ interface InputTextProps {
 }
 
 /**
- * 텍스트형 입력 컴포넌트
- * - type에 따라 스타일과 동작이 다르게 적용됨
+ * 입력 input 컴포넌트
+ *
+ * 필수 Props
+ * - type : 'text' | 'password' | 'email' | 'number' | 'tel' | 'url' | 'search'
+ * - name : 그룹화 및 id값에 할당
+ * - value : 값
+ * - onChange
+ *
+ * 선택 Props
+ * - label : <label>텍스트
+ * - placeholder : string
+ * - readonly : boolean
  */
+
 export const InputText = ({
   type,
   name,
