@@ -12,6 +12,7 @@ type ButtonMode = 'base' | 'confirm' | 'cancel' | 'more' | 'text';
  */
 type ButtonUnitProps = {
   mode: ButtonMode;
+  type?: string;
   isModal?: boolean;
   onCloseModal?: () => void;
   onMore?: () => void;
@@ -35,6 +36,7 @@ type ButtonUnitProps = {
  */
 const ButtonUnit = ({
   mode = 'base',
+  type,
   isModal = false,
   onCloseModal,
   onMore,
