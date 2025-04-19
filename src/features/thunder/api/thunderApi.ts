@@ -8,26 +8,33 @@ export const createThunder = async (data: {
   description: string;
   category: string;
   region: string;
+  time: string; // full datetime string (e.g., "2025-04-20T13:00:00")
+  imgId: number; // 이미지 ID
 }): Promise<number> => {
   const response = await axios.post('/api/thunders', data);
   return response.data.thunder_id;
 };
 
 /**
- * 번개모임 리스트 조회 (카테고리, 지역 기반)
+ * 번개모임 리스트 조회
  */
 export const fetchThunderList = async (
   category: string,
   region: string,
+  date: string, // e.g., "2025-04-20"
 ): Promise<
   {
     thunder_id: number;
     title: string;
     category: string;
     region: string;
+    datetime: string;
+    imgUrl: string | null;
   }[]
 > => {
-  const response = await axios.get(`/api/thunders?category=${category}&region=${region}`);
+  const response = await axios.get(
+    `/api/thunders?category=${category}&region=${region}&date=${date}`,
+  );
   return response.data.thunders;
 };
 
@@ -37,11 +44,13 @@ export const fetchThunderList = async (
 export const fetchThunderDetail = async (
   thunderId: number,
 ): Promise<{
-  thunder_id: number;
+  thunderId: number;
   title: string;
   description: string;
   category: string;
   region: string;
+  imgUrl: string;
+  datetime: string;
 }> => {
   const response = await axios.get(`/api/thunders/${thunderId}`);
   return response.data;
@@ -76,30 +85,43 @@ export const deleteThunder = async (thunderId: number): Promise<string> => {
  */
 export const updateThunder = async (
   thunderId: number,
-  data: { title: string; description: string },
+  data: {
+    title?: string | null;
+    description?: string | null;
+    region?: string | null;
+    date?: string | null;
+    id?: number | null;
+  },
 ): Promise<string> => {
   const response = await axios.put(`/api/thunders/${thunderId}`, data);
   return response.data.message;
 };
 
 /**
- * 번개모임 회원 관리 (가입 승인, 거절, 추방)
+ * 번개모임 회원 목록 조회
  */
-export const manageThunderMember = async (
+export const fetchThunderMembers = async (
   thunderId: number,
-  payload: { target_member_id: number; action: 'approve' | 'reject' | 'ban' },
-): Promise<string> => {
-  const response = await axios.post(`/api/thunders/${thunderId}/members/manage`, payload);
-  return response.data.message;
+): Promise<
+  {
+    memberId: number;
+    nickname: string;
+    role: 'admin' | 'member';
+  }[]
+> => {
+  const response = await axios.get(`/api/thunders/${thunderId}/members`);
+  return response.data.members;
 };
 
 /**
- * 번개모임 일정 등록
+ * 번개모임 회원 추방
  */
-export const createThunderEvent = async (
+export const banThunderMember = async (
   thunderId: number,
-  data: { title: string; description: string; eventDate: string },
-): Promise<number> => {
-  const response = await axios.post(`/api/thunders/${thunderId}/calendar/manage`, data);
-  return response.data.event_id;
+  targetMemberId: number,
+): Promise<string> => {
+  const response = await axios.delete(`/api/thunders/${thunderId}/ban`, {
+    data: { targetMemberId },
+  });
+  return response.data.message;
 };

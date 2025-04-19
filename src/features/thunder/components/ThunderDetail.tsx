@@ -39,8 +39,6 @@ interface ThunderDetailProps {
   /** 번개 모임의 날짜 및 시간 (선택적) */
   dateTime?: string;
   /** 번개 모임의 위치 (선택적) */
-  location?: string;
-  /** 번개 모임 참여 인원 목록 (선택적) */
   members?: ThunderMember[];
 }
 
@@ -59,7 +57,8 @@ const ThunderDetail: React.FC<ThunderDetailProps> = ({
   description,
   imageUrl,
   dateTime,
-  location,
+  region,
+  category,
   members = [],
 }) => {
   return (
@@ -71,7 +70,8 @@ const ThunderDetail: React.FC<ThunderDetailProps> = ({
       <p>{description}</p>
 
       <div>
-        {location && <div>모임 위치: {location}</div>}
+        {region && <div>모임 위치: {region}</div>}
+        {category && <div>관심사: {category}</div>}
         {dateTime && <div>모임 시간: {dateTime}</div>}
       </div>
 
