@@ -1,138 +1,116 @@
-import React, { useRef, useState } from 'react';
-import Modal from '../../../common/components/ui/Modal';
+import React, { useState } from 'react';
 import ButtonUnit from '../../../common/components/ui/Buttons';
-
-interface ClubMember {
-  id: string;
-  name: string;
-  profileImageUrl: string;
-}
+import InputText from '../../../common/components/ui/InputText';
+import { INTERESTS } from '../../../constants/interests';
+import { REGIONS } from '../../../constants/regions';
+import InterestModal from '../../../common/components/utils/InterestModal';
+import RegionModal from '../../../common/components/utils/RegionModal';
 
 interface ClubFormProps {
-  mode: 'create' | 'edit';
-  initialData?: {
-    name: string;
-    description: string;
-    imageUrl: string;
-    adims: ClubMember[];
-    members: ClubMember[];
-  };
-  onSubmit?: (data: { name: string; description: string; image: File | null }) => void;
-  onImageUpload?: (file: File) => Promise<string>; // 이미지 업로드 콜백 (옵션으로 유지 가능)
+  mode: 'create' | 'edit'; // ✅ 추가
+  name: string;
+  imageUrl?: string;
+  description: string;
+  category: string;
+  region: string;
+  onNameChange: (value: string) => void;
+  onImageChange: (file: File | null) => void;
+  onDescriptionChange: (value: string) => void;
+  onCategoryChange: (value: string[]) => void;
+  onRegionChange: (value: string[]) => void;
+  onSubmit: () => void;
 }
 
-const ClubForm: React.FC<ClubFormProps> = ({ mode, initialData, onSubmit }) => {
-  const [name, setName] = useState(initialData?.name || '');
-  const [description, setDescription] = useState(initialData?.description || '');
-  const [image, setImage] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState(initialData?.imageUrl || '');
-  const [adims] = useState<ClubMember[]>(initialData?.adims || []);
-  const [members, setMembers] = useState<ClubMember[]>(initialData?.members || []);
-  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const ClubForm: React.FC<ClubFormProps> = ({
+  mode,
+  name,
+  imageUrl,
+  description,
+  category,
+  region,
+  onNameChange,
+  onImageChange,
+  onDescriptionChange,
+  onCategoryChange,
+  onRegionChange,
+  onSubmit,
+}) => {
+  const [isInterestModalOpen, setIsInterestModalOpen] = useState(false);
+  const [isRegionModalOpen, setIsRegionModalOpen] = useState(false);
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleImageClick = () => {
-    fileInputRef.current?.click();
+  const handleInterestSelect = (selected: string[]) => {
+    onCategoryChange(selected);
+    setIsInterestModalOpen(false);
   };
 
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImage(file);
-      setPreviewUrl(URL.createObjectURL(file));
-    }
-  };
-
-  const handleExpelClick = (userId: string) => {
-    setSelectedUserId(userId);
-    setIsModalOpen(true);
-  };
-
-  const handleConfirmExpel = () => {
-    if (selectedUserId) {
-      setMembers((prev) => prev.filter((user) => user.id !== selectedUserId));
-    }
-    setIsModalOpen(false);
-    setSelectedUserId(null);
-  };
-
-  const handleSubmit = () => {
-    if (onSubmit) {
-      onSubmit({ name, description, image });
-    }
+  const handleRegionSelect = (selected: string[]) => {
+    onRegionChange(selected);
+    setIsRegionModalOpen(false);
   };
 
   return (
     <div>
-      <h2>{mode === 'edit' ? '모임 수정' : '모임 만들기'}</h2>
+      {/* 모임명 */}
+      <InputText type="text" name={name} value={name} onChange={(value) => onNameChange(value)} />
 
-      <div>
-        <label>모임명</label>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+      {/* 이미지 업로드 */}
+      <div className="flex flex-col">
+        <label>모임 이미지</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => onImageChange(e.target.files?.[0] || null)}
+        />
+        {imageUrl && <img src={imageUrl} alt="모임 이미지 미리보기" />}
       </div>
 
-      {/* ✅ 이미지 업로드 영역 */}
-      <div onClick={handleImageClick} style={{ cursor: 'pointer' }}>
-        {previewUrl ? <img src={previewUrl} alt="미리보기" /> : <div>이미지 넣기</div>}
-      </div>
-      <input
-        type="file"
-        accept="image/*"
-        style={{ display: 'none' }}
-        ref={fileInputRef}
-        onChange={handleImageSelect}
-      />
-
+      {/* 모임 소개 */}
       <div>
         <label>모임 소개</label>
-        <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+        <textarea
+          value={description}
+          onChange={(e) => onDescriptionChange(e.target.value)}
+          rows={5}
+        />
       </div>
 
+      {/* 모임 카테고리 */}
       <div>
-        <h3>운영진</h3>
-        <div>
-          {adims.map((leader) => (
-            <div key={leader.id}>
-              <img src={leader.profileImageUrl} alt={leader.name} />
-              <span>{leader.name}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <h3>멤버</h3>
-        <div>
-          {members.map((member) => (
-            <div key={member.id}>
-              <img src={member.profileImageUrl} alt={member.name} />
-              <span>{member.name}</span>
-              <ButtonUnit mode="text" onClick={() => handleExpelClick(member.id)}>
-                추방하기
-              </ButtonUnit>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <Modal
-        isOpen={isModalOpen}
-        mode="alert"
-        title="정말 이 회원을 추방하시겠습니까?"
-        confirmText="확인"
-        cancelText="취소"
-        onConfirm={handleConfirmExpel}
-        onCancel={() => setIsModalOpen(false)}
-      />
-
-      {/* ✅ 등록/수정 버튼 */}
-      <div>
-        <ButtonUnit mode="confirm" onClick={handleSubmit}>
-          {mode === 'edit' ? '수정 완료' : '등록'}
+        <label>카테고리</label>
+        <ButtonUnit mode="base" onClick={() => setIsInterestModalOpen(true)}>
+          {category || '카테고리 설정'}
         </ButtonUnit>
       </div>
+
+      {/* 지역 선택 */}
+      <div>
+        <label>지역</label>
+        <ButtonUnit mode="base" onClick={() => setIsRegionModalOpen(true)}>
+          {region || '지역 설정'}
+        </ButtonUnit>
+      </div>
+
+      <div>
+        <ButtonUnit mode="confirm" onClick={onSubmit}>
+          {mode === 'create' ? '모임 생성' : '수정 완료'}
+        </ButtonUnit>
+      </div>
+
+      {/* 관심사 모달 */}
+      <InterestModal
+        isOpen={isInterestModalOpen}
+        selectedInterests={INTERESTS}
+        onCancel={() => setIsInterestModalOpen(false)}
+        onConfirm={handleInterestSelect}
+      />
+
+      {/* 지역 모달 */}
+      <RegionModal
+        isOpen={isRegionModalOpen}
+        selectedRegions={REGIONS}
+        onCancel={() => setIsRegionModalOpen(false)}
+        onConfirm={handleRegionSelect}
+      />
     </div>
   );
 };

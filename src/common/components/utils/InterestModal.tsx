@@ -23,7 +23,7 @@ export const InterestModal = ({ isOpen, selectedInterests, onConfirm, onCancel }
     <Modal isOpen={isOpen} onClose={onCancel}>
       <h2>관심사 선택</h2>
       <InputSelect
-        type="checkbox"
+        type="radio"
         name="interests"
         options={INTERESTS} // ✅ constants 연결
         selected={checked}

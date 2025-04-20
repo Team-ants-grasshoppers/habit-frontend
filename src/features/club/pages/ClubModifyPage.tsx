@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchClubDetail, fetchClubMembers, updateClub, deleteClub } from '../api/clubApi';
+import { fetchClubDetail, updateClub, deleteClub } from '../api/clubApi';
 import ClubForm from '../components/ClubForm';
 import ButtonUnit from '../../../common/components/ui/Buttons';
-import uploadImage from '../../../common/api/imageApi';
-import Modal from '../../../common/components/ui/Modal';
-import { INTERESTS } from '../../../constants/interests';
-import { REGIONS } from '../../../constants/regions';
+import useImageUpload from '../../../hooks/useImageUpload';
 
-interface ClubMember {
-  id: string;
-  name: string;
-  profileImageUrl: string;
-}
 /**
  * ClubModifyPage 컴포넌트
  *
@@ -49,18 +41,13 @@ interface ClubMember {
 const ClubModifyPage: React.FC = () => {
   const { clubId } = useParams<{ clubId: string }>();
   const navigate = useNavigate();
-  const [initialData, setInitialData] = useState<{
-    name: string;
-    description: string;
-    imageUrl: string;
-    adims: ClubMember[];
-    members: ClubMember[];
-  } | null>(null);
 
-  const [category, setCategory] = useState<string>('');
-  const [region, setRegion] = useState<string>('');
-  const [isInterestOpen, setInterestOpen] = useState(false);
-  const [isRegionOpen, setRegionOpen] = useState(false);
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+  const [region, setRegion] = useState('');
+
+  const { imageFile, imageUrl, handleImageChange, uploadSelectedImage } = useImageUpload();
 
   useEffect(() => {
     if (!clubId) return;
@@ -68,59 +55,43 @@ const ClubModifyPage: React.FC = () => {
     const fetchData = async () => {
       try {
         const detail = await fetchClubDetail(Number(clubId));
-        const membersData = await fetchClubMembers(Number(clubId));
-
-        const adims = membersData
-          .filter((m) => m.role === 'admin')
-          .map((m) => ({
-            id: m.member_id.toString(),
-            name: m.nickname,
-            profileImageUrl: '/assets/default-profile.png',
-          }));
-
-        const members = membersData
-          .filter((m) => m.role === 'member')
-          .map((m) => ({
-            id: m.member_id.toString(),
-            name: m.nickname,
-            profileImageUrl: '/assets/default-profile.png',
-          }));
-
-        setInitialData({
-          name: detail.name,
-          description: detail.description,
-          imageUrl: detail.imageUrl,
-          adims,
-          members,
-        });
-
+        setName(detail.name);
+        setDescription(detail.description);
         setCategory(detail.category);
         setRegion(detail.region);
-      } catch (err) {
-        alert('클럽 정보를 불러오지 못했습니다.');
+
+        if (detail.imageUrl) {
+          handleImageChange(null);
+        }
+      } catch (error) {
+        alert('모임 정보를 불러오지 못했습니다.');
       }
     };
 
     fetchData();
   }, [clubId]);
 
-  const handleSubmit = async (data: { name: string; description: string; image: File | null }) => {
-    if (!clubId || !initialData) return;
+  const handleSubmit = async () => {
+    if (!clubId) return;
     try {
-      let imgId: number | undefined = undefined;
+      let uploadedImgId: number | undefined = undefined;
 
-      if (data.image) {
-        imgId = Number(await uploadImage(data.image));
+      if (imageFile) {
+        const imgId = await uploadSelectedImage();
+        if (imgId) {
+          uploadedImgId = imgId;
+        }
       }
 
       await updateClub(Number(clubId), {
-        description: data.description,
+        description,
         category,
         region,
-        imgId: imgId ?? 0,
+        imgId: uploadedImgId ?? 0,
       });
 
-      alert('수정이 완료되었습니다.');
+      alert('모임 수정이 완료되었습니다.');
+      navigate(`/club/${clubId}`);
     } catch (err) {
       alert('수정에 실패했습니다.');
     }
@@ -140,7 +111,7 @@ const ClubModifyPage: React.FC = () => {
     }
   };
 
-  if (!initialData) return <p>로딩중...</p>;
+  if (!name) return <p>로딩 중...</p>;
 
   return (
     <div>
@@ -149,43 +120,26 @@ const ClubModifyPage: React.FC = () => {
         <ButtonUnit mode="cancel" children={'X'} />
       </div>
 
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-        <ButtonUnit mode="base" onClick={() => setInterestOpen(true)}>
-          모임 카테고리 설정
-        </ButtonUnit>
-        <ButtonUnit mode="base" onClick={() => setRegionOpen(true)}>
-          지역 설정
-        </ButtonUnit>
-      </div>
+      <ClubForm
+        mode="edit"
+        name={name}
+        description={description}
+        imageUrl={imageUrl}
+        category={category}
+        region={region}
+        onNameChange={(value) => setName(value)}
+        onDescriptionChange={(value) => setDescription(value)}
+        onCategoryChange={(value) => setCategory(value[0])}
+        onRegionChange={(value) => setRegion(value[0])}
+        onImageChange={handleImageChange}
+        onSubmit={handleSubmit}
+      />
 
-      <ClubForm mode="edit" initialData={initialData} onSubmit={handleSubmit} />
-
-      <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
+      <div>
         <ButtonUnit mode="cancel" onClick={handleDelete}>
           모임 삭제
         </ButtonUnit>
       </div>
-
-      {/* 모달 영역 */}
-      <Modal
-        isOpen={isInterestOpen}
-        mode="checkbox"
-        title="관심사 설정"
-        checkboxItems={INTERESTS}
-        checked={[category]}
-        onCheckedChange={(items) => setCategory(items[0])}
-        onClose={() => setInterestOpen(false)}
-      />
-
-      <Modal
-        isOpen={isRegionOpen}
-        mode="checkbox"
-        title="지역 설정"
-        checkboxItems={REGIONS}
-        checked={[region]}
-        onCheckedChange={(items) => setRegion(items[0])}
-        onClose={() => setRegionOpen(false)}
-      />
     </div>
   );
 };
