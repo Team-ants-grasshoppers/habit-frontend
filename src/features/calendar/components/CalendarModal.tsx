@@ -76,12 +76,11 @@ export const CalendarModal = ({
   };
 
   return (
-    <Modal
-      isOpen={true}
-      mode="alert"
-      title={mode === 'view' ? `📅 ${selectedDate} 일정` : `일정 추가`}
-      onCancel={onClose}
-    >
+    <Modal isOpen={true} onClose={onClose}>
+      <h2 style={{ marginBottom: '1rem' }}>
+        {mode === 'view' ? `📅 ${selectedDate} 일정` : '일정 추가'}
+      </h2>
+
       {mode === 'view' ? (
         <>
           {filtered.length > 0 ? (
