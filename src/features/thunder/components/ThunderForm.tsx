@@ -85,6 +85,27 @@ const ThunderForm: React.FC<ThunderFormProps> = ({ mode, initialData, onSubmit }
         placeholder="상세 설명"
       />
 
+      {/* 배포 에러 방지 임시 코드 */}
+      <input
+        value={region}
+        onChange={(e) => setRegion(e.target.value)}
+        placeholder="지역 (ex: 서울 강남)"
+      />
+
+      <input
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        placeholder="날짜"
+      />
+
+      <input
+        type="time"
+        value={time}
+        onChange={(e) => setTime(e.target.value)}
+        placeholder="시간"
+      />
+
       <input
         type="file"
         ref={fileInputRef}
