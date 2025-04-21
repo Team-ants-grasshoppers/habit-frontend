@@ -119,18 +119,61 @@ const ThunderModifyPage: React.FC = () => {
       />
 
       {/* 지역/관심사 선택 버튼 */}
-      <div>
-        <ButtonUnit mode="base" onClick={() => setRegionModalOpen(true)}>
-          지역 선택
-        </ButtonUnit>
-        <p>선택된 지역: {selectedRegion || '없음'}</p>
-      </div>
-      <div>
-        <ButtonUnit mode="base" onClick={() => setCategoryModalOpen(true)}>
-          관심사 선택
-        </ButtonUnit>
-        <p>선택된 관심사: {selectedCategory || '없음'}</p>
-      </div>
+      <Modal isOpen={regionModalOpen} onClose={() => setRegionModalOpen(false)}>
+        <h2>지역 선택</h2>
+        <ul>
+          {REGIONS.map((region) => (
+            <li key={region}>
+              <label>
+                <input
+                  type="radio"
+                  name="region"
+                  value={region}
+                  checked={selectedRegion === region}
+                  onChange={() => setSelectedRegion(region)}
+                />
+                {region}
+              </label>
+            </li>
+          ))}
+        </ul>
+        <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
+          <ButtonUnit mode="cancel" onClick={() => setRegionModalOpen(false)}>
+            취소
+          </ButtonUnit>
+          <ButtonUnit mode="confirm" onClick={() => setRegionModalOpen(false)}>
+            확인
+          </ButtonUnit>
+        </div>
+      </Modal>
+
+      <Modal isOpen={categoryModalOpen} onClose={() => setCategoryModalOpen(false)}>
+        <h2>관심사 선택</h2>
+        <ul>
+          {INTERESTS.map((interest) => (
+            <li key={interest}>
+              <label>
+                <input
+                  type="radio"
+                  name="category"
+                  value={interest}
+                  checked={selectedCategory === interest}
+                  onChange={() => setSelectedCategory(interest)}
+                />
+                {interest}
+              </label>
+            </li>
+          ))}
+        </ul>
+        <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
+          <ButtonUnit mode="cancel" onClick={() => setCategoryModalOpen(false)}>
+            취소
+          </ButtonUnit>
+          <ButtonUnit mode="confirm" onClick={() => setCategoryModalOpen(false)}>
+            확인
+          </ButtonUnit>
+        </div>
+      </Modal>
 
       {/* 날짜 선택 */}
       <div>
@@ -167,36 +210,6 @@ const ThunderModifyPage: React.FC = () => {
           취소
         </ButtonUnit>
       </div>
-
-      {/* 지역 선택 모달 */}
-      <Modal
-        isOpen={regionModalOpen}
-        mode="checkbox"
-        title="지역 선택"
-        checkboxItems={REGIONS}
-        checked={selectedRegion ? [selectedRegion] : []}
-        onCheckedChange={(values) => setSelectedRegion(values[0])}
-        onConfirm={() => setRegionModalOpen(false)}
-        onCancel={() => setRegionModalOpen(false)}
-        onClose={() => setRegionModalOpen(false)}
-        confirmText="확인"
-        cancelText="취소"
-      />
-
-      {/* 관심사 선택 모달 */}
-      <Modal
-        isOpen={categoryModalOpen}
-        mode="checkbox"
-        title="관심사 선택"
-        checkboxItems={INTERESTS}
-        checked={selectedCategory ? [selectedCategory] : []}
-        onCheckedChange={(values) => setSelectedCategory(values[0])}
-        onConfirm={() => setCategoryModalOpen(false)}
-        onCancel={() => setCategoryModalOpen(false)}
-        onClose={() => setCategoryModalOpen(false)}
-        confirmText="확인"
-        cancelText="취소"
-      />
     </div>
   );
 };

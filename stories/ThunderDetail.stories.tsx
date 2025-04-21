@@ -33,7 +33,7 @@ export const Default: Story = {
     region: '강남역',
     imageUrl: 'https://via.placeholder.com/300x150?text=Thunder',
     dateTime: '2024-05-01 19:00',
-    location: '강남역 11번 출구 앞',
+    // location: '강남역 11번 출구 앞',
     members: sampleMembers,
   },
 };
@@ -59,7 +59,7 @@ export const EmptyMembers: Story = {
     region: '용산',
     imageUrl: 'https://via.placeholder.com/300x150?text=Movie+Thunder',
     dateTime: '2024-05-07 18:30',
-    location: '용산 CGV',
+    // location: '용산 CGV',
     members: [],
   },
 };
