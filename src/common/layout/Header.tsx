@@ -1,7 +1,23 @@
-import React from 'react';
+import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
+import { alc, flexStyle, jb, sectionStyle } from '../style/common.css';
+import { layoutTheme } from './layoutStyle.css';
 
-function Header() {
-  return <div>Header</div>;
-}
+const Header = () => {
+  return (
+    <HeaderStyle>
+      <Link to="/">HABIT</Link>
+    </HeaderStyle>
+  );
+};
 
 export default Header;
+
+const HeaderStyle = styled.header`
+  ${sectionStyle}
+  ${flexStyle}
+  ${jb}
+  ${alc}
+  box-shadow: var(--shadow);
+  height: ${layoutTheme.header.height};
+`;

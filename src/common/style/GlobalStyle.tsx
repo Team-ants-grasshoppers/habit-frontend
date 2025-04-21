@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { Global, css } from '@emotion/react';
+import { commonStyle } from './common.css';
 
-const globalStyle = css`
+const resetStyle = css`
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
   @import url('https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/static/pretendard.css');
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
@@ -11,11 +12,9 @@ const globalStyle = css`
     --mauve: #e7dcda;
     --black: #000;
     --white: #fff;
-    --gray1: #f8f8f8;
-    --gray2: #f1f1f1;
-    --gray3: #ddd;
-    --gray4: #232323;
-    --gray5: #333333;
+    --light_gray: #efefef;
+    --dark_gray: #333;
+    --gray: #ccc;
     --black_90: rgba(0, 0, 0, 0.9);
     --black_80: rgba(0, 0, 0, 0.8);
     --black_70: rgba(0, 0, 0, 0.7);
@@ -36,23 +35,24 @@ const globalStyle = css`
     --white_10: rgba(255, 255, 255, 0.1);
 
     --textColor: #232323;
-    --border: 1px solid #e5e5e5;
-    --radius: 0.5rem;
+    --textColor_dark: #757575;
+    --textColor_light: #a1a1a1;
+
+    --border: 1px solid #efefef;
+    --radius: 0.3rem;
     --inputHeight: 5rem;
-    --shadow: #eee 1px 0px 6px 1px;
+    --shadow: #eee 1px 1px 5px 0px;
   }
 
   html,
   body {
     font-size: 62.5%;
   }
-  body {
+  #root {
     position: relative;
     width: 100%;
     height: auto;
-    min-height: 100vh;
     margin: 0 auto;
-    box-shadow: var(--shadow);
   }
   * {
     font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
@@ -218,8 +218,13 @@ const globalStyle = css`
   } */
 `;
 
-function GlobalStyle() {
-  return <Global styles={globalStyle} />;
-}
+const GlobalStyle: React.FC = () => {
+  return (
+    <>
+      <Global styles={resetStyle} />
+      <Global styles={commonStyle} />
+    </>
+  );
+};
 
 export default GlobalStyle;

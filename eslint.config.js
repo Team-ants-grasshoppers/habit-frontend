@@ -4,15 +4,18 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import * as tseslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier';
+import reactPlugin from 'eslint-plugin-react';
 
 export default await tseslint.config(
   {
     ignores: ['dist'],
   },
+
+  // ✅ 기본 TypeScript 파일 설정
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
-      parser: tseslint.parser, // ⬅️ 이거 반드시 필요!
+      parser: tseslint.parser,
       parserOptions: {
         project: './tsconfig.app.json',
         tsconfigRootDir: process.cwd(),
@@ -22,13 +25,15 @@ export default await tseslint.config(
       globals: globals.browser,
     },
     plugins: {
-      '@typescript-eslint': tseslint.plugin, // ⬅️ 이것도 정확히 지정
+      '@typescript-eslint': tseslint.plugin,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      react: reactPlugin,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+
       '@typescript-eslint/naming-convention': [
         'error',
         {
@@ -44,47 +49,49 @@ export default await tseslint.config(
           },
         },
         {
-          selector: 'variable',
-          modifiers: ['const'],
-          types: ['function'],
-          format: ['camelCase'], // ✅ 훅은 camelCase 유지
-          filter: {
-            regex: '^use[A-Z].*', // ✅ use로 시작하는 이름은 camelCase 허용
-            match: true,
-          },
-        },
-        {
-          selector: 'variable',
-          modifiers: ['const'],
-          types: ['function'],
-          format: ['camelCase'], // ✅ 훅은 camelCase 유지
-          filter: {
-            regex: '^set[A-Z].*', // ✅ use로 시작하는 이름은 camelCase 허용
-            match: true,
-          },
-        },
-        {
           selector: 'typeAlias',
           format: ['PascalCase'],
         },
         {
-          // ✅ React 컴포넌트 (export된 const 함수형 변수)만 PascalCase 허용
+          selector: 'variableLike',
+          format: ['camelCase', 'PascalCase'],
+          leadingUnderscore: 'allow',
+        },
+      ],
+      'require-jsdoc': 'off',
+      'no-unused-vars': 'warn',
+      'no-console': 'warn',
+    },
+  },
+
+  // ✅ 컴포넌트 경로에만 PascalCase 적용 (오버라이드처럼 작동)
+  {
+    files: ['src/**/components/**/*.tsx'],
+    rules: {
+      '@typescript-eslint/naming-convention': [
+        'error',
+        {
           selector: 'variable',
           modifiers: ['const', 'exported'],
           types: ['function'],
           format: ['PascalCase'],
         },
+      ],
+    },
+  },
+  // ✅ pages 경로에 PascalCase 적용 (오버라이드처럼 작동)
+  {
+    files: ['src/**/pages/**/*.tsx'],
+    rules: {
+      '@typescript-eslint/naming-convention': [
+        'error',
         {
-          // ✅ 나머지 일반 변수, 함수는 camelCase 유지
-          selector: 'variableLike',
-          format: ['camelCase'],
-          leadingUnderscore: 'allow',
+          selector: 'variable',
+          modifiers: ['const', 'exported'],
+          types: ['function'],
+          format: ['PascalCase'],
         },
       ],
-
-      'require-jsdoc': 'off',
-      'no-unused-vars': 'warn',
-      'no-console': 'warn',
     },
   },
   {

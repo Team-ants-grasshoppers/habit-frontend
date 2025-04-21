@@ -271,6 +271,104 @@ yarn lint:fix
 - 문제가 해결되지 않을 경우 `src/` 밖의 파일은 제외하거나 `tsconfig.app.json`에서 처리 범위를 확장해야 합니다.
 
 ---
+# 📘 Storybook 사용 가이드
+
+우리 프로젝트는 UI 컴포넌트를 개발하고 문서화하기 위해 **[Storybook](https://storybook.js.org/)**을 사용합니다.  
+이 문서는 팀원들이 Storybook을 쉽게 설치하고 사용하는 방법, 그리고 새로운 컴포넌트에 대한 스토리를 작성하는 방법을 안내합니다.
+
+---
+
+## 📦 설치 방법
+
+로컬에서 Storybook을 사용하려면 아래 명령어를 실행하세요:
+
+```bash
+yarn install
+```
+
+> 📌 Storybook 관련 의존성은 이미 `package.json`에 포함되어 있습니다.
+
+---
+
+## 🚀 Storybook 실행 방법
+
+```bash
+yarn storybook
+```
+
+- 실행 후 브라우저에서 자동으로 `http://localhost:6006`이 열립니다.
+- 각 컴포넌트에 대한 스토리를 확인할 수 있습니다.
+
+---
+
+## ✍️ 스토리 작성 방법
+
+### 1. 스토리 파일 생성
+
+루트 디렉토리의 `stories/` 폴더 안에 `<ComponentName>.stories.tsx` 파일을 새로 생성합니다.
+
+예시: `stories/Button.stories.tsx`
+
+### 2. 기본 스토리 템플릿
+
+```tsx
+import type { Meta, StoryObj } from '@storybook/react';
+import Component from '../src/path/to/Component';
+
+const meta: Meta<typeof Component> = {
+  title: 'Components/Component',
+  component: Component,
+};
+
+export default meta;
+type Story = StoryObj<typeof Component>;
+
+export const Default: Story = {
+  args: {
+    // 필요한 props 작성
+  },
+};
+```
+
+### 3. 상태(Redux 등)가 필요한 경우
+
+`ProviderWrapper`로 감싸야 합니다:
+
+```tsx
+import ProviderWrapper from '../stories/ProviderWrapper';
+
+decorators: [
+  (Story) => (
+    <ProviderWrapper>
+      <Story />
+    </ProviderWrapper>
+  ),
+],
+```
+
+---
+
+## 🎨 스타일 적용
+
+Storybook 환경은 실제 앱과 동일한 스타일이 적용되도록 구성되어 있습니다:
+
+| 구성 요소        | 설명                              | 적용 방식                            |
+|------------------|-----------------------------------|--------------------------------------|
+| GlobalStyle.tsx  | reset + 공통 스타일 포함          | `<GlobalStyle />`                    |
+| common.css.ts    | 클래스, 유틸 스타일                | `GlobalStyle` 내부에서 포함됨       |
+| theme.css.ts     | Emotion 기반 테마 (colors 등)     | `<ThemeProvider theme={theme}>`     |
+| preview.tsx      | 전역 스타일 및 테마 적용 설정 파일 | 자동 로딩됨                          |
+
+- 글로벌 스타일은 `.storybook/preview.tsx`에서 전역으로 적용됩니다.
+- 컴포넌트에서는 `props.theme.xxx`로 테마 값 사용 가능
+
+```tsx
+const Box = styled.div`
+  background-color: ${({ theme }) => theme.colors.primary};
+`;
+```
+---
+
 
 # React + TypeScript + Vite
 

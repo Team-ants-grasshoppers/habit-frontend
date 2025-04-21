@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "incremental": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",
     "useDefineForClassFields": true,
@@ -20,8 +21,16 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    // "noUncheckedSideEffectImports": true
   },
-  "include": ["src"],
+  "include": ["src",
+              ".storybook/vitest.setup.ts",
+              ".storybook/**/*.ts",
+              "vitest.workspace.ts",
+              "stories/**/*.ts",
+              "stories/**/*.tsx", 
+              ".storybook/preview.tsx",
+              ".storybook/**/*.ts",
+              ".storybook/**/*.tsx"],
   "exclude": ["node_modules", "dist"]
 }
