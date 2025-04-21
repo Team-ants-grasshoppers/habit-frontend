@@ -7,6 +7,7 @@ import {
   requestJoinClub,
   manageClubMember,
   fetchClubList,
+  CreateClubResponse,
 } from '../api/clubApi';
 import { useState } from 'react';
 
@@ -51,7 +52,7 @@ export const useClubForm = (
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const submit = async (clubId?: number): Promise<number | string | null> => {
+  const submit = async (clubId?: number): Promise<CreateClubResponse | string | null> => {
     setIsLoading(true);
     setError(null);
     try {

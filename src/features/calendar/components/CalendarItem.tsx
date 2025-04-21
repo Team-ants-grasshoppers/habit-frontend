@@ -1,5 +1,3 @@
-import React from 'react';
-
 function CalendarItem() {
   return <div>CalendarItem</div>;
 }

@@ -2,13 +2,10 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   createThunder,
   fetchThunderDetail,
-  fetchThunderList,
   joinThunder,
   leaveThunder,
   deleteThunder,
   updateThunder,
-  manageThunderMember,
-  createThunderEvent,
 } from '../api/thunderApi';
 
 /**
@@ -24,7 +21,7 @@ export const useCreateThunder = () => {
 export const useThunderList = (category: string, region: string) => {
   return useQuery({
     queryKey: ['thunderList', category, region],
-    queryFn: () => fetchThunderList(category, region),
+    // queryFn: () => fetchThunderList(category, region),
   });
 };
 
@@ -79,30 +76,30 @@ export const useUpdateThunder = () => {
  * 번개모임 회원 승인/거절/추방 훅
  * @example mutate({ thunderId, payload: { target_member_id, action } })
  */
-export const useManageThunderMember = () => {
-  return useMutation({
-    mutationFn: ({
-      thunderId,
-      payload,
-    }: {
-      thunderId: number;
-      payload: { target_member_id: number; action: 'approve' | 'reject' | 'ban' };
-    }) => manageThunderMember(thunderId, payload),
-  });
-};
+// export const useManageThunderMember = () => {
+//   return useMutation({
+//     mutationFn: ({
+//       thunderId,
+//       payload,
+//     }: {
+//       thunderId: number;
+//       payload: { target_member_id: number; action: 'approve' | 'reject' | 'ban' };
+//     }) => manageThunderMember(thunderId, payload),
+//   });
+// };
 
 /**
  * 번개모임 일정 등록 훅
  * @example mutate({ thunderId, data: { date, content } })
  */
-export const useCreateThunderEvent = () => {
-  return useMutation({
-    mutationFn: ({
-      thunderId,
-      data,
-    }: {
-      thunderId: number;
-      data: { title: string; description: string; eventDate: string };
-    }) => createThunderEvent(thunderId, data),
-  });
-};
+// export const useCreateThunderEvent = () => {
+//   return useMutation({
+//     mutationFn: ({
+//       thunderId,
+//       data,
+//     }: {
+//       thunderId: number;
+//       data: { title: string; description: string; eventDate: string };
+//     }) => createThunderEvent(thunderId, data),
+//   });
+// };
