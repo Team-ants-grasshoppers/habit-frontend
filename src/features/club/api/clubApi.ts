@@ -1,17 +1,22 @@
-import axios from 'axios';
+import axiosInstance from '../../../lib/axios';
 
 /**
  * 모임 생성
  */
-export const createClub = async (data: {
+interface CreateClubRequest {
   name: string;
   description: string;
   category: string;
   region: string;
-  imgId: number;
-}): Promise<number> => {
-  const response = await axios.post('/api/clubs', data);
-  return response.data.club_id;
+  imgId?: number;
+}
+
+interface CreateClubResponse {
+  clubId: number; // 생성된 모임 ID
+}
+export const createClub = async (data: CreateClubRequest): Promise<CreateClubResponse> => {
+  const response = await axiosInstance.post('/clubs', data);
+  return response.data;
 };
 
 /**
@@ -26,7 +31,7 @@ export const fetchClubDetail = async (
   region: string;
   imageUrl: string;
 }> => {
-  const response = await axios.get(`/api/clubs/${clubId}`);
+  const response = await axiosInstance.get(`/api/clubs/${clubId}`);
   return response.data;
 };
 
@@ -42,7 +47,7 @@ export const updateClub = async (
     imgId: number;
   },
 ): Promise<string> => {
-  const response = await axios.put(`/api/clubs/${clubId}`, data);
+  const response = await axiosInstance.put(`/api/clubs/${clubId}`, data);
   return response.data.message;
 };
 
@@ -53,7 +58,7 @@ export const manageClubMember = async (
   clubId: number,
   payload: { target_member_id: number; action: 'approve' | 'reject' | 'ban' },
 ): Promise<string> => {
-  const response = await axios.post(`/api/clubs/${clubId}/members/manage`, payload);
+  const response = await axiosInstance.post(`/api/clubs/${clubId}/members/manage`, payload);
   return response.data.message;
 };
 
@@ -69,7 +74,7 @@ export const fetchClubMembers = async (
     role: 'admin' | 'member' | 'pending';
   }[]
 > => {
-  const response = await axios.get(`/api/clubs/${clubId}/members`);
+  const response = await axiosInstance.get(`/api/clubs/${clubId}/members`);
   return response.data.members ?? [];
 };
 
@@ -77,7 +82,7 @@ export const fetchClubMembers = async (
  * 모임 가입 요청
  */
 export const requestJoinClub = async (clubId: number): Promise<string> => {
-  const response = await axios.post(`/api/clubs/${clubId}/join`);
+  const response = await axiosInstance.post(`/api/clubs/${clubId}/join`);
   return response.data.message;
 };
 
@@ -94,13 +99,14 @@ export const fetchClubList = async (
     category: string;
   }[]
 > => {
-  const response = await axios.get(`/api/clubs?category=${category}&region=${region}`);
+  const response = await axiosInstance.get(`/api/clubs?category=${category}&region=${region}`);
   return response.data.clubs;
 };
+
 /**
  * 모임 삭제
  */
 export const deleteClub = async (clubId: number): Promise<string> => {
-  const response = await axios.delete(`/api/clubs/${clubId}`);
+  const response = await axiosInstance.delete(`/api/clubs/${clubId}`);
   return response.data.message;
 };

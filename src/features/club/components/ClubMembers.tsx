@@ -1,14 +1,12 @@
 import React from 'react';
-
-interface ClubMember {
-  id: string; // DB 프라이머리 키
-  name: string;
-  profileImageUrl: string;
-}
+import { ClubMember } from '../types';
+import ButtonUnit from '../../../common/components/ui/Buttons';
 
 interface ClubMembersProps {
   admins: ClubMember[];
   members: ClubMember[];
+  isAdmin: boolean;
+  onBan?: (userId: string) => void;
 }
 
 /**
@@ -26,38 +24,55 @@ interface ClubMembersProps {
  * @param {ClubMembersProps} props - 운영진과 일반 멤버 목록
  * @returns {JSX.Element} 클럽 멤버 시각화 영역
  */
-const ClubMembers: React.FC<ClubMembersProps> = ({ admins, members }) => {
+const ClubMembers: React.FC<ClubMembersProps> = ({ admins, members, isAdmin, onBan }) => {
   return (
-    <div>
+    <div className="flex flex-col gap-8">
       {/* 운영진 */}
-      {admins.length > 0 && (
-        <section>
-          <h3>운영진</h3>
-          <div>
+      <div>
+        <h3 className="text-lg font-bold mb-2">운영진</h3>
+        {admins.length > 0 ? (
+          <div className="flex flex-wrap gap-4">
             {admins.map((admin) => (
-              <div key={admin.id}>
-                <img src={admin.profileImageUrl} alt={admin.name} />
-                <p>{admin.name}</p>
+              <div key={admin.id} className="flex flex-col items-center w-24">
+                <img
+                  src={admin.profileImageUrl}
+                  alt={admin.name}
+                  className="w-16 h-16 rounded-full object-cover"
+                />
+                <span className="text-sm font-medium mt-1">{admin.name}</span>
               </div>
             ))}
           </div>
-        </section>
-      )}
+        ) : (
+          <p className="text-sm text-gray-500">운영진이 없습니다.</p>
+        )}
+      </div>
 
       {/* 일반 멤버 */}
-      {members.length > 0 && (
-        <section>
-          <h3>멤버</h3>
-          <div>
+      <div>
+        <h3 className="text-lg font-bold mb-2">멤버</h3>
+        {members.length > 0 ? (
+          <div className="flex flex-wrap gap-4">
             {members.map((member) => (
-              <div key={member.id}>
-                <img src={member.profileImageUrl} alt={member.name} />
-                <p>{member.name}</p>
+              <div key={member.id} className="flex flex-col items-center w-24">
+                <img
+                  src={member.profileImageUrl}
+                  alt={member.name}
+                  className="w-16 h-16 rounded-full object-cover"
+                />
+                <span className="text-sm">{member.name}</span>
+                {isAdmin && onBan && (
+                  <ButtonUnit mode="base" onClick={() => onBan(member.id)}>
+                    추방
+                  </ButtonUnit>
+                )}
               </div>
             ))}
           </div>
-        </section>
-      )}
+        ) : (
+          <p className="text-sm text-gray-500">멤버가 없습니다.</p>
+        )}
+      </div>
     </div>
   );
 };
