@@ -17,6 +17,7 @@ interface ClubDetailProps {
   onJoin: () => void;
   onApprove: (userId: string) => void;
   onReject: (userId: string) => void;
+  onBan: (userId: string) => void;
 }
 
 /**
@@ -38,6 +39,7 @@ const ClubDetail: React.FC<ClubDetailProps> = ({
   onJoin,
   onApprove,
   onReject,
+  onBan,
 }) => {
   return (
     <div className="flex flex-col gap-6">
@@ -77,7 +79,7 @@ const ClubDetail: React.FC<ClubDetailProps> = ({
         </div>
       )}
 
-      <ClubMembers admins={admins} members={members} />
+      <ClubMembers admins={admins} members={members} isAdmin={isAdmin} onBan={onBan} />
 
       {/* 운영자만 가입 대기자 관리 가능 */}
       {isAdmin && (

@@ -1,9 +1,12 @@
 import React from 'react';
 import { ClubMember } from '../types';
+import ButtonUnit from '../../../common/components/ui/Buttons';
 
 interface ClubMembersProps {
   admins: ClubMember[];
   members: ClubMember[];
+  isAdmin: boolean;
+  onBan?: (userId: string) => void;
 }
 
 /**
@@ -21,7 +24,7 @@ interface ClubMembersProps {
  * @param {ClubMembersProps} props - 운영진과 일반 멤버 목록
  * @returns {JSX.Element} 클럽 멤버 시각화 영역
  */
-const ClubMembers: React.FC<ClubMembersProps> = ({ admins, members }) => {
+const ClubMembers: React.FC<ClubMembersProps> = ({ admins, members, isAdmin, onBan }) => {
   return (
     <div className="flex flex-col gap-8">
       {/* 운영진 */}
@@ -47,7 +50,7 @@ const ClubMembers: React.FC<ClubMembersProps> = ({ admins, members }) => {
 
       {/* 일반 멤버 */}
       <div>
-        <h3 className="text-lg font-bold mb-2">일반 멤버</h3>
+        <h3 className="text-lg font-bold mb-2">멤버</h3>
         {members.length > 0 ? (
           <div className="flex flex-wrap gap-4">
             {members.map((member) => (
@@ -58,11 +61,16 @@ const ClubMembers: React.FC<ClubMembersProps> = ({ admins, members }) => {
                   className="w-16 h-16 rounded-full object-cover"
                 />
                 <span className="text-sm">{member.name}</span>
+                {isAdmin && onBan && (
+                  <ButtonUnit mode="base" onClick={() => onBan(member.id)}>
+                    추방
+                  </ButtonUnit>
+                )}
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-sm text-gray-500">일반 멤버가 없습니다.</p>
+          <p className="text-sm text-gray-500">멤버가 없습니다.</p>
         )}
       </div>
     </div>

@@ -157,6 +157,20 @@ const ClubDetailPage: React.FC = () => {
     }
   };
 
+  const handleBan = async (userId: string) => {
+    if (!clubId) return;
+    try {
+      await manageClubMember(Number(clubId), {
+        target_member_id: Number(userId),
+        action: 'ban',
+      });
+      alert('추방 완료');
+      location.reload();
+    } catch {
+      alert('추방 실패');
+    }
+  };
+
   if (isLoading || isAuthLoading) return <p>로딩 중...</p>;
   if (!clubData) return <p>모임 정보를 찾을 수 없습니다.</p>;
 
@@ -181,6 +195,7 @@ const ClubDetailPage: React.FC = () => {
         onJoin={handleJoin}
         onApprove={handleApprove}
         onReject={handleReject}
+        onBan={handleBan}
       />
     </div>
   );
