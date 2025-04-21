@@ -36,6 +36,34 @@ const Sidebar: React.FC = () => {
             <Link to="/recent">최근 본 모임</Link>
           </li>
         </ul>
+
+        <ul>
+          <li style={{ margin: '30px 0 10px', fontWeight: 'bold' }}>@ 확인용</li>
+          <li>
+            <Link to="/user/info">내 정보</Link>
+          </li>
+          <li>
+            <Link to="/user/recent">최근 본 모임</Link>
+          </li>
+          <li>
+            <Link to="/user/club">내 모임</Link>
+          </li>
+          <li>
+            <Link to="/calendar">일정</Link>
+          </li>
+          <li>
+            <Link to="/club/list">모임 리스트</Link>
+          </li>
+          <li>
+            <Link to="/club/create">모임 생성</Link>
+          </li>
+          <li>
+            <Link to="/thunder">번개모임 리스트</Link>
+          </li>
+          <li>
+            <Link to="/thunder">번개모임 생성</Link>
+          </li>
+        </ul>
       </nav>
 
       <div>
