@@ -3,7 +3,7 @@ import axiosInstance from '../../../lib/axios';
 /**
  * 모임 생성
  */
-interface CreateClubRequest {
+export interface CreateClubRequest {
   name: string;
   description: string;
   category: string;
@@ -11,7 +11,7 @@ interface CreateClubRequest {
   imgId?: number;
 }
 
-interface CreateClubResponse {
+export interface CreateClubResponse {
   clubId: number; // 생성된 모임 ID
 }
 export const createClub = async (data: CreateClubRequest): Promise<CreateClubResponse> => {

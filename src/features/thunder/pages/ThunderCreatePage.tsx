@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ThunderForm from '../components/ThunderForm';
-import Modal from '../../../common/components/ui/Modal';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 import { createThunder } from '../api/thunderApi';
 import uploadImage from '../../../common/api/imageApi';
 import CalendarView from '../../calendar/components/CalendarView';
 import { INTERESTS } from '../../../constants/interests';
 import { REGIONS } from '../../../constants/regions';
+import InterestModal from '../../../common/components/utils/InterestModal';
+import RegionModal from '../../../common/components/utils/RegionModal';
 
 /**
  * ThunderCreatePage
@@ -143,34 +144,26 @@ const ThunderCreatePage: React.FC = () => {
         </ButtonUnit>
       </div>
 
-      {/* 관심사 선택 모달 */}
-      <Modal
+      {/* 관심사 모달 */}
+      <InterestModal
         isOpen={categoryModalOpen}
-        mode="checkbox"
-        title="관심사 선택"
-        checkboxItems={INTERESTS}
-        checked={selectedCategory ? [selectedCategory] : []}
-        onCheckedChange={(values) => setSelectedCategory(values[0])}
-        onConfirm={() => setCategoryModalOpen(false)}
+        selectedInterests={INTERESTS}
         onCancel={() => setCategoryModalOpen(false)}
-        onClose={() => setCategoryModalOpen(false)}
-        confirmText="확인"
-        cancelText="취소"
+        onConfirm={(selected) => {
+          setSelectedCategory(selected[0]);
+          setCategoryModalOpen(false);
+        }}
       />
 
-      {/* 지역 선택 모달 */}
-      <Modal
+      {/* 지역 모달 */}
+      <RegionModal
         isOpen={regionModalOpen}
-        mode="checkbox"
-        title="지역 선택"
-        checkboxItems={REGIONS}
-        checked={selectedRegion ? [selectedRegion] : []}
-        onCheckedChange={(values) => setSelectedRegion(values[0])}
-        onConfirm={() => setRegionModalOpen(false)}
+        selectedRegions={REGIONS}
         onCancel={() => setRegionModalOpen(false)}
-        onClose={() => setRegionModalOpen(false)}
-        confirmText="확인"
-        cancelText="취소"
+        onConfirm={(selected) => {
+          setSelectedRegion(selected[0]);
+          setRegionModalOpen(false);
+        }}
       />
     </div>
   );

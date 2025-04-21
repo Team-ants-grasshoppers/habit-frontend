@@ -18,19 +18,27 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
     email: initialData.email,
     password: '',
     confirmPassword: '',
+    apiError: '',
+    successMsg: '',
   });
-  const [apiError, setApiError] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
 
   const handleSubmit = async () => {
     const errors = validateForm(formState, 'edit');
     if (Object.keys(errors).length > 0) {
-      setApiError('유효성 검사 실패');
+      setFormState((prev) => ({
+        ...prev,
+        apiError: '유효성 검사 실패',
+        successMsg: '',
+      }));
       return;
     }
 
     if (formState.password && formState.password !== formState.confirmPassword) {
-      setApiError('비밀번호가 일치하지 않습니다.');
+      setFormState((prev) => ({
+        ...prev,
+        apiError: '비밀번호가 일치하지 않습니다.',
+        successMsg: '',
+      }));
       return;
     }
 
@@ -41,23 +49,30 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
 
     try {
       await onSubmit(updateData);
-      setSuccessMsg('정보가 성공적으로 수정되었습니다!');
-      setApiError('');
+      setFormState((prev) => ({
+        ...prev,
+        apiError: '',
+        successMsg: '정보가 성공적으로 수정되었습니다!',
+      }));
     } catch (error: any) {
-      setApiError(error.response?.data?.error || '수정에 실패했습니다.');
+      setFormState((prev) => ({
+        ...prev,
+        apiError: error.response?.data?.error || '수정에 실패했습니다.',
+        successMsg: '',
+      }));
     }
   };
 
   return (
     <div>
-      {apiError && <p style={{ color: 'red' }}>{apiError}</p>}
-      {successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
+      {formState.apiError && <p style={{ color: 'red' }}>{formState.apiError}</p>}
+      {formState.successMsg && <p style={{ color: 'green' }}>{formState.successMsg}</p>}
 
       <UserForm
         mode="edit"
         fields={['nickname', 'email', 'password', 'confirmPassword']}
         onSubmit={handleSubmit}
-        serverError={apiError}
+        serverError={formState.apiError}
       >
         <ButtonUnit mode="confirm" type="submit">
           수정 완료

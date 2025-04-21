@@ -18,7 +18,13 @@ interface ClubFormProps {
   onDescriptionChange: (value: string) => void;
   onCategoryChange: (value: string[]) => void;
   onRegionChange: (value: string[]) => void;
-  onSubmit: () => void;
+  onSubmit: (data: {
+    name: string;
+    description: string;
+    region: string;
+    category: string;
+    image?: File | null;
+  }) => void;
 }
 
 const ClubForm: React.FC<ClubFormProps> = ({
@@ -91,7 +97,10 @@ const ClubForm: React.FC<ClubFormProps> = ({
       </div>
 
       <div>
-        <ButtonUnit mode="confirm" onClick={onSubmit}>
+        <ButtonUnit
+          mode="confirm"
+          onClick={() => onSubmit({ name, description, region, category })}
+        >
           {mode === 'create' ? '모임 생성' : '수정 완료'}
         </ButtonUnit>
       </div>

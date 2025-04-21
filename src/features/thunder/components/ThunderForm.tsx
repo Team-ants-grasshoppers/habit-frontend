@@ -95,6 +95,26 @@ const ThunderForm: React.FC<ThunderFormProps> = ({ mode, initialData, onSubmit }
         {previewUrl ? <img src={previewUrl} alt="미리보기" width={120} /> : <div>이미지 선택</div>}
       </div>
 
+      {/* 배포 에러로 임시 추가 */}
+      <input
+        value={region}
+        onChange={(e) => setRegion(e.target.value)}
+        placeholder="지역 (ex: 서울 강남)"
+      />
+      <input
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        placeholder="날짜"
+      />
+      <input
+        type="time"
+        value={time}
+        onChange={(e) => setTime(e.target.value)}
+        placeholder="시간"
+      />
+      {/* //배포 에러로 임시 추가 끝 */}
+
       <div>
         <ButtonUnit mode="confirm" onClick={handleSubmit}>
           {mode === 'edit' ? '수정 완료' : '등록'}

@@ -1,9 +1,17 @@
 import { useEffect, useState } from 'react';
-import { getMyInfo, updateMyInfo, checkEmailDuplicate } from '../hooks/useUser';
+import { getMyInfo, updateMyInfo } from '../hooks/useUser';
 import UserInfo from '../components/UserInfo';
 
+interface UserType {
+  user_id: string;
+  nickname: string;
+  email: string;
+  region: string;
+  profile_media_id: string;
+}
+
 const MyInfoPage = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<UserType | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -20,9 +28,17 @@ const MyInfoPage = () => {
 
   return (
     <UserInfo
-      initialData={user}
-      onSubmit={updateMyInfo}
-      checkEmailDuplicate={checkEmailDuplicate}
+      initialData={{
+        userId: user.user_id,
+        nickname: user.nickname,
+        email: user.email,
+      }}
+      onSubmit={(data) =>
+        updateMyInfo({
+          ...data,
+          id: user.user_id,
+        })
+      }
     />
   );
 };
