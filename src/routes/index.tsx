@@ -11,7 +11,7 @@ import ThunderCreatePage from '../features/thunder/pages/ThunderCreatePage';
 import ThunderDetailPage from '../features/thunder/pages/ThunderDetailPage';
 import ThunderModifyPage from '../features/thunder/pages/ThunderModifyPage';
 import MyInfoPage from '../features/user/pages/MyInfoPage';
-import RecentPage from '../features/user/pages/RecentPage';
+import RecentPage from '../features/user/pages/RecentViewedPage';
 import MyClubPage from '../features/user/pages/MyClubPage';
 
 const AppRoutes = () => {
