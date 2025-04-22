@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ClubDetailProps, ClubMember } from '../types';
+import { ClubDataProps, ClubMemberProps } from '../types';
 import { useAuth } from '../../../hooks/useAuth';
 import {
   fetchClubDetail,
@@ -12,20 +12,19 @@ import ButtonUnit from '../../../common/components/ui/Buttons';
 import ClubDetail from '../components/ClubDetail';
 
 /**
- * ClubDetailPage 컴포넌트
+ * ClubDetailPage - 클럽 상세 페이지
  *
- * 클럽 상세 페이지로, 다음의 기능을 포함한다:
- *
+ * 기능 :
  * - 클럽 정보(fetchClubDetail) 및 멤버 목록(fetchClubMembers) 조회
  * - 운영자(admin), 일반 멤버(member), 가입 대기자(pending) 구분하여 렌더링
- * - 사용자가 클럽에 가입 요청을 보낼 수 있는 '가입하기' 버튼 제공
- * - 운영자인 경우 가입 대기자의 가입을 승인하거나 거절할 수 있는 기능 포함
+ * - 로그인한 사용자가 클럽에 가입 요청을 보낼 수 있는 '가입하기' 버튼 제공
+ * - 운영자인 경우 가입 대기자의 요청을 승인하거나 거절할 수 있으며 가입된 멤버를 추방할 수 있음
  *
  * 상태 설명:
  * @state clubData - 클럽 기본 정보 (이름, 소개, 이미지 등)
- * @state admins - 클럽 운영진 목록 (ClubMember[])
- * @state members - 일반 멤버 목록 (ClubMember[])
- * @state pendingMembers - 가입 대기자 목록 (ClubMember[])
+ * @state admins - 클럽 운영진 목록 (ClubMemberProps[])
+ * @state members - 일반 멤버 목록 (ClubMemberProps[])
+ * @state pendingMembers - 가입 요청 대기자 목록 (ClubMemberProps[])
  * @state isLoading - 데이터 로딩 여부
  *
  * 인증 상태:
@@ -35,7 +34,7 @@ import ClubDetail from '../components/ClubDetail';
  * - fetchClubDetail(clubId): 클럽 상세 정보 조회
  * - fetchClubMembers(clubId): 멤버/운영진/대기자 목록 조회
  * - requestJoinClub(clubId): 클럽 가입 요청
- * - manageClubMember(clubId, { target_member_id, action }): 가입 승인/거절 처리
+ * - manageClubMember(clubId, { target_member_id, action }): 가입 대기자의 승인/거절, 가입된 멤버의 추방 처리
  *
  * 컴포넌트 렌더링 구성:
  * 1. <ButtonUnit mode="cancel"> - 상단 뒤로가기 버튼
@@ -47,10 +46,10 @@ const ClubDetailPage: React.FC = () => {
   const { clubId } = useParams<{ clubId: string }>();
   const defaultProfile = '/assets/default-profile.png';
 
-  const [clubData, setClubData] = useState<ClubDetailProps | null>(null);
-  const [admins, setAdmins] = useState<ClubMember[]>([]);
-  const [members, setMembers] = useState<ClubMember[]>([]);
-  const [pendingMembers, setPendingMembers] = useState<ClubMember[]>([]);
+  const [clubData, setClubData] = useState<ClubDataProps | null>(null);
+  const [admins, setAdmins] = useState<ClubMemberProps[]>([]);
+  const [members, setMembers] = useState<ClubMemberProps[]>([]);
+  const [pendingMembers, setPendingMembers] = useState<ClubMemberProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const { user, isLoading: isAuthLoading } = useAuth();
@@ -67,30 +66,30 @@ const ClubDetailPage: React.FC = () => {
         const admins = memberList
           .filter((m) => m.role === 'admin')
           .map((m) => ({
-            id: String(m.member_id),
-            name: m.nickname,
+            userId: String(m.memberId),
+            nickname: m.nickname,
             profileImageUrl: defaultProfile,
           }));
 
         const members = memberList
           .filter((m) => m.role === 'member')
           .map((m) => ({
-            id: String(m.member_id),
-            name: m.nickname,
+            userId: String(m.memberId),
+            nickname: m.nickname,
             profileImageUrl: defaultProfile,
           }));
 
         const pending = memberList
           .filter((m) => m.role === 'pending')
           .map((m) => ({
-            id: String(m.member_id),
-            name: m.nickname,
+            userId: String(m.memberId),
+            nickname: m.nickname,
             profileImageUrl: defaultProfile,
           }));
 
         setClubData({
-          id: Number(clubId),
-          name: detail.name,
+          clubId: Number(clubId),
+          clubName: detail.clubName,
           description: detail.description,
           category: detail.category,
           region: detail.region,
@@ -174,9 +173,9 @@ const ClubDetailPage: React.FC = () => {
   if (isLoading || isAuthLoading) return <p>로딩 중...</p>;
   if (!clubData) return <p>모임 정보를 찾을 수 없습니다.</p>;
 
-  const isAdmin = admins.some((admin) => admin.id === userId);
-  const isMember = members.some((member) => member.id === userId);
-  const isPending = pendingMembers.some((pending) => pending.id === userId);
+  const isAdmin = admins.some((admin) => admin.userId === userId);
+  const isMember = members.some((member) => member.userId === userId);
+  const isPending = pendingMembers.some((pending) => pending.userId === userId);
 
   return (
     <div className="flex flex-col gap-6">
@@ -184,7 +183,7 @@ const ClubDetailPage: React.FC = () => {
 
       <ClubDetail
         imageUrl={clubData.imageUrl || defaultProfile}
-        name={clubData.name}
+        clubName={clubData.clubName}
         description={clubData.description}
         admins={admins}
         members={members}

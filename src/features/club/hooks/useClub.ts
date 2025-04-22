@@ -7,13 +7,11 @@ import {
   requestJoinClub,
   manageClubMember,
   fetchClubList,
-  CreateClubResponse,
 } from '../api/clubApi';
 import { useState } from 'react';
+import { CreateClubResponse } from '../types';
 
-/**
- * 특정 모임(club)의 상세 정보를 가져오는 커스텀 훅
- */
+/** [Hook] 특정 모임의 상세 정보 */
 export const useClubDetail = (clubId: number) => {
   return useQuery({
     queryKey: ['clubDetail', clubId],
@@ -22,9 +20,7 @@ export const useClubDetail = (clubId: number) => {
   });
 };
 
-/**
- * 클럽 멤버 및 대기자 리스트를 가져오는 훅
- */
+/** [Hook] 클럽 멤버 및 대기자 리스트 */
 export const useClubMembers = (clubId: number) => {
   return useQuery({
     queryKey: ['clubMembers', clubId],
@@ -33,19 +29,17 @@ export const useClubMembers = (clubId: number) => {
   });
 };
 
-/**
- * 클럽 생성 및 수정 폼 로직을 관리하는 훅
- */
+/** [Hook] 클럽 생성 및 수정 폼 로직 관리 */
 export const useClubForm = (
   mode: 'create' | 'edit',
   initialData?: {
-    name: string;
+    clubName: string;
     description: string;
     category: string;
     region: string;
   },
 ) => {
-  const [name, setName] = useState(initialData?.name || '');
+  const [clubName, setClubName] = useState(initialData?.clubName || '');
   const [description, setDescription] = useState(initialData?.description || '');
   const [category, setCategory] = useState(initialData?.category || '');
   const [region, setRegion] = useState(initialData?.region || '');
@@ -58,7 +52,7 @@ export const useClubForm = (
     try {
       if (mode === 'create') {
         const newClubId = await createClub({
-          name,
+          clubName,
           description,
           category,
           region,
@@ -84,8 +78,8 @@ export const useClubForm = (
   };
 
   return {
-    name,
-    setName,
+    clubName,
+    setClubName,
     description,
     setDescription,
     category,
@@ -98,9 +92,7 @@ export const useClubForm = (
   };
 };
 
-/**
- * 클럽 가입 요청
- */
+/** [Hook] 클럽 가입 요청 */
 export const useJoinClub = (clubId: number) => {
   const mutation = useMutation({
     mutationFn: () => requestJoinClub(clubId),
@@ -108,9 +100,7 @@ export const useJoinClub = (clubId: number) => {
   return mutation;
 };
 
-/**
- * 클럽 멤버 승인/거절/추방
- */
+/** [Hook] 클럽 멤버 승인/거절/추방 */
 export const useManageMember = (clubId: number) => {
   const queryClient = useQueryClient();
 
@@ -124,9 +114,7 @@ export const useManageMember = (clubId: number) => {
   return mutation;
 };
 
-/**
- * 클럽 리스트 조회 (조건 기반)
- */
+/** [Hook] 클럽 리스트 조회 (조건 기반) */
 export const useClubList = (category: string, region: string) => {
   return useQuery({
     queryKey: ['clubList', category, region],

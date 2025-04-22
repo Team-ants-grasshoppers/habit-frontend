@@ -5,31 +5,40 @@ import { INTERESTS } from '../../../constants/interests';
 import { REGIONS } from '../../../constants/regions';
 import InterestModal from '../../../common/components/utils/InterestModal';
 import RegionModal from '../../../common/components/utils/RegionModal';
+import { ClubFormProps } from '../types';
 
-interface ClubFormProps {
-  mode: 'create' | 'edit'; // ✅ 추가
-  name: string;
-  imageUrl?: string;
-  description: string;
-  category: string;
-  region: string;
-  onNameChange: (value: string) => void;
-  onImageChange: (file: File | null) => void;
-  onDescriptionChange: (value: string) => void;
-  onCategoryChange: (value: string[]) => void;
-  onRegionChange: (value: string[]) => void;
-  onSubmit: (data: {
-    name: string;
-    description: string;
-    region: string;
-    category: string;
-    image?: File | null;
-  }) => void;
-}
-
+/**
+ * ClubForm - 모임 생성/수정 폼 UI 렌더링
+ *
+ * 주요 기능 :
+ * - 모임명 입력
+ * - 이미지 업로드 및 미리보기
+ * - 모임 소개 입력
+ * - 카테고리(관심사) 선택
+ * - 지역 선택
+ * - 생성 또는 수정 완료 버튼
+ *
+ * props:
+ * @prop mode - 'create' | 'edit' 모드 구분
+ * @prop clubName - 모임명 입력값
+ * @prop imageUrl - 업로드된 이미지 미리보기 URL
+ * @prop description - 모임 소개 입력값
+ * @prop category - 선택된 카테고리
+ * @prop region - 선택된 지역
+ * @prop onNameChange - 모임명 변경 핸들러
+ * @prop onImageChange - 이미지 파일 변경 핸들러
+ * @prop onDescriptionChange - 소개 변경 핸들러
+ * @prop onCategoryChange - 카테고리 선택 핸들러
+ * @prop onRegionChange - 지역 선택 핸들러
+ * @prop onSubmit - 폼 제출 핸들러
+ *
+ * 추가 구성:
+ * - 관심사 선택 모달 (InterestModal)
+ * - 지역 선택 모달 (RegionModal)
+ */
 const ClubForm: React.FC<ClubFormProps> = ({
   mode,
-  name,
+  clubName,
   imageUrl,
   description,
   category,
@@ -57,7 +66,12 @@ const ClubForm: React.FC<ClubFormProps> = ({
   return (
     <div>
       {/* 모임명 */}
-      <InputText type="text" name={name} value={name} onChange={(value) => onNameChange(value)} />
+      <InputText
+        type="text"
+        name={clubName}
+        value={clubName}
+        onChange={(value) => onNameChange(value)}
+      />
 
       {/* 이미지 업로드 */}
       <div className="flex flex-col">
@@ -99,7 +113,7 @@ const ClubForm: React.FC<ClubFormProps> = ({
       <div>
         <ButtonUnit
           mode="confirm"
-          onClick={() => onSubmit({ name, description, region, category })}
+          onClick={() => onSubmit({ clubName, description, region, category })}
         >
           {mode === 'create' ? '모임 생성' : '수정 완료'}
         </ButtonUnit>
