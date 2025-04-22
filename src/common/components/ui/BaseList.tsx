@@ -5,6 +5,7 @@ interface BaseListItem {
   id: string;
   name: string;
   imageUrl: string;
+  extraElement?: React.ReactNode;
 }
 
 interface BaseListProps {
@@ -35,9 +36,36 @@ const BaseList: React.FC<BaseListProps> = ({ items, routePrefix }) => {
   return (
     <div>
       {items.map((item) => (
-        <div key={item.id} onClick={() => navigate(`${routePrefix}/${item.id}`)}>
+        <div
+          key={item.id}
+          onClick={() => navigate(`${routePrefix}/${item.id}`)}
+          style={{
+            position: 'relative',
+            border: '1px solid #ccc',
+            padding: '10px',
+            marginBottom: '10px',
+          }}
+        >
+          {/* 카드 내부: 이미지 + 이름 */}
           <img src={item.imageUrl} alt={item.name} />
           <p>{item.name}</p>
+
+          {/* 카드 바깥쪽에 띄우는 버튼 */}
+          {item.extraElement && (
+            <div
+              style={{
+                position: 'absolute',
+                top: '8px',
+                right: '8px',
+                zIndex: 1,
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              {item.extraElement}
+            </div>
+          )}
         </div>
       ))}
     </div>
