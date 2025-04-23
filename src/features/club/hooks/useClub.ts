@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
+import useImageUploadV2 from '../../../hooks/useImageUploadV2';
 import {
   createClub,
   fetchClubDetail,
@@ -9,7 +10,7 @@ import {
   requestJoinClub,
   updateClub,
 } from '../api/clubApi';
-import { ClubDetailModel, ClubList, CreateClubResponse } from '../types';
+import { ClubDetailModel, ClubFormData, ClubList } from '../types';
 
 /** [Hook] 특정 모임의 상세 정보 */
 export const useClubDetail = (clubId?: string, userId?: string) => {
@@ -83,68 +84,81 @@ export const useClubMembers = (clubId: number) => {
 };
 
 /** [Hook] 클럽 생성 및 수정 폼 로직 관리 */
-export const useClubForm = (
-  mode: 'create' | 'edit',
-  initialData?: {
-    clubName: string;
-    description: string;
-    category: string;
-    region: string;
-  },
-) => {
-  const [clubName, setClubName] = useState(initialData?.clubName || '');
-  const [description, setDescription] = useState(initialData?.description || '');
-  const [category, setCategory] = useState(initialData?.category || '');
-  const [region, setRegion] = useState(initialData?.region || '');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export const useClubForm = (initialData?: ClubFormData) => {
+  const [formData, setFormData] = useState<ClubFormData>(
+    initialData || {
+      clubName: '',
+      description: '',
+      category: '',
+      region: '',
+      image: {
+        url: undefined,
+        file: undefined,
+      },
+    },
+  );
 
-  const submit = async (clubId?: number): Promise<CreateClubResponse | string | null> => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      if (mode === 'create') {
-        const newClubId = await createClub({
-          clubName,
-          description,
-          category,
-          region,
-          imgId: 0,
-        });
-        return newClubId;
-      } else if (mode === 'edit' && clubId) {
-        const message = await updateClub(clubId, {
-          description,
-          category,
-          region,
-          imgId: 0,
-        });
-        return message;
-      }
-    } catch (e: any) {
-      setError(e.message);
-      return null;
-    } finally {
-      setIsLoading(false);
+  const handleImageChange = async (image: File | null) => {
+    if (image) {
+      const imageUrl = URL.createObjectURL(image);
+      setFormData((prev) => ({ ...prev, image: { url: imageUrl, file: image } }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        image: { url: undefined, file: undefined },
+      }));
     }
-    return null; // Explicitly return null if no other return is reached
   };
 
   return {
-    clubName,
-    setClubName,
-    description,
-    setDescription,
-    category,
-    setCategory,
-    region,
-    setRegion,
-    isLoading,
-    error,
-    submit,
+    formData,
+    setFormData,
+    handleImageChange,
   };
 };
 
+/** [Hook] 클럽 생성 */
+export const useClubCreate = () => {
+  const { mutateAsync: uploadImage } = useImageUploadV2();
+  const mutation = useMutation({
+    mutationFn: async (formData: ClubFormData) => {
+      let imgId: number | undefined;
+      if (formData.image.file) {
+        imgId = await uploadImage(formData.image.file);
+      }
+      return createClub({
+        clubName: formData.clubName,
+        description: formData.description,
+        category: formData.category,
+        region: formData.region,
+        imgId: imgId,
+      });
+    },
+  });
+  return mutation;
+};
+
+/** [Hook] 클럽 수정 */
+export const useClubUpdate = (clubId: number) => {
+  const { mutateAsync: uploadImage } = useImageUploadV2();
+  const mutation = useMutation({
+    mutationFn: async (formData: ClubFormData) => {
+      let imgId: number = 0;
+      if (formData.image.file) {
+        imgId = await uploadImage(formData.image.file);
+      }
+      return updateClub(clubId, {
+        description: formData.description,
+        category: formData.category,
+        region: formData.region,
+        // TODO: imgId required인지 확인
+        // * 만약 required라면, club detail 응답으로부터 이미지 id를 함께 전달 받아야함.
+        imgId: imgId,
+      });
+    },
+  });
+  return mutation;
+};
 /** [Hook] 클럽 가입 요청 */
 export const useJoinClub = (clubId: number) => {
   const mutation = useMutation({

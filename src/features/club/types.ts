@@ -6,13 +6,15 @@
  * - category: 관심사 카테고리 (string)
  * - region: 지역명 (string)
  */
-export interface ClubFormValues {
-  mode: 'create' | 'edit';
+export interface ClubFormData {
   clubName: string;
-  imageUrl?: string;
   description: string;
   category: string;
   region: string;
+  image: {
+    url?: string;
+    file?: File;
+  };
 }
 
 /** ### 클럽 회원(운영진/멤버/대기자) 정보 Props
