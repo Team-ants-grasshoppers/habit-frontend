@@ -4,6 +4,7 @@ import { RootState } from '../../../store';
 import { fetchClubList } from '../api/clubApi';
 import ClubList from '../components/ClubList';
 import ButtonUnit from '../../../common/components/ui/Buttons';
+import { useClubList } from '../hooks/useClub';
 /**
  * ClubListPage
  * 관심사 및 지역 필터에 따라 클럽 목록을 조회하고 화면에 렌더링하는 페이지
@@ -29,26 +30,14 @@ import ButtonUnit from '../../../common/components/ui/Buttons';
 const ClubListPage: React.FC = () => {
   const { interests, regions } = useSelector((state: RootState) => state.checkboxSelection);
 
-  const [clubs, setClubs] = useState<{ clubId: string; clubName: string; imageUrl: string }[]>([]);
-
-  useEffect(() => {
-    const category = interests[0] || '전체';
-    const region = regions[0] || '전체';
-
-    fetchClubList(category, region).then((data) => {
-      const mapped = data.map((club) => ({
-        clubId: club.clubId.toString(),
-        clubName: club.clubName,
-        imageUrl: '/placeholder.png', // TODO: imageUrl 서버 응답에 따라 교체
-      }));
-      setClubs(mapped);
-    });
-  }, [interests, regions]);
+  const category = interests[0] || '전체';
+  const region = regions[0] || '전체';
+  const { data } = useClubList(category, region);
 
   return (
     <div>
       <h2>모임 리스트</h2>
-      <ClubList clubListItems={clubs} routePrefix="/club" />
+      {data && <ClubList clubListItems={data?.clubListItems} routePrefix="/club" />}
       {/* 더보기 버튼 - 기능 없음, 위치용 */}
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
         <ButtonUnit mode="more" onClick={() => {}}>

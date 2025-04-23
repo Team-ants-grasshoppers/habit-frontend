@@ -9,14 +9,63 @@ import {
   fetchClubList,
 } from '../api/clubApi';
 import { useState } from 'react';
-import { CreateClubResponse } from '../types';
+import { ClubDetailModel, ClubList, CreateClubResponse } from '../types';
 
 /** [Hook] 특정 모임의 상세 정보 */
-export const useClubDetail = (clubId: number) => {
+export const useClubDetail = (clubId?: string, userId?: string) => {
+  const defaultProfile = '/assets/default-profile.png';
   return useQuery({
     queryKey: ['clubDetail', clubId],
-    queryFn: () => fetchClubDetail(clubId),
+    queryFn: async () => {
+      const detail = await fetchClubDetail(Number(clubId));
+      const memberList = await fetchClubMembers(Number(clubId));
+      return {
+        detail,
+        memberList,
+      };
+    },
     enabled: !!clubId,
+    select: ({ detail, memberList }): ClubDetailModel => {
+      const admins = memberList
+        .filter((m) => m.role === 'admin')
+        .map((m) => ({
+          userId: String(m.memberId),
+          nickname: m.nickname,
+          profileImageUrl: defaultProfile,
+        }));
+
+      const members = memberList
+        .filter((m) => m.role === 'member')
+        .map((m) => ({
+          userId: String(m.memberId),
+          nickname: m.nickname,
+          profileImageUrl: defaultProfile,
+        }));
+
+      const pending = memberList
+        .filter((m) => m.role === 'pending')
+        .map((m) => ({
+          userId: String(m.memberId),
+          nickname: m.nickname,
+          profileImageUrl: defaultProfile,
+        }));
+
+      const isAdmin = admins.some((admin) => admin.userId === userId);
+      const isMember = members.some((member) => member.userId === userId);
+      const isPending = pending.some((pending) => pending.userId === userId);
+
+      return {
+        admins,
+        clubName: detail.clubName,
+        description: detail.description,
+        isAdmin,
+        isMember,
+        isPending,
+        members,
+        pendingUsers: pending,
+        imageUrl: detail.imageUrl,
+      };
+    },
   });
 };
 
@@ -120,5 +169,14 @@ export const useClubList = (category: string, region: string) => {
     queryKey: ['clubList', category, region],
     queryFn: () => fetchClubList(category, region),
     enabled: !!category && !!region,
+    select: (response): ClubList => {
+      return {
+        clubListItems: response.map((data) => ({
+          clubId: data.clubId.toString(),
+          clubName: data.clubName,
+          imageUrl: '/placeholder.png',
+        })),
+      };
+    },
   });
 };

@@ -5,7 +5,30 @@ import { INTERESTS } from '../../../constants/interests';
 import { REGIONS } from '../../../constants/regions';
 import InterestModal from '../../../common/components/utils/InterestModal';
 import RegionModal from '../../../common/components/utils/RegionModal';
-import { ClubFormProps } from '../types';
+import { ClubFormValues } from '../types';
+
+/** ### 모임 생성/수정 폼에서 사용
+ * - onNameChange: 이름 입력 핸들러
+ * - onImageChange: 이미지 업로드 핸들러
+ * - onDescriptionChange: 소개 입력 핸들러
+ * - onCategoryChange: 관심사 선택 핸들러
+ * - onRegionChange: 지역 선택 핸들러
+ * - onSubmit: 폼 제출 핸들러 (폼 데이터 전달)
+ */
+export interface ClubFormProps extends ClubFormValues {
+  onNameChange: (value: string) => void;
+  onImageChange: (file: File | null) => void;
+  onDescriptionChange: (value: string) => void;
+  onCategoryChange: (value: string[]) => void;
+  onRegionChange: (value: string[]) => void;
+  onSubmit: (data: {
+    clubName: string;
+    description: string;
+    region: string;
+    category: string;
+    image?: File | null;
+  }) => void;
+}
 
 /**
  * ClubForm - 모임 생성/수정 폼 UI 렌더링

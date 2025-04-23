@@ -1,6 +1,10 @@
 import React from 'react';
 import BaseList from '../../../common/components/ui/BaseList';
-import { ClubListProps } from '../types';
+import { ClubList as ClubListType } from '../types';
+
+export interface ClubListProps extends ClubListType {
+  routePrefix: string;
+}
 
 /**
  * ClubList 컴포넌트

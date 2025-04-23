@@ -1,5 +1,6 @@
 import axiosInstance from '../../../lib/axios';
 import { CreateClubRequest, CreateClubResponse } from '../types';
+import { ClubDetailResponse, ClubListResponse } from './schemas';
 
 export const createClub = async (data: CreateClubRequest): Promise<CreateClubResponse> => {
   const response = await axiosInstance.post('/clubs', data);
@@ -7,15 +8,7 @@ export const createClub = async (data: CreateClubRequest): Promise<CreateClubRes
 };
 
 /** [API] 모임 상세 조회 */
-export const fetchClubDetail = async (
-  clubId: number,
-): Promise<{
-  clubName: string;
-  description: string;
-  category: string;
-  region: string;
-  imageUrl: string;
-}> => {
+export const fetchClubDetail = async (clubId: number): Promise<ClubDetailResponse> => {
   const response = await axiosInstance.get(`/api/clubs/${clubId}`);
   return response.data;
 };
@@ -67,13 +60,7 @@ export const requestJoinClub = async (clubId: number): Promise<string> => {
 export const fetchClubList = async (
   category: string,
   region: string,
-): Promise<
-  {
-    clubId: number;
-    clubName: string;
-    category: string;
-  }[]
-> => {
+): Promise<ClubListResponse> => {
   const response = await axiosInstance.get(`/api/clubs?category=${category}&region=${region}`);
   return response.data.clubs;
 };

@@ -1,8 +1,16 @@
 import React from 'react';
-import { ClubDetailProps } from '../types';
+import { ClubDetailModel } from '../types';
 import ClubMembers from './ClubMembers';
 import ClubRequest from './ClubRequest';
 import ButtonUnit from '../../../common/components/ui/Buttons';
+
+export interface ClubDetailProps {
+  model: ClubDetailModel;
+  onJoin: () => void;
+  onApprove: (userId: string) => void;
+  onReject: (userId: string) => void;
+  onBan: (userId: string) => void;
+}
 
 /**
  * ClubDetail - 클럽 상세 정보를 표시하는 프레젠테이셔널 컴포넌트
@@ -30,15 +38,17 @@ import ButtonUnit from '../../../common/components/ui/Buttons';
  * @prop onBan - 멤버 추방 핸들러
  */
 const ClubDetail: React.FC<ClubDetailProps> = ({
-  imageUrl,
-  clubName,
-  description,
-  admins,
-  members,
-  pendingUsers,
-  isAdmin,
-  isMember,
-  isPending,
+  model: {
+    imageUrl,
+    clubName,
+    description,
+    admins,
+    members,
+    pendingUsers,
+    isAdmin,
+    isMember,
+    isPending,
+  },
   onJoin,
   onApprove,
   onReject,
