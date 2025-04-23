@@ -64,6 +64,8 @@ export const useClubDetail = (clubId?: string, userId?: string) => {
         isMember,
         isPending,
         members,
+        category: detail.category,
+        region: detail.region,
         pendingUsers: pending,
         imageUrl: detail.imageUrl,
       };

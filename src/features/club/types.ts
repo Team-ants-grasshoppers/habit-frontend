@@ -54,6 +54,8 @@ export interface ClubDetailModel {
   imageUrl?: string;
   clubName: string;
   description: string;
+  category: string;
+  region: string;
   admins: ClubMember[];
   members: ClubMember[];
   pendingUsers: ClubMember[];
