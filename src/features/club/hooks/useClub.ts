@@ -3,6 +3,7 @@ import { useState } from 'react';
 import useImageUploadV2 from '../../../hooks/useImageUploadV2';
 import {
   createClub,
+  deleteClub,
   fetchClubDetail,
   fetchClubList,
   fetchClubMembers,
@@ -159,6 +160,24 @@ export const useClubUpdate = (clubId: number) => {
   });
   return mutation;
 };
+
+/** [Hook] 클럽 삭제 */
+export const useClubDelete = () => {
+  return useMutation({
+    mutationFn: async (clubId: string) => {
+      if (!clubId) return;
+      if (!window.confirm('정말로 이 모임을 삭제하시겠습니까?')) return;
+
+      try {
+        await deleteClub(Number(clubId));
+      } catch (err: any) {
+        const msg = err.response?.data?.error || '삭제에 실패했습니다.';
+        alert(msg);
+      }
+    },
+  });
+};
+
 /** [Hook] 클럽 가입 요청 */
 export const useJoinClub = (clubId: number) => {
   const mutation = useMutation({
