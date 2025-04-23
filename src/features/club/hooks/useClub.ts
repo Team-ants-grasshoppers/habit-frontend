@@ -1,31 +1,33 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import {
   createClub,
-  updateClub,
   fetchClubDetail,
-  fetchClubMembers,
-  requestJoinClub,
-  manageClubMember,
   fetchClubList,
+  fetchClubMembers,
+  manageClubMember,
+  requestJoinClub,
+  updateClub,
 } from '../api/clubApi';
-import { useState } from 'react';
 import { ClubDetailModel, ClubList, CreateClubResponse } from '../types';
 
 /** [Hook] 특정 모임의 상세 정보 */
 export const useClubDetail = (clubId?: string, userId?: string) => {
   const defaultProfile = '/assets/default-profile.png';
   return useQuery({
-    queryKey: ['clubDetail', clubId],
-    queryFn: async () => {
+    queryKey: ['clubDetail', clubId, userId],
+    queryFn: async ({ queryKey }) => {
+      const [, clubId, userId] = queryKey;
       const detail = await fetchClubDetail(Number(clubId));
       const memberList = await fetchClubMembers(Number(clubId));
       return {
         detail,
         memberList,
+        userId,
       };
     },
-    enabled: !!clubId,
-    select: ({ detail, memberList }): ClubDetailModel => {
+    enabled: !!clubId && !!userId,
+    select: ({ detail, memberList, userId }): ClubDetailModel => {
       const admins = memberList
         .filter((m) => m.role === 'admin')
         .map((m) => ({
