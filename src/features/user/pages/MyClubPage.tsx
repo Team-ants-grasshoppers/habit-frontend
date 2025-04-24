@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react';
 import { useAppSelector } from '../../../store/hook';
 import MyJoinedClubList from '../components/MyJoinedClubList';
 import MyManagedClubList from '../components/MyManagedClubList';
-import MyJoinedThunderList from '../components/MyJoinedThunderlist';
+import MyJoinedThunderList from '../components/MyJoinedThunderList';
 import {
   fetchJoinedMyClubList,
   fetchMyClubList,
