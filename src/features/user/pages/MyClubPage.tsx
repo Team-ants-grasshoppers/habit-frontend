@@ -27,21 +27,16 @@ import {
   fetchJoinedMyThunderClubList,
 } from '../../user/hooks/useMypage';
 import ButtonUnit from '../../../common/components/ui/Buttons';
+import { MyPageList } from '../types';
 
 const MyClubPage = () => {
   const userId = useAppSelector((state) => state.user.userId);
   const nickname = useAppSelector((state) => state.user.nickname);
   const profileUrl = useAppSelector((state) => state.user.userProfile);
 
-  const [joinedClubs, setJoinedClubs] = useState<
-    { club_id: number; title: string; imgUrl: string | null }[]
-  >([]);
-  const [managedClubs, setManagedClubs] = useState<
-    { club_id: number; title: string; imgUrl: string | null }[]
-  >([]);
-  const [joinedThunders, setJoinedThunders] = useState<
-    { club_id: number; title: string; imgUrl: string | null }[]
-  >([]);
+  const [joinedClubs, setJoinedClubs] = useState<MyPageList>([]);
+  const [managedClubs, setManagedClubs] = useState<MyPageList>([]);
+  const [joinedThunders, setJoinedThunders] = useState<MyPageList>([]);
 
   useEffect(() => {
     if (!userId) return;
