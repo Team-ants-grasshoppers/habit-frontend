@@ -1,6 +1,19 @@
 import React from 'react';
 import ButtonUnit from '../../../common/components/ui/Buttons';
-import { ClubMemberListProps } from '../types';
+import { FormattedMember } from '../../utils/separateMembersByRole';
+
+/** ### 클럽 운영진/멤버 리스트 출력용 Props
+ * - admins: 운영진 리스트
+ * - members: 멤버 리스트
+ * - isAdmin: 현재 유저가 운영자인지 여부
+ * - onBan: 멤버 추방 핸들러 (선택)
+ */
+export interface ClubMemberListProps {
+  admins: FormattedMember[];
+  members: FormattedMember[];
+  isAdmin: boolean;
+  onBan?: (userId: string) => void;
+}
 
 /**
  * ClubMembers
@@ -12,7 +25,7 @@ import { ClubMemberListProps } from '../types';
  * - 운영자인 경우, 일반 멤버 카드 하단에 "추방" 버튼 표시 가능
  *
  * @component
- * @param {ClubMembersProps} props - 운영진과 멤버 목록
+ * @param {ClubMemberListProps} props - 운영진과 멤버 목록
  * @prop members - 일반 멤버 유저 리스트
  * @prop isAdmin - 현재 유저가 운영자인지 여부
  * @prop onBan - 멤버 추방 핸들러 (선택적)
