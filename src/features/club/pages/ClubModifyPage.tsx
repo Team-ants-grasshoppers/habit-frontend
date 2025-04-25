@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { fetchClubDetail, updateClub, deleteClub } from '../api/clubApi';
-import ClubForm from '../components/ClubForm';
+import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import ButtonUnit from '../../../common/components/ui/Buttons';
-import useImageUpload from '../../../hooks/useImageUpload';
+import { useAuth } from '../../../hooks/useAuth';
+import ClubForm from '../components/ClubForm';
+import { useClubDelete, useClubDetail, useClubUpdate } from '../hooks/useClub';
+import { ClubFormData } from '../types';
 
 /**
  * ClubModifyPage
@@ -35,81 +36,37 @@ import useImageUpload from '../../../hooks/useImageUpload';
  */
 
 const ClubModifyPage: React.FC = () => {
-  const { clubId } = useParams<{ clubId: string }>();
   const navigate = useNavigate();
+  const { clubId } = useParams<{ clubId: string }>();
+  const { user } = useAuth();
+  const userId = user?.user_id;
+  const { data: clubDetail, isLoading } = useClubDetail(clubId, userId);
+  const { mutateAsync: updateClub } = useClubUpdate(Number(clubId));
+  const { mutateAsync: deleteClub } = useClubDelete();
 
-  const [clubName, setClubName] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
-  const [region, setRegion] = useState('');
-
-  const { imageFile, imageUrl, handleImageChange, uploadSelectedImage } = useImageUpload();
-
-  useEffect(() => {
-    if (!clubId) return;
-
-    const fetchData = async () => {
-      try {
-        const detail = await fetchClubDetail(Number(clubId));
-        setClubName(detail.clubName);
-        setDescription(detail.description);
-        setCategory(detail.category);
-        setRegion(detail.region);
-
-        if (detail.imageUrl) {
-          handleImageChange(null);
-        }
-      } catch (error) {
-        alert('모임 정보를 불러오지 못했습니다.');
-      }
-    };
-
-    fetchData();
-  }, [clubId]);
-
-  /** 수정 완료 후 클럽 상세 페이지로 이동 */
-  const handleSubmit = async () => {
-    if (!clubId) return;
+  const handleSubmit = async (formData: ClubFormData) => {
     try {
-      let uploadedImgId: number | undefined = undefined;
-
-      if (imageFile) {
-        const imgId = await uploadSelectedImage();
-        if (imgId) {
-          uploadedImgId = imgId;
-        }
-      }
-
-      await updateClub(Number(clubId), {
-        description,
-        category,
-        region,
-        imgId: uploadedImgId ?? 0,
-      });
-
+      await updateClub(formData);
       alert('모임 수정이 완료되었습니다.');
       navigate(`/club/${clubId}`);
-    } catch (err) {
-      alert('수정에 실패했습니다.');
+    } catch (e) {
+      alert(`수정에 실패했습니다. ${e instanceof Error ? e.message : JSON.stringify(e)}`);
     }
   };
 
-  /** 삭제 완료 후 클럽 리스트 페이지로 이동 */
   const handleDelete = async () => {
-    if (!clubId) return;
-    if (!window.confirm('정말로 이 모임을 삭제하시겠습니까?')) return;
-
     try {
-      await deleteClub(Number(clubId));
+      if (!clubId) return;
+      await deleteClub(clubId);
       alert('모임이 삭제되었습니다.');
       navigate('/clubs');
-    } catch (err: any) {
-      const msg = err.response?.data?.error || '삭제에 실패했습니다.';
-      alert(msg);
+    } catch (e) {
+      alert(`삭제에 실패했습니다. ${e instanceof Error ? e.message : JSON.stringify(e)}`);
     }
   };
 
-  if (!clubName) return <p>로딩 중...</p>;
+  if (isLoading) return <p>로딩 중...</p>;
+  if (!clubDetail) return <p>모임 정보를 찾을 수 없습니다.</p>;
 
   return (
     <div>
@@ -120,16 +77,15 @@ const ClubModifyPage: React.FC = () => {
 
       <ClubForm
         mode="edit"
-        clubName={clubName}
-        description={description}
-        imageUrl={imageUrl}
-        category={category}
-        region={region}
-        onNameChange={(value) => setClubName(value)}
-        onDescriptionChange={(value) => setDescription(value)}
-        onCategoryChange={(value) => setCategory(value[0])}
-        onRegionChange={(value) => setRegion(value[0])}
-        onImageChange={handleImageChange}
+        initialData={{
+          clubName: clubDetail.clubName,
+          description: clubDetail.description,
+          image: {
+            url: clubDetail.imageUrl,
+          },
+          category: clubDetail.category,
+          region: clubDetail.region,
+        }}
         onSubmit={handleSubmit}
       />
 

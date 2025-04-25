@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ClubDataProps, ClubMemberProps } from '../types';
 import { useAuth } from '../../../hooks/useAuth';
-import {
-  fetchClubDetail,
-  fetchClubMembers,
-  manageClubMember,
-  requestJoinClub,
-} from '../api/clubApi';
+import { manageClubMember, requestJoinClub } from '../api/clubApi';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 import ClubDetail from '../components/ClubDetail';
+import { useClubDetail } from '../hooks/useClub';
 
 /**
  * ClubDetailPage - 클럽 상세 페이지
@@ -44,71 +39,9 @@ import ClubDetail from '../components/ClubDetail';
 const ClubDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { clubId } = useParams<{ clubId: string }>();
-  const defaultProfile = '/assets/default-profile.png';
-
-  const [clubData, setClubData] = useState<ClubDataProps | null>(null);
-  const [admins, setAdmins] = useState<ClubMemberProps[]>([]);
-  const [members, setMembers] = useState<ClubMemberProps[]>([]);
-  const [pendingMembers, setPendingMembers] = useState<ClubMemberProps[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
   const { user, isLoading: isAuthLoading } = useAuth();
   const userId = user?.user_id;
-
-  useEffect(() => {
-    if (!clubId) return;
-
-    const fetchData = async () => {
-      try {
-        const detail = await fetchClubDetail(Number(clubId));
-        const memberList = await fetchClubMembers(Number(clubId));
-
-        const admins = memberList
-          .filter((m) => m.role === 'admin')
-          .map((m) => ({
-            userId: String(m.memberId),
-            nickname: m.nickname,
-            profileImageUrl: defaultProfile,
-          }));
-
-        const members = memberList
-          .filter((m) => m.role === 'member')
-          .map((m) => ({
-            userId: String(m.memberId),
-            nickname: m.nickname,
-            profileImageUrl: defaultProfile,
-          }));
-
-        const pending = memberList
-          .filter((m) => m.role === 'pending')
-          .map((m) => ({
-            userId: String(m.memberId),
-            nickname: m.nickname,
-            profileImageUrl: defaultProfile,
-          }));
-
-        setClubData({
-          clubId: Number(clubId),
-          clubName: detail.clubName,
-          description: detail.description,
-          category: detail.category,
-          region: detail.region,
-          imageUrl: detail.imageUrl,
-          admins,
-          members,
-        });
-        setAdmins(admins);
-        setMembers(members);
-        setPendingMembers(pending);
-      } catch (error) {
-        alert('모임 정보를 불러오는 데 실패했습니다.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [clubId]);
+  const { data: clubDetail, isLoading } = useClubDetail(clubId, userId);
 
   const handleJoin = async () => {
     if (!user) {
@@ -171,31 +104,21 @@ const ClubDetailPage: React.FC = () => {
   };
 
   if (isLoading || isAuthLoading) return <p>로딩 중...</p>;
-  if (!clubData) return <p>모임 정보를 찾을 수 없습니다.</p>;
-
-  const isAdmin = admins.some((admin) => admin.userId === userId);
-  const isMember = members.some((member) => member.userId === userId);
-  const isPending = pendingMembers.some((pending) => pending.userId === userId);
 
   return (
     <div className="flex flex-col gap-6">
       <ButtonUnit mode="cancel">뒤로가기</ButtonUnit>
-
-      <ClubDetail
-        imageUrl={clubData.imageUrl || defaultProfile}
-        clubName={clubData.clubName}
-        description={clubData.description}
-        admins={admins}
-        members={members}
-        pendingUsers={pendingMembers}
-        isAdmin={isAdmin}
-        isMember={isMember}
-        isPending={isPending}
-        onJoin={handleJoin}
-        onApprove={handleApprove}
-        onReject={handleReject}
-        onBan={handleBan}
-      />
+      {clubDetail ? (
+        <ClubDetail
+          model={clubDetail}
+          onJoin={handleJoin}
+          onApprove={handleApprove}
+          onReject={handleReject}
+          onBan={handleBan}
+        />
+      ) : (
+        <p>모임 정보를 찾을 수 없습니다.</p>
+      )}
     </div>
   );
 };

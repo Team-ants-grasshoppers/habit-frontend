@@ -1,22 +1,78 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import useImageUploadV2 from '../../../hooks/useImageUploadV2';
 import {
   createClub,
-  updateClub,
-  fetchClubDetail,
-  fetchClubMembers,
-  requestJoinClub,
-  manageClubMember,
+  deleteClub,
   fetchClubList,
+  fetchClubMembers,
+  manageClubMember,
+  requestJoinClub,
+  updateClub,
 } from '../api/clubApi';
-import { useState } from 'react';
-import { CreateClubResponse } from '../types';
+import { ClubDetailModel, ClubFormData, ClubList } from '../types';
+import axios from 'axios';
 
 /** [Hook] 특정 모임의 상세 정보 */
-export const useClubDetail = (clubId: number) => {
+export const useClubDetail = (clubId?: string, userId?: string) => {
+  const defaultProfile = '/assets/default-profile.png';
   return useQuery({
-    queryKey: ['clubDetail', clubId],
-    queryFn: () => fetchClubDetail(clubId),
-    enabled: !!clubId,
+    queryKey: ['clubDetail', clubId, userId],
+    queryFn: () => axios.get(`/api/clubs/${clubId}`).then((res) => res.data),
+    // queryFn: async ({ queryKey }) => {
+    //   const [, clubId, userId] = queryKey;
+    //   const detail = await fetchClubDetail(Number(clubId));
+    //   const memberList = await fetchClubMembers(Number(clubId));
+    //   return {
+    //     detail,
+    //     memberList,
+    //     userId,
+    //   };
+    // },
+    enabled: !!clubId && !!userId,
+    select: ({ detail, memberList, userId }): ClubDetailModel => {
+      const admins = memberList
+        .filter((m: any) => m.role === 'admin')
+        .map((m: any) => ({
+          userId: String(m.memberId),
+          nickname: m.nickname,
+          profileImageUrl: defaultProfile,
+        }));
+
+      const members = memberList
+        .filter((m: any) => m.role === 'member')
+        .map((m: any) => ({
+          userId: String(m.memberId),
+          nickname: m.nickname,
+          profileImageUrl: defaultProfile,
+        }));
+
+      const pending = memberList
+        .filter((m: any) => m.role === 'pending')
+        .map((m: any) => ({
+          userId: String(m.memberId),
+          nickname: m.nickname,
+          profileImageUrl: defaultProfile,
+        }));
+
+      const isAdmin = admins.some((admin: any) => admin.userId === userId);
+      const isMember = members.some((member: any) => member.userId === userId);
+      const isPending = pending.some((pending: any) => pending.userId === userId);
+
+      return {
+        admins,
+        clubName: detail.clubName,
+        description: detail.description,
+        isAdmin,
+        isMember,
+        isPending,
+        members,
+        category: detail.category,
+        region: detail.region,
+        pendingUsers: pending,
+        imageUrl: detail.imageUrl,
+      };
+    },
   });
 };
 
@@ -30,66 +86,97 @@ export const useClubMembers = (clubId: number) => {
 };
 
 /** [Hook] 클럽 생성 및 수정 폼 로직 관리 */
-export const useClubForm = (
-  mode: 'create' | 'edit',
-  initialData?: {
-    clubName: string;
-    description: string;
-    category: string;
-    region: string;
-  },
-) => {
-  const [clubName, setClubName] = useState(initialData?.clubName || '');
-  const [description, setDescription] = useState(initialData?.description || '');
-  const [category, setCategory] = useState(initialData?.category || '');
-  const [region, setRegion] = useState(initialData?.region || '');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export const useClubForm = (initialData?: ClubFormData) => {
+  const [formData, setFormData] = useState<ClubFormData>(
+    initialData || {
+      clubName: '',
+      description: '',
+      category: '',
+      region: '',
+      image: {
+        url: undefined,
+        file: undefined,
+      },
+    },
+  );
 
-  const submit = async (clubId?: number): Promise<CreateClubResponse | string | null> => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      if (mode === 'create') {
-        const newClubId = await createClub({
-          clubName,
-          description,
-          category,
-          region,
-          imgId: 0,
-        });
-        return newClubId;
-      } else if (mode === 'edit' && clubId) {
-        const message = await updateClub(clubId, {
-          description,
-          category,
-          region,
-          imgId: 0,
-        });
-        return message;
-      }
-    } catch (e: any) {
-      setError(e.message);
-      return null;
-    } finally {
-      setIsLoading(false);
+  const handleImageChange = async (image: File | null) => {
+    if (image) {
+      const imageUrl = URL.createObjectURL(image);
+      setFormData((prev) => ({ ...prev, image: { url: imageUrl, file: image } }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        image: { url: undefined, file: undefined },
+      }));
     }
-    return null; // Explicitly return null if no other return is reached
   };
 
   return {
-    clubName,
-    setClubName,
-    description,
-    setDescription,
-    category,
-    setCategory,
-    region,
-    setRegion,
-    isLoading,
-    error,
-    submit,
+    formData,
+    setFormData,
+    handleImageChange,
   };
+};
+
+/** [Hook] 클럽 생성 */
+export const useClubCreate = () => {
+  const { mutateAsync: uploadImage } = useImageUploadV2();
+  const mutation = useMutation({
+    mutationFn: async (formData: ClubFormData) => {
+      let imgId: number | undefined;
+      if (formData.image.file) {
+        imgId = await uploadImage(formData.image.file);
+      }
+      return createClub({
+        clubName: formData.clubName,
+        description: formData.description,
+        category: formData.category,
+        region: formData.region,
+        imgId: imgId,
+      });
+    },
+  });
+  return mutation;
+};
+
+/** [Hook] 클럽 수정 */
+export const useClubUpdate = (clubId: number) => {
+  const { mutateAsync: uploadImage } = useImageUploadV2();
+  const mutation = useMutation({
+    mutationFn: async (formData: ClubFormData) => {
+      let imgId: number = 0;
+      if (formData.image.file) {
+        imgId = await uploadImage(formData.image.file);
+      }
+      return updateClub(clubId, {
+        description: formData.description,
+        category: formData.category,
+        region: formData.region,
+        // TODO: imgId required인지 확인
+        // * 만약 required라면, club detail 응답으로부터 이미지 id를 함께 전달 받아야함.
+        imgId: imgId,
+      });
+    },
+  });
+  return mutation;
+};
+
+/** [Hook] 클럽 삭제 */
+export const useClubDelete = () => {
+  return useMutation({
+    mutationFn: async (clubId: string) => {
+      if (!clubId) return;
+      if (!window.confirm('정말로 이 모임을 삭제하시겠습니까?')) return;
+
+      try {
+        await deleteClub(Number(clubId));
+      } catch (err: any) {
+        const msg = err.response?.data?.error || '삭제에 실패했습니다.';
+        alert(msg);
+      }
+    },
+  });
 };
 
 /** [Hook] 클럽 가입 요청 */
@@ -120,5 +207,14 @@ export const useClubList = (category: string, region: string) => {
     queryKey: ['clubList', category, region],
     queryFn: () => fetchClubList(category, region),
     enabled: !!category && !!region,
+    select: (response): ClubList => {
+      return {
+        clubListItems: response.map((data) => ({
+          clubId: data.clubId.toString(),
+          clubName: data.clubName,
+          imageUrl: '/placeholder.png',
+        })),
+      };
+    },
   });
 };

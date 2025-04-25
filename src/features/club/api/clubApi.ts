@@ -1,24 +1,18 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance from '../../../lib/axios';
 import { CreateClubRequest, CreateClubResponse } from '../types';
+import { ClubListResponse } from './schemas';
 
 export const createClub = async (data: CreateClubRequest): Promise<CreateClubResponse> => {
   const response = await axiosInstance.post('/clubs', data);
   return response.data;
 };
 
-/** [API] 모임 상세 조회 */
-export const fetchClubDetail = async (
-  clubId: number,
-): Promise<{
-  clubName: string;
-  description: string;
-  category: string;
-  region: string;
-  imageUrl: string;
-}> => {
-  const response = await axiosInstance.get(`/api/clubs/${clubId}`);
-  return response.data;
-};
+/** [API] 모임 상세 정보 */
+export const fetchClubDetail = createAsyncThunk('club/fetchDetail', async (clubId: number) => {
+  const res = await axiosInstance.get(`/api/clubs/${clubId}`);
+  return res.data;
+});
 
 /** [API] 모임 수정 */
 export const updateClub = async (
@@ -44,18 +38,10 @@ export const manageClubMember = async (
 };
 
 /** [API] 모임 회원 조회 (운영진, 멤버, 대기자 등 포함) */
-export const fetchClubMembers = async (
-  clubId: number,
-): Promise<
-  {
-    memberId: number;
-    nickname: string;
-    role: 'admin' | 'member' | 'pending';
-  }[]
-> => {
-  const response = await axiosInstance.get(`/api/clubs/${clubId}/members`);
-  return response.data.members ?? [];
-};
+export const fetchClubMembers = createAsyncThunk('club/fetchMembers', async (clubId: number) => {
+  const res = await axiosInstance.get(`/api/clubs/${clubId}/members`);
+  return res.data.members;
+});
 
 /** [API] 모임 가입 요청 */
 export const requestJoinClub = async (clubId: number): Promise<string> => {
@@ -67,13 +53,7 @@ export const requestJoinClub = async (clubId: number): Promise<string> => {
 export const fetchClubList = async (
   category: string,
   region: string,
-): Promise<
-  {
-    clubId: number;
-    clubName: string;
-    category: string;
-  }[]
-> => {
+): Promise<ClubListResponse> => {
   const response = await axiosInstance.get(`/api/clubs?category=${category}&region=${region}`);
   return response.data.clubs;
 };
