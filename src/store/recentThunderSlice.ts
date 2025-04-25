@@ -4,7 +4,7 @@ import { Thunder } from '../features/user/types';
 
 const STORAGEKEY = 'recentThunders';
 
-const initialState: Thunder[] = loadFromLocalStorage(STORAGEKEY);
+const initialState: Thunder[] = loadFromLocalStorage<Thunder[]>(STORAGEKEY, []);
 /**
  * recentThundersSlice
  *

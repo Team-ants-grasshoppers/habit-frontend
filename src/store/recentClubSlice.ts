@@ -4,7 +4,7 @@ import { Club } from '../features/user/types';
 
 const STORAGEKEY = 'recentClubs';
 
-const initialState: Club[] = loadFromLocalStorage(STORAGEKEY);
+const initialState: Club[] = loadFromLocalStorage<Club[]>(STORAGEKEY, []);
 /**
  * recentClubsSlice
  *
