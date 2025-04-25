@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
-import { manageClubMember, requestJoinClub } from '../api/clubApi';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 import ClubDetail from '../components/ClubDetail';
-import { useClubDetail } from '../hooks/useClub';
+import { useClubDetail } from '../hooks/useClubDetail';
+import { manageClubMemberApi, requestJoinClubApi } from '../api/clubApi';
 
 /**
  * ClubDetailPage - 클럽 상세 페이지
@@ -53,7 +53,7 @@ const ClubDetailPage: React.FC = () => {
     if (!clubId) return;
 
     try {
-      await requestJoinClub(Number(clubId));
+      await requestJoinClubApi(Number(clubId));
       alert('가입 요청이 성공적으로 전송되었습니다!');
       location.reload();
     } catch (error: any) {
@@ -64,7 +64,7 @@ const ClubDetailPage: React.FC = () => {
   const handleApprove = async (userId: string) => {
     if (!clubId) return;
     try {
-      await manageClubMember(Number(clubId), {
+      await manageClubMemberApi(Number(clubId), {
         target_member_id: Number(userId),
         action: 'approve',
       });
@@ -78,7 +78,7 @@ const ClubDetailPage: React.FC = () => {
   const handleReject = async (userId: string) => {
     if (!clubId) return;
     try {
-      await manageClubMember(Number(clubId), {
+      await manageClubMemberApi(Number(clubId), {
         target_member_id: Number(userId),
         action: 'reject',
       });
@@ -92,7 +92,7 @@ const ClubDetailPage: React.FC = () => {
   const handleBan = async (userId: string) => {
     if (!clubId) return;
     try {
-      await manageClubMember(Number(clubId), {
+      await manageClubMemberApi(Number(clubId), {
         target_member_id: Number(userId),
         action: 'ban',
       });

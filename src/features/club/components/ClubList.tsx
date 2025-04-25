@@ -1,6 +1,6 @@
 import React from 'react';
 import BaseList from '../../../common/components/ui/BaseList';
-import { ClubListProps } from '../types';
+import { ClubList as CLubListType } from '../types';
 
 /**
  * ClubList 컴포넌트
@@ -20,17 +20,19 @@ import { ClubListProps } from '../types';
  * @component
  * @returns {JSX.Element} 클럽 리스트 카드 또는 비어있을 경우 안내 문구
  */
-const ClubList: React.FC<ClubListProps> = ({ clubListItems }) => {
-  if (clubListItems.length === 0) return <div>클럽이 없습니다.</div>;
+const ClubList: React.FC<CLubListType> = ({ clubListItems }) => {
+  // if (clubListItems.length === 0) return <div>클럽이 없습니다.</div>;
   return (
-    <BaseList
-      items={clubListItems.map((item) => ({
-        id: item.clubId,
-        name: item.clubName,
-        imageUrl: item.imageUrl,
-      }))}
-      routePrefix="/club"
-    />
+    <>
+      <BaseList
+        items={clubListItems.map((item) => ({
+          id: item.clubId,
+          name: item.clubName,
+          imageUrl: item.imageUrl,
+        }))}
+        routePrefix="/club"
+      />
+    </>
   );
 };
 

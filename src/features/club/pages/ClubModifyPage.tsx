@@ -3,8 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 import { useAuth } from '../../../hooks/useAuth';
 import ClubForm from '../components/ClubForm';
-import { useClubDelete, useClubDetail, useClubUpdate } from '../hooks/useClub';
 import { ClubFormData } from '../types';
+import { useClubDetail } from '../hooks/useClubDetail';
+import { useClubUpdate } from '../hooks/useClubUpdate';
+import { useClubDelete } from '../hooks/useClubDelete';
 
 /**
  * ClubModifyPage
