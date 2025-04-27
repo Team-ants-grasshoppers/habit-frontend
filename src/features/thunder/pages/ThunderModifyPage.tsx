@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ThunderForm from '../components/ThunderForm';
-import Modal from '../../../common/components/ui/Modal';
 import ButtonUnit from '../../../common/components/ui/Buttons';
-import { fetchThunderDetail, updateThunder } from '../api/thunderApi';
-import uploadImage from '../../../common/api/imageApi';
-import CalendarView from '../../calendar/components/CalendarView';
-import { INTERESTS } from '../../../constants/interests';
-import { REGIONS } from '../../../constants/regions';
+import { useAuth } from '../../../hooks/useAuth';
+import { useThunderDetail } from '../hooks/useThunderDetail';
+import { useThunderUpdate } from '../hooks/useThunderUpdate';
+import { useThunderDelete } from '../hooks/useThunderDelete';
+import { ThunderFormData } from '../types';
 /**
  * ThunderModifyPage
  *
@@ -19,198 +18,69 @@ import { REGIONS } from '../../../constants/regions';
  * - 이미지 업로드 시 변경 여부 추적하여 imgId 전송
  */
 const ThunderModifyPage: React.FC = () => {
-  const { thunderId } = useParams<{ thunderId: string }>();
   const navigate = useNavigate();
+  const { thunderId } = useParams<{ thunderId: string }>();
+  const { user } = useAuth();
+  const userId = user?.user_id;
+  const { data: thunderDetail, isLoading } = useThunderDetail(thunderId, userId);
+  const { mutateAsync: updateThunder } = useThunderUpdate(Number(thunderId));
+  const { mutateAsync: deleteThunder } = useThunderDelete();
 
-  // 🔧 초기값 및 상태 정의
-  const [initialDetail, setInitialDetail] = useState<any>(null);
-
-  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-  const [regionModalOpen, setRegionModalOpen] = useState(false);
-
-  const [selectedRegion, setSelectedRegion] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
-  const [time, setTime] = useState('');
-  const [imgId, setImgId] = useState<number | null>(null);
-  const [hasUploadedImage, setHasUploadedImage] = useState(false); // 이미지 변경 여부
-
-  /**
-   * 번개 모임 상세 정보를 불러와 초기 상태 설정
-   */
-  useEffect(() => {
-    if (!thunderId) return;
-
-    (async () => {
-      try {
-        const detail = await fetchThunderDetail(Number(thunderId));
-        setInitialDetail(detail);
-        setSelectedRegion(detail.region);
-        setSelectedCategory(detail.category);
-        setSelectedDate(detail.datetime.split('T')[0]);
-        setTime(detail.datetime.split('T')[1].slice(0, 5));
-        setImgId(null); // 최초 로드 시 imgId는 null
-      } catch {
-        alert('모임 정보를 불러올 수 없습니다.');
-      }
-    })();
-  }, [thunderId]);
-
-  /**
-   * 이미지 업로드 처리 함수
-   * @param file - 업로드할 이미지 파일
-   * @returns 성공 메시지
-   */
-  const handleImageUpload = async (file: File): Promise<string> => {
-    const id = await uploadImage(file);
-    setImgId(Number(id));
-    setHasUploadedImage(true);
-    return '업로드 성공';
-  };
-
-  /**
-   * 폼 제출 시 수정 요청을 보냄
-   * 변경된 항목만 포함하여 update API 호출
-   * @param form - ThunderForm에서 전달된 제목, 설명, 이미지
-   */
-  const handleSubmit = async (form: { title: string; description: string; image: File | null }) => {
-    if (!initialDetail) return;
-
-    const updated = {
-      title: form.title !== initialDetail.title ? form.title : null,
-      description: form.description !== initialDetail.description ? form.description : null,
-      region: selectedRegion !== initialDetail.region ? selectedRegion : null,
-      category: selectedCategory !== initialDetail.category ? selectedCategory : null,
-      date:
-        `${selectedDate} ${time}` !==
-        `${initialDetail.datetime.split('T')[0]} ${initialDetail.datetime.split('T')[1].slice(0, 5)}`
-          ? `${selectedDate} ${time}`
-          : null,
-      id: hasUploadedImage ? imgId : null,
-    };
-
+  const handleSubmit = async (formData: ThunderFormData) => {
     try {
-      await updateThunder(Number(thunderId), updated);
+      await updateThunder(formData);
+      alert('번개모임 수정이 완료되었습니다.');
       navigate(`/thunder/${thunderId}`);
-    } catch {
-      alert('모임 수정에 실패했습니다.');
+    } catch (e) {
+      alert(`수정에 실패했습니다. ${e instanceof Error ? e.message : JSON.stringify(e)}`);
     }
   };
 
-  if (!initialDetail) return <p>로딩중...</p>;
+  const handleDelete = async () => {
+    try {
+      if (!thunderId) return;
+      await deleteThunder(thunderId);
+      alert('번개모임이 삭제되었습니다.');
+      navigate('/');
+    } catch (e) {
+      alert(`삭제에 실패했습니다. ${e instanceof Error ? e.message : JSON.stringify(e)}`);
+    }
+  };
+
+  if (isLoading) return <p>로딩 중...</p>;
+  if (!thunderDetail) return <p>모임 정보를 찾을 수 없습니다.</p>;
 
   return (
-    <div>
-      <h2>번개 모임 수정하기</h2>
-
-      {/* 폼: 제목, 설명, 이미지 */}
-      <ThunderForm
-        mode="edit"
-        initialData={{
-          title: initialDetail.title,
-          description: initialDetail.description,
-          imageUrl: initialDetail.imgUrl,
-          region: initialDetail.region,
-          date: initialDetail.datetime.split('T')[0],
-          time: initialDetail.datetime.split('T')[1].slice(0, 5),
-        }}
-        onImageUpload={handleImageUpload}
-        onSubmit={handleSubmit}
-      />
-
-      {/* 지역/관심사 선택 버튼 */}
-      <Modal isOpen={regionModalOpen} onClose={() => setRegionModalOpen(false)}>
-        <h2>지역 선택</h2>
-        <ul>
-          {REGIONS.map((region) => (
-            <li key={region}>
-              <label>
-                <input
-                  type="radio"
-                  name="region"
-                  value={region}
-                  checked={selectedRegion === region}
-                  onChange={() => setSelectedRegion(region)}
-                />
-                {region}
-              </label>
-            </li>
-          ))}
-        </ul>
-        <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
-          <ButtonUnit mode="cancel" onClick={() => setRegionModalOpen(false)}>
-            취소
-          </ButtonUnit>
-          <ButtonUnit mode="confirm" onClick={() => setRegionModalOpen(false)}>
-            확인
-          </ButtonUnit>
+    <>
+      <div className="flex flex-col gap-6">
+        {/* 상단 뒤로가기 버튼 */}
+        <div>
+          <ButtonUnit mode="cancel" children={'X'} />
         </div>
-      </Modal>
 
-      <Modal isOpen={categoryModalOpen} onClose={() => setCategoryModalOpen(false)}>
-        <h2>관심사 선택</h2>
-        <ul>
-          {INTERESTS.map((interest) => (
-            <li key={interest}>
-              <label>
-                <input
-                  type="radio"
-                  name="category"
-                  value={interest}
-                  checked={selectedCategory === interest}
-                  onChange={() => setSelectedCategory(interest)}
-                />
-                {interest}
-              </label>
-            </li>
-          ))}
-        </ul>
-        <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
-          <ButtonUnit mode="cancel" onClick={() => setCategoryModalOpen(false)}>
-            취소
-          </ButtonUnit>
-          <ButtonUnit mode="confirm" onClick={() => setCategoryModalOpen(false)}>
-            확인
-          </ButtonUnit>
-        </div>
-      </Modal>
-
-      {/* 날짜 선택 */}
-      <div>
-        <p>날짜 선택</p>
-        <CalendarView
-          events={[]}
-          onClickDate={(date) => {
-            const formatted = date.toLocaleDateString('sv-SE');
-            setSelectedDate(formatted);
+        {/* 번개 모임 수정 폼 */}
+        <ThunderForm
+          mode="edit"
+          initialData={{
+            thunderName: thunderDetail.thunderName,
+            description: thunderDetail.description,
+            category: thunderDetail.category,
+            region: thunderDetail.region,
+            date: thunderDetail.date,
+            time: thunderDetail.time,
+            image: {
+              url: thunderDetail.imageUrl,
+            },
           }}
-          onClickAdd={() => {}}
+          onSubmit={handleSubmit}
         />
-        <p>선택된 날짜: {selectedDate || '없음'}</p>
-      </div>
 
-      {/* 시간 선택 */}
-      <div>
-        <label>
-          시간:
-          <input type="time" value={time} onChange={(e) => setTime(e.target.value)} />
-        </label>
-      </div>
-
-      {/* 하단 취소 버튼 */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          gap: '1rem',
-          marginTop: '2rem',
-        }}
-      >
-        <ButtonUnit mode="cancel" onClick={() => navigate(-1)}>
-          취소
+        {/* 번개 모임 삭제 버튼 */}
+        <ButtonUnit mode="base" onClick={handleDelete}>
+          모임 삭제
         </ButtonUnit>
       </div>
-    </div>
+    </>
   );
 };
 

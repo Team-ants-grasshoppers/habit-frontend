@@ -1,16 +1,6 @@
 import React from 'react';
 import BaseList from '../../../common/components/ui/BaseList';
-
-interface ThunderItem {
-  id: string;
-  name: string;
-  imageUrl: string;
-}
-
-interface ThunderListProps {
-  items: ThunderItem[];
-  routePrefix: string;
-}
+import { ThunderList as ThunderListType } from '../types';
 
 /**
  * ThunderList 컴포넌트
@@ -25,9 +15,19 @@ interface ThunderListProps {
  * @param {ThunderItem[]} props.items - 번개 모임 데이터 배열 (id, name, imageUrl 포함)
  * @returns {JSX.Element} 번개 모임 목록 UI 또는 빈 안내 메시지
  */
-const ThunderList: React.FC<ThunderListProps> = ({ items }) => {
-  if (items.length === 0) return <div>번개 모임이 없습니다.</div>;
-  return <BaseList items={items} routePrefix="/thunder" />;
+const ThunderList: React.FC<ThunderListType> = ({ thunderListItems }) => {
+  return (
+    <>
+      <BaseList
+        items={thunderListItems.map((item) => ({
+          id: item.thunderId,
+          name: item.thunderName,
+          imageUrl: item.imageUrl,
+        }))}
+        routePrefix="/thunder"
+      />
+    </>
+  );
 };
 
 export default ThunderList;
