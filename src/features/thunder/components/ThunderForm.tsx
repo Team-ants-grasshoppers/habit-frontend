@@ -1,5 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import ButtonUnit from '../../../common/components/ui/Buttons';
+import { ThunderFormData } from '../types';
+import { useThunderForm } from '../hooks/useThunder';
+import InputText from '../../../common/components/ui/InputText';
+import InterestModal from '../../../common/components/utils/InterestModal';
+import RegionModal from '../../../common/components/utils/RegionModal';
+import { REGIONS } from '../../../constants/regions';
+import { INTERESTS } from '../../../constants/interests';
 
 /**
  * ThunderForm의 props 타입 정의
@@ -9,25 +16,8 @@ import ButtonUnit from '../../../common/components/ui/Buttons';
  */
 interface ThunderFormProps {
   mode: 'create' | 'edit'; // 생성 또는 수정 모드
-  initialData?: {
-    // 수정 시 사용할 초기 데이터
-    title: string;
-    description: string;
-    region: string;
-    date: string;
-    time: string;
-    imageUrl?: string;
-  };
-  onSubmit?: (data: {
-    // 제출 시 상위에서 처리할 콜백
-    title: string;
-    description: string;
-    region: string;
-    date: string;
-    time: string;
-    image: File | null;
-  }) => void;
-  onImageUpload?: (file: File) => Promise<string>;
+  initialData?: ThunderFormData;
+  onSubmit?: (data: ThunderFormData) => void;
 }
 
 /**
@@ -53,94 +43,112 @@ interface ThunderFormProps {
  * @param {(data: { title: string; description: string; region: { city: string; district: string }; date: string; hour: number; minute: number; image: File | null }) => void} [props.onSubmit] - 수정 또는 생성 완료 시 실행되는 콜백 함수
  */
 const ThunderForm: React.FC<ThunderFormProps> = ({ mode, initialData, onSubmit }) => {
-  const [title, setTitle] = useState(initialData?.title || '');
-  const [description, setDescription] = useState(initialData?.description || '');
-  const [region, setRegion] = useState(initialData?.region || '');
-  const [date, setDate] = useState(initialData?.date || '');
-  const [time, setTime] = useState(initialData?.time || '');
-  const [image, setImage] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState(initialData?.imageUrl || '');
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { formData, setFormData, handleImageChange } = useThunderForm(initialData);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImage(file);
-      setPreviewUrl(URL.createObjectURL(file));
-    }
+  const [isInterestModalOpen, setIsInterestModalOpen] = useState(false);
+  const [isRegionModalOpen, setIsRegionModalOpen] = useState(false);
+
+  const handleInterestSelect = (selected: string[]) => {
+    setFormData({ ...formData, category: selected[0] });
+    setIsInterestModalOpen(false);
   };
 
-  const handleSubmit = () => {
-    onSubmit?.({ title, description, region, date, time, image });
+  const handleRegionSelect = (selected: string[]) => {
+    setFormData({ ...formData, region: selected[0] });
+    setIsRegionModalOpen(false);
   };
 
   return (
     <div>
-      <h2>{mode === 'edit' ? '번개 모임 수정' : '번개 모임 생성'}</h2>
-
-      <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="모임명" />
-      <textarea
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        placeholder="상세 설명"
+      {/* 모임명 */}
+      <InputText
+        type="text"
+        name={formData.thunderName}
+        value={formData.thunderName}
+        onChange={(value) => setFormData({ ...formData, thunderName: value })}
       />
 
-      {/* 배포 에러 방지 임시 코드 */}
-      <input
-        value={region}
-        onChange={(e) => setRegion(e.target.value)}
-        placeholder="지역 (ex: 서울 강남)"
-      />
-
-      <input
-        type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-        placeholder="날짜"
-      />
-
-      <input
-        type="time"
-        value={time}
-        onChange={(e) => setTime(e.target.value)}
-        placeholder="시간"
-      />
-
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleImageChange}
-        style={{ display: 'none' }}
-      />
-      <div onClick={() => fileInputRef.current?.click()} style={{ cursor: 'pointer' }}>
-        {previewUrl ? <img src={previewUrl} alt="미리보기" width={120} /> : <div>이미지 선택</div>}
+      {/* 이미지 업로드 */}
+      <div className="flex flex-col">
+        <label>모임 이미지</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => handleImageChange(e.target.files?.[0] || null)}
+        />
+        {formData.image.url && <img src={formData.image.url} alt="모임 이미지 미리보기" />}
       </div>
 
-      {/* 배포 에러로 임시 추가 */}
-      <input
-        value={region}
-        onChange={(e) => setRegion(e.target.value)}
-        placeholder="지역 (ex: 서울 강남)"
-      />
-      <input
-        type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-        placeholder="날짜"
-      />
-      <input
-        type="time"
-        value={time}
-        onChange={(e) => setTime(e.target.value)}
-        placeholder="시간"
-      />
-      {/* //배포 에러로 임시 추가 끝 */}
-
+      {/* 모임 소개 */}
       <div>
-        <ButtonUnit mode="confirm" onClick={handleSubmit}>
-          {mode === 'edit' ? '수정 완료' : '등록'}
+        <label>모임 소개</label>
+        <textarea
+          value={formData.description}
+          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          rows={5}
+        />
+      </div>
+
+      {/* 모임 카테고리 */}
+      <div>
+        <label>카테고리</label>
+        <ButtonUnit mode="base" onClick={() => setIsInterestModalOpen(true)}>
+          {formData.category || '카테고리 설정'}
         </ButtonUnit>
       </div>
+
+      {/* 지역 선택 */}
+      <div>
+        <label>지역</label>
+        <ButtonUnit mode="base" onClick={() => setIsRegionModalOpen(true)}>
+          {formData.region || '지역 설정'}
+        </ButtonUnit>
+      </div>
+      {/* 날짜 선택 */}
+      <div>
+        <label>날짜</label>
+        <input
+          type="date"
+          value={formData.date}
+          onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+        />
+      </div>
+
+      {/* 시간 선택 */}
+      <div>
+        <label>시간</label>
+        <input type="time" value={`${formData.date}:${formData.time}`} />
+      </div>
+
+      {/* 제출 버튼 */}
+      <div>
+        <ButtonUnit
+          mode="confirm"
+          onClick={() => {
+            if (onSubmit) {
+              onSubmit({ ...formData });
+            }
+          }}
+        >
+          {mode === 'create' ? '번개모임 생성' : '수정 완료'}
+        </ButtonUnit>
+      </div>
+
+      {/* 관심사 모달 */}
+      <InterestModal
+        isOpen={isInterestModalOpen}
+        selectedInterests={INTERESTS}
+        onCancel={() => setIsInterestModalOpen(false)}
+        onConfirm={handleInterestSelect}
+      />
+
+      {/* 지역 모달 */}
+      <RegionModal
+        isOpen={isRegionModalOpen}
+        selectedRegions={REGIONS}
+        onCancel={() => setIsRegionModalOpen(false)}
+        onConfirm={handleRegionSelect}
+      />
     </div>
   );
 };
