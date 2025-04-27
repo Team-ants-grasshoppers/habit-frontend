@@ -1,30 +1,37 @@
 import React from 'react';
-import { ClubMember } from '../types';
 import ButtonUnit from '../../../common/components/ui/Buttons';
+import { FormattedMember } from '../../utils/separateMembersByRole';
 
-interface ClubMembersProps {
-  admins: ClubMember[];
-  members: ClubMember[];
+/** ### 클럽 운영진/멤버 리스트 출력용 Props
+ * - admins: 운영진 리스트
+ * - members: 멤버 리스트
+ * - isAdmin: 현재 유저가 운영자인지 여부
+ * - onBan: 멤버 추방 핸들러 (선택)
+ */
+export interface ClubMemberListProps {
+  admins: FormattedMember[];
+  members: FormattedMember[];
   isAdmin: boolean;
   onBan?: (userId: string) => void;
 }
 
 /**
- * ClubMembers 컴포넌트
+ * ClubMembers
+ * 클럽 운영진과 일반 멤버를 구분하여 렌더링하는 컴포넌트
  *
- * 클럽에 속한 멤버들을 시각적으로 구분하여 렌더링하는 역할을 한다.
- * - 상위 컴포넌트에서 role(role: 'admin' | 'member')에 따라 분리된 데이터를 전달받음
- * - 각 멤버는 사진과 이름으로 구성된 카드 형태로 렌더링됨
- * - 운영진(admin)과 일반 멤버(member)를 두 개의 섹션으로 나누어 구분해서 표시
- * - 운영진/멤버가 각각 비어 있는 경우 해당 섹션은 렌더링되지 않음
- *
- * ⚠️ 이 컴포넌트는 데이터 분리나 가공은 하지 않고, 순수하게 받은 데이터를 렌더링만 한다.
+ * - 운영진(admin)과 일반 멤버(member) 리스트를 시각적으로 나누어 표시
+ * - 각 유저는 프로필 이미지와 닉네임으로 구성된 카드 형태로 출력
+ * - 운영진이 없거나 멤버가 없을 경우 각각 "운영진이 없습니다", "멤버가 없습니다" 문구 표시
+ * - 운영자인 경우, 일반 멤버 카드 하단에 "추방" 버튼 표시 가능
  *
  * @component
- * @param {ClubMembersProps} props - 운영진과 일반 멤버 목록
- * @returns {JSX.Element} 클럽 멤버 시각화 영역
+ * @param {ClubMemberListProps} props - 운영진과 멤버 목록
+ * @prop members - 일반 멤버 유저 리스트
+ * @prop isAdmin - 현재 유저가 운영자인지 여부
+ * @prop onBan - 멤버 추방 핸들러 (선택적)
+ * @returns {JSX.Element} 운영진 및 멤버 리스트 UI
  */
-const ClubMembers: React.FC<ClubMembersProps> = ({ admins, members, isAdmin, onBan }) => {
+const ClubMembers: React.FC<ClubMemberListProps> = ({ admins, members, isAdmin, onBan }) => {
   return (
     <div className="flex flex-col gap-8">
       {/* 운영진 */}
@@ -33,13 +40,13 @@ const ClubMembers: React.FC<ClubMembersProps> = ({ admins, members, isAdmin, onB
         {admins.length > 0 ? (
           <div className="flex flex-wrap gap-4">
             {admins.map((admin) => (
-              <div key={admin.id} className="flex flex-col items-center w-24">
+              <div key={admin.userId} className="flex flex-col items-center w-24">
                 <img
                   src={admin.profileImageUrl}
-                  alt={admin.name}
+                  alt={admin.nickname}
                   className="w-16 h-16 rounded-full object-cover"
                 />
-                <span className="text-sm font-medium mt-1">{admin.name}</span>
+                <span className="text-sm font-medium mt-1">{admin.nickname}</span>
               </div>
             ))}
           </div>
@@ -54,15 +61,15 @@ const ClubMembers: React.FC<ClubMembersProps> = ({ admins, members, isAdmin, onB
         {members.length > 0 ? (
           <div className="flex flex-wrap gap-4">
             {members.map((member) => (
-              <div key={member.id} className="flex flex-col items-center w-24">
+              <div key={member.userId} className="flex flex-col items-center w-24">
                 <img
                   src={member.profileImageUrl}
-                  alt={member.name}
+                  alt={member.nickname}
                   className="w-16 h-16 rounded-full object-cover"
                 />
-                <span className="text-sm">{member.name}</span>
+                <span className="text-sm">{member.nickname}</span>
                 {isAdmin && onBan && (
-                  <ButtonUnit mode="base" onClick={() => onBan(member.id)}>
+                  <ButtonUnit mode="base" onClick={() => onBan(member.userId)}>
                     추방
                   </ButtonUnit>
                 )}
