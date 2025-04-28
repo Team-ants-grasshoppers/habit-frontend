@@ -32,8 +32,8 @@ const ClubListPage: React.FC = () => {
   const [clubs, setClubs] = useState<{ clubId: string; clubName: string; imageUrl: string }[]>([]);
 
   useEffect(() => {
-    const category = interests[0] || '전체';
-    const region = regions[0] || '전체';
+    const category = interests[0] && interests[0] !== '전체' ? interests[0] : '';
+    const region = regions[0] && regions[0] !== '전체' ? regions[0] : '';
 
     fetchClubListApi(category, region).then((data) => {
       const mapped = data.map((club) => ({
