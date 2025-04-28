@@ -114,12 +114,19 @@ const ThunderForm: React.FC<ThunderFormProps> = ({ mode, initialData, onSubmit }
         />
       </div>
 
-      {/* 시간 선택 */}
       <div>
         <label>시간</label>
-        <input type="time" value={`${formData.date}:${formData.time}`} />
+        <input
+          type="time"
+          value={formData.time} // 시간만
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              time: e.target.value, // 시간 값만 업데이트
+            })
+          }
+        />
       </div>
-
       {/* 제출 버튼 */}
       <div>
         <ButtonUnit
