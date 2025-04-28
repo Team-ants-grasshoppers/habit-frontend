@@ -58,10 +58,10 @@ const Sidebar: React.FC = () => {
             <Link to="/club/create">모임 생성</Link>
           </li>
           <li>
-            <Link to="/thunder">번개모임 리스트</Link>
+            <Link to="/thunder/list">번개모임 리스트</Link>
           </li>
           <li>
-            <Link to="/thunder">번개모임 생성</Link>
+            <Link to="/thunder/create">번개모임 생성</Link>
           </li>
         </ul>
       </nav>
