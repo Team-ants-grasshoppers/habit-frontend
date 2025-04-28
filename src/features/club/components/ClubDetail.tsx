@@ -44,6 +44,7 @@ const ClubDetail: React.FC<ClubDetailProps> = ({
     description,
     category,
     region,
+
     admins,
     members,
     pendingUsers,
