@@ -1,9 +1,9 @@
 import React from 'react';
 import BaseList from '../../../common/components/ui/BaseList';
-import { Thunder } from '../types';
+import { JoinedThunderItem } from '../types';
 
 interface MyJoinedThunderListProps {
-  thunders: Thunder[];
+  thunders: JoinedThunderItem[];
 }
 
 /**
