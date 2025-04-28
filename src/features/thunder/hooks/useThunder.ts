@@ -1,92 +1,59 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import {
-  createThunder,
-  fetchThunderDetail,
-  joinThunder,
-  leaveThunder,
-  deleteThunder,
-  updateThunder,
-} from '../api/thunderApi';
+import { ThunderFormData, ThunderList } from '../types';
+import useImageUpload from '../../../hooks/useImageUpload';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { fetchThunderListApi } from '../api/thunderApi';
 
 /**
- * 번개모임 생성 훅
+ * [Hook] 클럽 생성 및 수정 폼 로직 관리
+ * - 추후 번개모임 생성 및 수정 폼과 공통 훅으로 분리 예정
  */
-export const useCreateThunder = () => {
-  return useMutation({ mutationFn: createThunder });
+export const useThunderForm = (initialData?: ThunderFormData) => {
+  const { imageFile, imageUrl, handleImageChange, uploadSelectedImage } = useImageUpload();
+  const [formData, setFormData] = useState<ThunderFormData>(
+    initialData || {
+      thunderName: '',
+      description: '',
+      category: '',
+      region: '',
+      date: '',
+      time: '',
+      image: {
+        url: undefined,
+        file: undefined,
+      },
+    },
+  );
+
+  return {
+    formData,
+    setFormData,
+    imageFile,
+    imageUrl,
+    handleImageChange,
+    uploadSelectedImage,
+  };
 };
 
 /**
  * 번개모임 리스트 조회 훅 (카테고리 및 지역 기준)
  */
-export const useThunderList = (category: string, region: string) => {
+export const useThunderList = (category: string, region: string, date: string) => {
   return useQuery({
-    queryKey: ['thunderList', category, region],
-    // queryFn: () => fetchThunderList(category, region),
+    queryKey: ['thunderList', category, region, date],
+    queryFn: () => fetchThunderListApi(category, region, date),
+    enabled: !!category && !!region,
+    select: (response): ThunderList => {
+      return {
+        thunderListItems: response.map((data) => ({
+          thunderId: data.thunderId.toString(),
+          thunderName: data.thunderName,
+          imageUrl: '/placeholder.png',
+        })),
+      };
+    },
   });
 };
-
-/**
- * 번개모임 상세 조회 훅
- */
-export const useThunderDetail = (thunderId: number) => {
-  return useQuery({
-    queryKey: ['thunderDetail', thunderId],
-    queryFn: () => fetchThunderDetail(thunderId),
-  });
-};
-
-/**
- * 번개모임 참가 요청 훅
- */
-export const useJoinThunder = () => {
-  return useMutation({ mutationFn: joinThunder });
-};
-
-/**
- * 번개모임 탈퇴 훅
- */
-export const useLeaveThunder = () => {
-  return useMutation({ mutationFn: leaveThunder });
-};
-
-/**
- * 번개모임 삭제 훅
- */
-export const useDeleteThunder = () => {
-  return useMutation({ mutationFn: deleteThunder });
-};
-
-/**
- * 번개모임 수정 훅
- * @example mutate({ thunderId, data: { title, description } })
- */
-export const useUpdateThunder = () => {
-  return useMutation({
-    mutationFn: ({
-      thunderId,
-      data,
-    }: {
-      thunderId: number;
-      data: { title: string; description: string };
-    }) => updateThunder(thunderId, data),
-  });
-};
-
-/**
- * 번개모임 회원 승인/거절/추방 훅
- * @example mutate({ thunderId, payload: { target_member_id, action } })
- */
-// export const useManageThunderMember = () => {
-//   return useMutation({
-//     mutationFn: ({
-//       thunderId,
-//       payload,
-//     }: {
-//       thunderId: number;
-//       payload: { target_member_id: number; action: 'approve' | 'reject' | 'ban' };
-//     }) => manageThunderMember(thunderId, payload),
-//   });
-// };
 
 /**
  * 번개모임 일정 등록 훅

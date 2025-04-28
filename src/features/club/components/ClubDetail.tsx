@@ -42,6 +42,9 @@ const ClubDetail: React.FC<ClubDetailProps> = ({
     imageUrl,
     clubName,
     description,
+    category,
+    region,
+
     admins,
     members,
     pendingUsers,
@@ -77,6 +80,11 @@ const ClubDetail: React.FC<ClubDetailProps> = ({
       <div>
         <h3 className="text-xl font-semibold">모임 소개</h3>
         <p className="mt-2">{description}</p>
+      </div>
+
+      <div className="flex gap-4">
+        <span className="text-sm font-semibold">{category}</span>
+        <span className="text-sm font-semibold">{region}</span>
       </div>
 
       {/* 가입 상태별 버튼 */}

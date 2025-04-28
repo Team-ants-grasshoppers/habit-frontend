@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchThunderList } from '../api/thunderApi';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 import BaseList from '../../../common/components/ui/BaseList';
 import { useAppSelector } from '../../../store/hook';
+import { fetchThunderListApi } from '../api/thunderApi';
 
 /**
  * ThunderListPage
@@ -38,7 +38,11 @@ const ThunderListPage: React.FC = () => {
     if (selectedRegions.length === 0 || selectedInterests.length === 0) return;
 
     const fetchData = async () => {
-      const result = await fetchThunderList(selectedInterests[0], selectedRegions[0], selectedDate);
+      const result = await fetchThunderListApi(
+        selectedInterests[0],
+        selectedRegions[0],
+        selectedDate,
+      );
       setThunderList(result);
       setVisibleCount(6); // 초기값 리셋
     };

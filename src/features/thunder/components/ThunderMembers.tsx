@@ -1,35 +1,22 @@
 import React from 'react';
 import ButtonUnit from '../../../common/components/ui/Buttons';
+import { FormattedMember } from '../../utils/separateMembersByRole';
 
-/**
- * 번개 모임에 참여 중인 멤버 정보를 나타냄
- * 운영자는 이 리스트에 포함되지 않으며,
- * 이 컴포넌트를 보고 있는 유저가 운영자인 경우에만
- * 각 멤버에 대해 "추방하기" 버튼이 표시됨
+/** ### 번개모임 운영진/멤버 리스트 출력용 Props
+ * - admins: 운영진 리스트
+ * - members: 멤버 리스트
+ * - isAdmin: 현재 유저가 운영자인지 여부
+ * - onBan: 멤버 추방 핸들러 (선택)
  */
-interface ThunderMember {
-  /** 멤버의 고유 ID */
-  memberId: number;
-  /** 멤버의 닉네임 */
-  nickname: string;
-  /** 멤버의 프로필 이미지 URL (선택) */
-  profileImageUrl?: string;
+export interface ThunderMembersProps {
+  admins: FormattedMember[];
+  members: FormattedMember[];
+  isAdmin: boolean;
+  onBan?: (userId: string) => void;
 }
 
 /**
- * ThunderMembers 컴포넌트의 Props
- */
-interface ThunderMembersProps {
-  /** 운영자를 제외한 모임 참여 멤버 리스트 */
-  members: ThunderMember[];
-  /** 멤버 추방 버튼 클릭 시 실행할 콜백 함수 (옵션) */
-  onBanClick?: (memberId: number) => void;
-  /** 현재 이 컴포넌트를 보고 있는 사용자가 운영자인지 여부 */
-  isViewerAdmin?: boolean;
-}
-
-/**
- * 번개 모임 참여 멤버 리스트를 보여주는 컴포넌트
+ * 번개모임 참여 멤버 리스트를 보여주는 컴포넌트
  *
  * - 운영자는 리스트에 포함되지 않음
  * - 운영자가 볼 때만 멤버 옆에 "추방하기" 버튼이 표시됨
@@ -38,24 +25,56 @@ interface ThunderMembersProps {
  * @param {ThunderMembersProps} props - 컴포넌트 props
  * @returns {JSX.Element | null}
  */
-const ThunderMembers: React.FC<ThunderMembersProps> = ({ members, onBanClick, isViewerAdmin }) => {
-  if (!members || members.length === 0) return null;
+const ThunderMembers: React.FC<ThunderMembersProps> = ({ admins, members, onBan, isAdmin }) => {
+  if (!members.length) return null;
 
   return (
-    <div>
-      <h3>참여중인 인원</h3>
+    <div className="flex flex-col gap-8">
+      {/* 운영진 */}
       <div>
-        {members.map((member) => (
-          <div key={member.memberId}>
-            <img src={member.profileImageUrl} alt={member.nickname} />
-            <p>{member.nickname}</p>
-            {isViewerAdmin && onBanClick && (
-              <ButtonUnit mode="confirm" onClick={() => onBanClick(member.memberId)}>
-                추방하기
-              </ButtonUnit>
-            )}
+        <h3 className="text-lg font-bold mb-2">운영진</h3>
+        {admins.length > 0 ? (
+          <div className="flex flex-wrap gap-4">
+            {admins.map((admin) => (
+              <div key={admin.userId} className="flex flex-col items-center w-24">
+                <img
+                  src={admin.profileImageUrl}
+                  alt={admin.nickname}
+                  className="w-16 h-16 rounded-full object-cover"
+                />
+                <span className="text-sm font-medium mt-1">{admin.nickname}</span>
+              </div>
+            ))}
           </div>
-        ))}
+        ) : (
+          <p className="text-sm text-gray-500">운영진이 없습니다.</p>
+        )}
+      </div>
+
+      {/* 일반 멤버 */}
+      <div>
+        <h3 className="text-lg font-bold mb-2">멤버</h3>
+        {members.length > 0 ? (
+          <div className="flex flex-wrap gap-4">
+            {members.map((member) => (
+              <div key={member.userId} className="flex flex-col items-center w-24">
+                <img
+                  src={member.profileImageUrl}
+                  alt={member.nickname}
+                  className="w-16 h-16 rounded-full object-cover"
+                />
+                <span className="text-sm">{member.nickname}</span>
+                {isAdmin && onBan && (
+                  <ButtonUnit mode="base" onClick={() => onBan(member.userId)}>
+                    추방
+                  </ButtonUnit>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-gray-500">멤버가 없습니다.</p>
+        )}
       </div>
     </div>
   );
