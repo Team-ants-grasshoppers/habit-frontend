@@ -70,7 +70,13 @@ export const requestJoinClubApi = async (clubId: number): Promise<string> => {
 export const fetchClubListApi = async (
   category: string,
   region: string,
-): Promise<ClubListResponse> => {
+): Promise<
+  {
+    club_id: number;
+    name: string;
+    category: string;
+  }[]
+> => {
   const response = await axiosInstance.get(`/api/clubs?category=${category}&region=${region}`);
   return response.data.clubs;
 };
