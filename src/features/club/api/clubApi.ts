@@ -1,44 +1,26 @@
 import axiosInstance from '../../../lib/axios';
+import { ClubListResponse, CreateClubRequest, CreateClubResponse } from './schemas';
 
-/**
- * 모임 생성
+/** clubApi.ts 클럽 관련 API
+ *
+ * createClubApi : 모임 생성
+ * updateClubApi : 모임 수정
+ * deleteClubApi : 모임 삭제
+ * fetchClubDetailApi : 모임 상세 정보 조회
+ * fetchClubMembersApi : 모임 회원(운영진/멤버/대기자) 조회
+ * manageClubMemberApi : 모임 회원 관리 (승인/거절/추방)
+ * requestJoinClubApi : 모임 가입 요청
+ * fetchClubListApi : 모임 리스트 조회
  */
-export interface CreateClubRequest {
-  name: string;
-  description: string;
-  category: string;
-  region: string;
-  imgId?: number;
-}
 
-export interface CreateClubResponse {
-  clubId: number; // 생성된 모임 ID
-}
-export const createClub = async (data: CreateClubRequest): Promise<CreateClubResponse> => {
+/** [API] 모임 생성 */
+export const createClubApi = async (data: CreateClubRequest): Promise<CreateClubResponse> => {
   const response = await axiosInstance.post('/clubs', data);
   return response.data;
 };
 
-/**
- * 모임 상세 조회
- */
-export const fetchClubDetail = async (
-  clubId: number,
-): Promise<{
-  name: string;
-  description: string;
-  category: string;
-  region: string;
-  imageUrl: string;
-}> => {
-  const response = await axiosInstance.get(`/api/clubs/${clubId}`);
-  return response.data;
-};
-
-/**
- * 모임 수정
- */
-export const updateClub = async (
+/** [API] 모임 수정 */
+export const updateClubApi = async (
   clubId: number,
   data: {
     description: string;
@@ -51,10 +33,26 @@ export const updateClub = async (
   return response.data.message;
 };
 
-/**
- * 모임 회원 관리 (가입 승인, 거절, 추방)
- */
-export const manageClubMember = async (
+/** [API] 모임 삭제 */
+export const deleteClubApi = async (clubId: number): Promise<string> => {
+  const response = await axiosInstance.delete(`/api/clubs/${clubId}`);
+  return response.data.message;
+};
+
+/** [API] 모임 상세 정보 */
+export const fetchClubDetailApi = async (clubId: number) => {
+  const response = await axiosInstance.get(`/api/clubs/${clubId}`);
+  return response.data;
+};
+
+/** [API] 모임 회원 조회 (운영진, 멤버, 대기자 등 포함) */
+export const fetchClubMembersApi = async (clubId: number) => {
+  const response = await axiosInstance.get(`/api/clubs/${clubId}/members`);
+  return response.data;
+};
+
+/** [API] 모임 회원 관리 (가입 승인, 거절, 추방) */
+export const manageClubMemberApi = async (
   clubId: number,
   payload: { target_member_id: number; action: 'approve' | 'reject' | 'ban' },
 ): Promise<string> => {
@@ -62,51 +60,17 @@ export const manageClubMember = async (
   return response.data.message;
 };
 
-/**
- * 모임 회원 조회 (운영진, 멤버, 대기자 등 포함)
- */
-export const fetchClubMembers = async (
-  clubId: number,
-): Promise<
-  {
-    member_id: number;
-    nickname: string;
-    role: 'admin' | 'member' | 'pending';
-  }[]
-> => {
-  const response = await axiosInstance.get(`/api/clubs/${clubId}/members`);
-  return response.data.members ?? [];
-};
-
-/**
- * 모임 가입 요청
- */
-export const requestJoinClub = async (clubId: number): Promise<string> => {
+/** [API] 모임 가입 요청 */
+export const requestJoinClubApi = async (clubId: number): Promise<string> => {
   const response = await axiosInstance.post(`/api/clubs/${clubId}/join`);
   return response.data.message;
 };
 
-/**
- * 모임 리스트 조회 (카테고리, 지역 조건 기반)
- */
-export const fetchClubList = async (
+/** [API] 모임 리스트 조회 (카테고리, 지역 조건 기반) */
+export const fetchClubListApi = async (
   category: string,
   region: string,
-): Promise<
-  {
-    club_id: number;
-    name: string;
-    category: string;
-  }[]
-> => {
+): Promise<ClubListResponse> => {
   const response = await axiosInstance.get(`/api/clubs?category=${category}&region=${region}`);
   return response.data.clubs;
-};
-
-/**
- * 모임 삭제
- */
-export const deleteClub = async (clubId: number): Promise<string> => {
-  const response = await axiosInstance.delete(`/api/clubs/${clubId}`);
-  return response.data.message;
 };
