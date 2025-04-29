@@ -7,6 +7,7 @@ import { useThunderDetail } from '../hooks/useThunderDetail';
 import { useThunderUpdate } from '../hooks/useThunderUpdate';
 import { useThunderDelete } from '../hooks/useThunderDelete';
 import { ThunderFormData } from '../types';
+import { MainTitle } from '../../../common/style/common.css';
 /**
  * ThunderModifyPage
  *
@@ -52,6 +53,7 @@ const ThunderModifyPage: React.FC = () => {
 
   return (
     <>
+      <MainTitle>번개모임 수정</MainTitle>
       <div className="flex flex-col gap-6">
         {/* 상단 뒤로가기 버튼 */}
         <div>
