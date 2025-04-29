@@ -1,0 +1,28 @@
+.react-calendar {
+    width: 100%;
+    max-width: 720px;
+    min-width: 320px;
+    background: white;
+    border: 0;
+    font-family: inherit;
+    line-height: 1;
+}
+
+.react-calendar__navigation {
+    width: 40%;
+}
+.react-calendar__navigation button{
+    flex: auto;
+}
+.react-calendar__navigation__arrow.react-calendar__navigation__prev2-button,
+.react-calendar__navigation__arrow.react-calendar__navigation__next2-button{
+    display: none;
+}
+
+.react-calendar button.react-calendar__tile--active{
+    background: none;
+    border: 1px solid var(--primary);
+    abbr {
+        color: var(--primary);
+    }
+}
