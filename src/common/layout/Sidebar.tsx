@@ -175,13 +175,6 @@ const AsideStyle = styled.aside`
     margin-bottom: 1rem;
   }
 
-  nav ul li a {
-    text-decoration: none;
-    color: var(--text-main);
-    font-size: 16px;
-    font-weight: 500;
-  }
-
   nav ul li a:hover {
     color: var(--primary);
   }
@@ -213,10 +206,8 @@ const AsideStyle = styled.aside`
 `;
 
 const StyledLink = styled(Link)<{ active: boolean }>`
-  text-decoration: none;
   color: ${({ active }) => (active ? 'var(--primary)' : 'var(--text-main)')};
-  font-weight: ${({ active }) => (active ? '700' : '500')};
-  font-size: 16px;
+  font-weight: ${({ active }) => (active ? '500' : 'normal')};
 
   &:hover {
     color: var(--primary);
