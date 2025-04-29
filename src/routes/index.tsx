@@ -26,7 +26,7 @@ const AppRoutes = () => {
 
         {/* Club 관련 라우트 추가 */}
         <Route path="club/create" element={<ClubCreatePage />} />
-        <Route path="club/list" element={<ClubListPage />} />
+        <Route index element={<ClubListPage />} />
         <Route path="club/:clubId" element={<ClubDetailPage />} />
         <Route path="club/:clubId/edit" element={<ClubModifyPage />} />
 
