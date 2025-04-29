@@ -5,6 +5,7 @@ import ButtonUnit from '../../../common/components/ui/Buttons';
 import ClubDetail from '../components/ClubDetail';
 import { useClubDetail } from '../hooks/useClubDetail';
 import { manageClubMemberApi, requestJoinClubApi } from '../api/clubApi';
+import { MainTitle } from '../../../common/style/common.css';
 
 /**
  * ClubDetailPage - 클럽 상세 페이지
@@ -106,20 +107,23 @@ const ClubDetailPage: React.FC = () => {
   if (isLoading || isAuthLoading) return <p>로딩 중...</p>;
 
   return (
-    <div className="flex flex-col gap-6">
-      <ButtonUnit mode="cancel">뒤로가기</ButtonUnit>
-      {clubDetail ? (
-        <ClubDetail
-          model={clubDetail}
-          onJoin={handleJoin}
-          onApprove={handleApprove}
-          onReject={handleReject}
-          onBan={handleBan}
-        />
-      ) : (
-        <p>모임 정보를 찾을 수 없습니다.</p>
-      )}
-    </div>
+    <>
+      <MainTitle>모임명</MainTitle>
+      <div className="flex flex-col gap-6">
+        <ButtonUnit mode="cancel">뒤로가기</ButtonUnit>
+        {clubDetail ? (
+          <ClubDetail
+            model={clubDetail}
+            onJoin={handleJoin}
+            onApprove={handleApprove}
+            onReject={handleReject}
+            onBan={handleBan}
+          />
+        ) : (
+          <p>모임 정보를 찾을 수 없습니다.</p>
+        )}
+      </div>
+    </>
   );
 };
 
