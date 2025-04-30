@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 
 const Layout = () => {
   return (
-    <>
+    <LayoutWrapper>
       <Header />
       <div style={{ display: 'flex', height: '100%' }}>
         <Sidebar />
@@ -13,11 +13,16 @@ const Layout = () => {
           <Outlet />
         </MainStyle>
       </div>
-    </>
+    </LayoutWrapper>
   );
 };
 
 export default Layout;
+
+const LayoutWrapper = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+`;
 
 const MainStyle = styled.main`
   flex: 1;

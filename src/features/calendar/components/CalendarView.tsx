@@ -42,17 +42,6 @@ export const CalendarView = ({ events, onClickDate, onClickAdd }: Props) => {
     setCalendarValue(calendarValue);
   }, [calendarValue]);
 
-  /**
-   * 일정이 있으면 ● 마킹
-   */
-  // const tileContent = ({ date, view }: { date: Date; view: string }) => {
-  //   const formatted = date.toLocaleDateString('sv-SE');
-  //   const hasEvent = events.some((e) => e.date === formatted);
-  //   return view === 'month' && hasEvent ? (
-  //     <div style={{ color: 'red', fontSize: '0.8rem' }}>●</div>
-  //   ) : null;
-  // };
-
   const handleAddEvent = () => {
     const today = new Date().toLocaleDateString('sv-SE');
     onClickAdd(today);
@@ -67,13 +56,16 @@ export const CalendarView = ({ events, onClickDate, onClickAdd }: Props) => {
         value={calendarValue}
         onChange={onChangeCalendar}
         onClickDay={onClickDate}
+        calendarType="gregory"
+        locale="en-US"
+        prev2Label={null}
+        next2Label={null}
+        showNeighboringMonth={false}
         tileContent={({ date, view }) => {
           const formatted = date.toLocaleDateString('sv-SE');
           const hasEvent = events.some((e) => e.date === formatted);
           return view === 'month' && hasEvent ? <Dot /> : null;
         }}
-        calendarType="gregory"
-        locale="ko-KR"
       />
     </CalendarWrapper>
   );

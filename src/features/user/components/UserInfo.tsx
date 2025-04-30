@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import UserForm from './UserForm';
 import { validateForm } from '../hooks/validateForm';
 import ButtonUnit from '../../../common/components/ui/Buttons';
+import { FormWrapper } from '../../../common/style/common.css';
 
 interface UserInfoProps {
   initialData: {
@@ -71,10 +72,12 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
     return (
       <div>
         <p>
-          <strong>닉네임:</strong> {formState.nickname}
+          <strong>닉네임</strong>
+          {formState.nickname}
         </p>
         <p>
-          <strong>이메일:</strong> {formState.email}
+          <strong>이메일</strong>
+          {formState.email}
         </p>
         <ButtonUnit mode="confirm" onClick={() => setIsEditMode(true)}>
           수정
@@ -84,7 +87,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
   }
 
   return (
-    <div>
+    <FormWrapper>
       {formState.apiError && <p style={{ color: 'red' }}>{formState.apiError}</p>}
       {formState.successMsg && <p style={{ color: 'green' }}>{formState.successMsg}</p>}
 
@@ -98,7 +101,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
           수정 완료
         </ButtonUnit>
       </UserForm>
-    </div>
+    </FormWrapper>
   );
 };
 

@@ -7,7 +7,7 @@ import { ClubFormData } from '../types';
 import { useClubDetail } from '../hooks/useClubDetail';
 import { useClubUpdate } from '../hooks/useClubUpdate';
 import { useClubDelete } from '../hooks/useClubDelete';
-import { MainTitle } from '../../../common/style/common.css';
+import { MainTitle, TitleArea } from '../../../common/style/common.css';
 
 /**
  * ClubModifyPage
@@ -73,11 +73,10 @@ const ClubModifyPage: React.FC = () => {
 
   return (
     <>
-      <MainTitle>모임 수정</MainTitle>
-      {/* 상단 뒤로가기 버튼 */}
-      <div>
-        <ButtonUnit mode="cancel" children={'X'} />
-      </div>
+      <TitleArea>
+        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
+        <MainTitle>모임 수정</MainTitle>
+      </TitleArea>
 
       <ClubForm
         mode="edit"

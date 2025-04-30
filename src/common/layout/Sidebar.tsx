@@ -162,7 +162,7 @@ export default Sidebar;
 
 const AsideWrapper = styled.div`
   width: 25%;
-  max-width: 35rem;
+  max-width: 34rem;
   min-width: 24rem;
   padding: 2rem 2rem 3rem;
   height: calc(100vh - ${layoutTheme.header.height});

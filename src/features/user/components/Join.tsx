@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { joinUser } from '../hooks/useUser';
 import UserForm from './UserForm';
 import ButtonUnit from '../../../common/components/ui/Buttons';
-import { MainTitle } from '../../../common/style/common.css';
-import styled from '@emotion/styled';
+import { FormWrapper, MainTitle } from '../../../common/style/common.css';
 
 const Join = () => {
   const navigate = useNavigate();
@@ -36,7 +35,7 @@ const Join = () => {
   return (
     <>
       <MainTitle>회원가입</MainTitle>
-      <JoinWrapper>
+      <FormWrapper>
         <UserForm
           mode="join"
           serverError={apiError}
@@ -47,13 +46,9 @@ const Join = () => {
             회원가입
           </ButtonUnit>
         </UserForm>
-      </JoinWrapper>
+      </FormWrapper>
     </>
   );
 };
 
 export default Join;
-
-const JoinWrapper = styled.div`
-  max-width: 400px;
-`;
