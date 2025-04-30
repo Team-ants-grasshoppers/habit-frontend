@@ -56,7 +56,7 @@ const BaseList: React.FC<BaseListProps> = ({ items, routePrefix }) => {
           }}
         >
           {/* 카드 내부: 이미지 + 이름 */}
-          <img src={item.imageUrl || '/vite.svg'} alt={item.name} />
+          <img src={item.imageUrl || '/vite.svg'} />
           <p>{item.name}</p>
 
           {/* 카드 바깥쪽에 띄우는 버튼 */}
