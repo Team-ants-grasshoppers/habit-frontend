@@ -15,6 +15,8 @@ export const useClubDetail = (clubId?: string, userId?: string) => {
       const [, clubId, userId] = queryKey;
       const detail = await fetchClubDetailApi(Number(clubId)); // 클럽상세 정보 API 호출
       const memberList = await fetchClubMembersApi(Number(clubId)); // 모임 회원 조회 API 호출 (배열)
+      console.log('✅ queryFn 응답 detail:', detail);
+      console.log('✅ queryFn 응답 memberList:', memberList);
       return { detail, memberList, userId };
     },
     enabled: !!clubId && !!userId, // clubId, userId가 모두 있을 때만 쿼리를 활성화함 (!!: boolean 변환)
