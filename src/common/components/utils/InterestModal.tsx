@@ -3,7 +3,7 @@
  * @description 관심사 선택 모달 (InputSelect + constants 연동)
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from '../ui/Modal';
 import InputSelect from '../ui/InputSelect';
 import { INTERESTS } from '../../../constants/interests';
@@ -17,7 +17,13 @@ interface Props {
 }
 
 export const InterestModal = ({ isOpen, selectedInterests, onConfirm, onCancel }: Props) => {
-  const [checked, setChecked] = useState<string[]>(selectedInterests);
+  const [checked, setChecked] = useState<string>(selectedInterests[0] || '');
+
+  useEffect(() => {
+    if (isOpen) {
+      setChecked(selectedInterests[0] || '');
+    }
+  }, [isOpen, selectedInterests]);
 
   return (
     <Modal isOpen={isOpen} onClose={onCancel}>
@@ -26,14 +32,14 @@ export const InterestModal = ({ isOpen, selectedInterests, onConfirm, onCancel }
         type="radio"
         name="interests"
         options={INTERESTS} // ✅ constants 연결
-        selected={checked}
-        onChange={setChecked}
+        selected={[checked]}
+        onChange={(value: string[]) => setChecked(value[0])} // ✅ 문자열 단일 선택
       />
       <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
         <ButtonUnit mode="cancel" isModal onClick={onCancel}>
           취소
         </ButtonUnit>
-        <ButtonUnit mode="confirm" onClick={() => onConfirm(checked)}>
+        <ButtonUnit mode="confirm" onClick={() => onConfirm([checked])}>
           확인
         </ButtonUnit>
       </div>
