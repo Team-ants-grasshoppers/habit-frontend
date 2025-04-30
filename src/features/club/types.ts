@@ -51,6 +51,7 @@ export interface ClubRequestProps {
 export interface ClubListItem {
   clubId: string;
   clubName: string;
+  clubCategory: string;
   imageUrl: string;
 }
 

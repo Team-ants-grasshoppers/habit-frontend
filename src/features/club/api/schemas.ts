@@ -28,6 +28,7 @@ export type ClubDetailResponse = {
 };
 
 export type ClubListResponse = {
+  imgUrl: string;
   clubId: number;
   clubName: string;
   category: string;

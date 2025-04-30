@@ -29,7 +29,9 @@ import { fetchClubListApi } from '../api/clubApi';
 const ClubListPage: React.FC = () => {
   const { interests, regions } = useSelector((state: RootState) => state.checkboxSelection);
 
-  const [clubs, setClubs] = useState<{ clubId: string; clubName: string; imageUrl: string }[]>([]);
+  const [clubs, setClubs] = useState<
+    { clubId: string; clubName: string; clubCategory: string; imageUrl: string }[]
+  >([]);
 
   useEffect(() => {
     const category = interests[0] || '전체';
@@ -40,7 +42,8 @@ const ClubListPage: React.FC = () => {
       const mapped = data.map((club) => ({
         clubId: club.clubId.toString(),
         clubName: club.clubName,
-        imageUrl: '/placeholder.png', // TODO: imageUrl 서버 응답에 따라 교체
+        clubCategory: club.category,
+        imageUrl: club.imgUrl, // TODO: imageUrl 서버 응답에 따라 교체
       }));
       setClubs(mapped);
     });
