@@ -40,13 +40,14 @@ const ClubListPage: React.FC = () => {
 
     fetchClubListApi(category, region).then((data) => {
       const mapped = data.map((club) => ({
-        clubId: club.clubId.toString(),
-        clubName: club.clubName,
+        clubId: club.club_id.toString(),
+        clubName: club.name,
         clubCategory: club.category,
         imageUrl: club.imgUrl, // TODO: imageUrl 서버 응답에 따라 교체
       }));
       setClubs(mapped);
     });
+    console.log('클럽 리스트:', clubs);
   }, [interests, regions]);
 
   return (
