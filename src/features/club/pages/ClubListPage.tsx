@@ -46,8 +46,8 @@ const ClubListPage: React.FC = () => {
         imageUrl: club.imgUrl, // TODO: imageUrl 서버 응답에 따라 교체
       }));
       setClubs(mapped);
+      console.log('클럽 리스트:', clubs);
     });
-    console.log('클럽 리스트:', clubs);
   }, [interests, regions]);
 
   return (
