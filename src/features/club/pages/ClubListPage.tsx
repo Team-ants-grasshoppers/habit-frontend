@@ -47,9 +47,12 @@ const ClubListPage: React.FC = () => {
       }));
       console.log('mapped:', mapped);
       setClubs(mapped);
-      console.log('클럽 리스트:', clubs);
     });
   }, [interests, regions]);
+
+  useEffect(() => {
+    console.log('✅ clubs 상태 변경됨:', clubs);
+  }, [clubs]);
 
   return (
     <div>
