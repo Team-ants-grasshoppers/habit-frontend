@@ -17,7 +17,7 @@ export const useClubCreate = () => {
         description: formData.description,
         category: formData.category,
         region: formData.region,
-        imgId: imgId,
+        image_id: imgId,
       });
     },
   });

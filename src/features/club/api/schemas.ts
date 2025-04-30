@@ -10,7 +10,7 @@ export interface CreateClubRequest {
   description: string;
   category: string;
   region: string;
-  imgId?: number;
+  image_id?: number;
 }
 
 /** ### 생성된 모임 ID
