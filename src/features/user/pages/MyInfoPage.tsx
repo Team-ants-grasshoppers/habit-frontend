@@ -152,7 +152,7 @@ const MyInfoPage = () => {
       const file = input.files?.[0];
       if (file) {
         try {
-          const imgId = await uploadImage(file);
+          const imgId = await uploadImage(file, 'profile');
           setProfileImageId(imgId);
           setImgPreview(URL.createObjectURL(file));
         } catch {
