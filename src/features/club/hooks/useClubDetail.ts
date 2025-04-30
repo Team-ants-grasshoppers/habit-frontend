@@ -21,6 +21,7 @@ export const useClubDetail = (clubId?: string, userId?: string) => {
     },
     enabled: !!clubId && !!userId, // clubId, userId가 모두 있을 때만 쿼리를 활성화함 (!!: boolean 변환)
     select: ({ detail, memberList, userId }): ClubDetailModel => {
+      console.log('✅ select 입력값:', detail, memberList, userId);
       const { admins, members, pendingUsers, isAdmin, isMember, isPending } = separateMembersByRole(
         memberList,
         userId || '',

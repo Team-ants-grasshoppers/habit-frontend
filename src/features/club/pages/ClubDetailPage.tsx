@@ -42,7 +42,7 @@ const ClubDetailPage: React.FC = () => {
   const { user, isLoading: isAuthLoading } = useAuth();
   const userId = user?.user_id;
   const { data: clubDetail, isLoading } = useClubDetail(clubId, userId);
-
+  console.log('✅ 클럽 상세정보:', clubDetail);
   const handleJoin = async () => {
     if (!user) {
       alert('로그인이 필요합니다!');
