@@ -57,8 +57,8 @@ export const useClubList = (category: string, region: string) => {
     select: (response): ClubList => {
       return {
         clubListItems: response.map((data) => ({
-          clubId: data.clubId.toString(),
-          clubName: data.clubName,
+          clubId: data.club_id.toString(),
+          clubName: data.name,
           imageUrl: data.imgUrl,
           clubCategory: data.category,
         })),

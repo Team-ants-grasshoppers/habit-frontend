@@ -29,7 +29,7 @@ export type ClubDetailResponse = {
 
 export type ClubListResponse = {
   imgUrl: string;
-  clubId: number;
-  clubName: string;
+  club_id: number;
+  name: string;
   category: string;
 }[];
