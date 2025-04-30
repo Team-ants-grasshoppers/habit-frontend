@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../lib/axios';
 
 /**
  * 이미지 업로드 API 요청 함수
