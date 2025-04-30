@@ -45,6 +45,7 @@ const ClubListPage: React.FC = () => {
         clubCategory: club.category,
         imageUrl: club.imgUrl, // TODO: imageUrl 서버 응답에 따라 교체
       }));
+      console.log('mapped:', mapped);
       setClubs(mapped);
       console.log('클럽 리스트:', clubs);
     });
