@@ -17,7 +17,7 @@ const uploadImage = async (
   formData.append('media_usage_type', usageType); // 용도에 따라 달라짐
 
   try {
-    const response = await axios.post('/api/media', formData);
+    const response = await axios.post('/api/upload-image', formData);
 
     if (typeof response.data.id === 'number') {
       return response.data.id.toString();
