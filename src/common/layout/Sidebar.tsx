@@ -97,7 +97,9 @@ const Sidebar: React.FC = () => {
       <InterestModal
         isOpen={isInterestOpen}
         selectedInterests={interests}
-        onConfirm={(items) => dispatch(setInterests(items))}
+        onConfirm={(items) => {
+          dispatch(setInterests(items)), setInterestOpen(false);
+        }}
         onCancel={() => setInterestOpen(false)}
       />
 
@@ -105,7 +107,9 @@ const Sidebar: React.FC = () => {
       <RegionModal
         isOpen={isRegionOpen}
         selectedRegions={regions}
-        onConfirm={(items) => dispatch(setRegions(items))}
+        onConfirm={(items) => {
+          dispatch(setRegions(items)), setRegionOpen(false);
+        }}
         onCancel={() => setRegionOpen(false)}
       />
 
