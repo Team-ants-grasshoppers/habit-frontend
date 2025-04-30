@@ -59,7 +59,8 @@ export const useClubList = (category: string, region: string) => {
         clubListItems: response.map((data) => ({
           clubId: data.clubId.toString(),
           clubName: data.clubName,
-          imageUrl: '/placeholder.png',
+          imageUrl: data.imgUrl,
+          clubCategory: data.category,
         })),
       };
     },
