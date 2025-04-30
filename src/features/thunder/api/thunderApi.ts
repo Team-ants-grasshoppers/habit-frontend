@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../../lib/axios';
 import { CreateThunderRequest, CreateThunderResponse, ThunderListResponse } from './schemas';
 
 /** thunderApi.ts 번개모임 관련 API

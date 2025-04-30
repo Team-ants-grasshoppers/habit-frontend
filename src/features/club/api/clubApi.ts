@@ -15,7 +15,7 @@ import { ClubListResponse, CreateClubRequest, CreateClubResponse } from './schem
 
 /** [API] 모임 생성 */
 export const createClubApi = async (data: CreateClubRequest): Promise<CreateClubResponse> => {
-  const response = await axiosInstance.post('/clubs', data);
+  const response = await axiosInstance.post('/api/clubs', data);
   return response.data;
 };
 
