@@ -25,11 +25,11 @@ export const useClubDetail = (clubId?: string, userId?: string) => {
         defaultProfile,
       );
       return {
-        clubName: detail.clubName,
+        clubName: detail.name,
         description: detail.description,
         category: detail.category,
         region: detail.region,
-        imageUrl: detail.imageUrl,
+        imageUrl: detail.imgUrl,
         admins,
         members,
         pendingUsers: pendingUsers,
