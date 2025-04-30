@@ -40,8 +40,7 @@ const ClubDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { clubId } = useParams<{ clubId: string }>();
   const { user, isLoading: isAuthLoading } = useAuth();
-  const userId = user?.user_id;
-  const { data: clubDetail, isLoading } = useClubDetail(clubId, userId);
+  const { data: clubDetail, isLoading } = useClubDetail(clubId);
   console.log('✅ 클럽 상세정보:', clubDetail);
   const handleJoin = async () => {
     if (!user) {

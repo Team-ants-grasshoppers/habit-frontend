@@ -6,11 +6,11 @@ import { separateMembersByRole } from '../../utils/separateMembersByRole';
 /** [Hook] 특정 모임의 상세 정보
  * - 모임 상세정보 + 멤버리스트
  */
-export const useClubDetail = (clubId?: string, userId?: string) => {
+export const useClubDetail = (clubId?: string) => {
   const defaultProfile = '/assets/default-profile.png';
 
   return useQuery({
-    queryKey: ['clubDetail', clubId, userId],
+    queryKey: ['clubDetail', clubId],
     queryFn: async ({ queryKey }) => {
       const [, clubId, userId] = queryKey;
       const detail = await fetchClubDetailApi(Number(clubId)); // 클럽상세 정보 API 호출
@@ -19,7 +19,7 @@ export const useClubDetail = (clubId?: string, userId?: string) => {
       console.log('✅ queryFn 응답 memberList:', memberList);
       return { detail, memberList, userId };
     },
-    enabled: !!clubId && !!userId, // clubId, userId가 모두 있을 때만 쿼리를 활성화함 (!!: boolean 변환)
+    enabled: !!clubId, // clubId, userId가 모두 있을 때만 쿼리를 활성화함 (!!: boolean 변환)
     select: ({ detail, memberList, userId }): ClubDetailModel => {
       console.log('✅ select 입력값:', detail, memberList, userId);
       const { admins, members, pendingUsers, isAdmin, isMember, isPending } = separateMembersByRole(
