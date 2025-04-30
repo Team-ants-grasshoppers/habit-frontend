@@ -9,7 +9,12 @@ import useImageUpload from '../../../hooks/useImageUpload';
  * - 추후 번개모임 생성 및 수정 폼과 공통 훅으로 분리 예정
  */
 export const useClubForm = (initialData?: ClubFormData) => {
-  const { imageFile, imageUrl, handleImageChange, uploadSelectedImage } = useImageUpload();
+  const {
+    imageFile,
+    imageUrl,
+    handleImageChange: rawHandleImageChange,
+    uploadSelectedImage,
+  } = useImageUpload();
   const [formData, setFormData] = useState<ClubFormData>(
     initialData || {
       clubName: '',
@@ -22,6 +27,16 @@ export const useClubForm = (initialData?: ClubFormData) => {
       },
     },
   );
+  const handleImageChange = (file: File | undefined) => {
+    rawHandleImageChange(file ?? null); // 원래 훅 로직 호출
+    setFormData((prev) => ({
+      ...prev,
+      image: {
+        file,
+        url: file ? URL.createObjectURL(file) : '',
+      },
+    }));
+  };
 
   return {
     formData,

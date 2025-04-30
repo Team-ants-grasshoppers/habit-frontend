@@ -37,7 +37,7 @@ const useImageUpload = () => {
    */
   const mutation = useMutation({
     mutationFn: async (imageFile: File) => {
-      const imgIdStr = await uploadImage(imageFile);
+      const imgIdStr = await uploadImage(imageFile, 'background');
       const imgId = Number(imgIdStr);
       if (isNaN(imgId)) {
         throw new Error('업로드된 이미지 ID가 유효하지 않습니다.');
