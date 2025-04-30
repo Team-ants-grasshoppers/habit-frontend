@@ -17,7 +17,7 @@ export const useClubForm = (initialData?: ClubFormData) => {
   } = useImageUpload();
   const [formData, setFormData] = useState<ClubFormData>(
     initialData || {
-      clubName: '',
+      name: '',
       description: '',
       category: '',
       region: '',

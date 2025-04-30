@@ -72,9 +72,9 @@ const ClubForm: React.FC<ClubFormProps> = ({ mode, initialData, onSubmit }) => {
       {/* 모임명 */}
       <InputText
         type="text"
-        name={formData.clubName}
-        value={formData.clubName}
-        onChange={(value) => setFormData({ ...formData, clubName: value })}
+        name={formData.name}
+        value={formData.name}
+        onChange={(value) => setFormData({ ...formData, name: value })}
       />
 
       {/* 이미지 업로드 */}
