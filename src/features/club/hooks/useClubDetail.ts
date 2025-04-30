@@ -29,7 +29,7 @@ export const useClubDetail = (clubId?: string, userId?: string) => {
         description: detail.description,
         category: detail.category,
         region: detail.region,
-        imageUrl: detail.imgUrl,
+        imageUrl: detail.imgUrl?.[0] ?? 'vite.svg',
         admins,
         members,
         pendingUsers: pendingUsers,
