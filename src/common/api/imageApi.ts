@@ -13,7 +13,6 @@ const uploadImage = async (
 ): Promise<string> => {
   const formData = new FormData();
   formData.append('img', file);
-  formData.append('media_type', 'image'); // 고정
   formData.append('media_usage_type', usageType); // 용도에 따라 달라짐
 
   try {
