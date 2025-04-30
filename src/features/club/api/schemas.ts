@@ -6,7 +6,7 @@
  * - imgId?: 대표 이미지 ID (선택)
  */
 export interface CreateClubRequest {
-  clubName: string;
+  name: string;
   description: string;
   category: string;
   region: string;
