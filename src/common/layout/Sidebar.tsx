@@ -107,13 +107,29 @@ const Sidebar: React.FC = () => {
                 mode="base"
                 onClick={() => {
                   if (userState.isLogin) {
-                    window.location.href = '/profile';
+                    window.location.href = '/user/info';
                   } else {
                     setLoginOpen(true);
                   }
                 }}
               >
-                {userState.isLogin ? userState.nickname : '로그인'}
+                {userState.isLogin ? (
+                  <div>
+                    <img
+                      src={userState.userProfile || '/assets/images/default_profile.png'}
+                      alt="User Profile"
+                      style={{
+                        width: '30px',
+                        height: '30px',
+                        borderRadius: '50%',
+                        marginRight: '10px',
+                      }}
+                    />
+                    {userState.nickname}
+                  </div>
+                ) : (
+                  '로그인'
+                )}
               </ButtonUnit>
             </li>
           </ul>
