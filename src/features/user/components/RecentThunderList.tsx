@@ -28,7 +28,7 @@ const RecentThunderList = ({ thunders }: { thunders: Thunder[] }) => {
 
   const items = thunders.map((thunder) => ({
     id: thunder.id,
-    imageUrl: thunder.imageUrl,
+    imageUrl: thunder.imageUrl || '',
     name: `${thunder.name}\n${thunder.region} ・ ${thunder.time}`,
     extraElement: (
       <button
