@@ -9,7 +9,7 @@ import { FormattedMember, SeparatedMembers } from '../utils/separateMembersByRol
  * - image.file?: 대표 이미지 file (선택)
  */
 export interface ClubFormData {
-  clubName: string;
+  name: string;
   description: string;
   category: string;
   region: string;
@@ -51,6 +51,7 @@ export interface ClubRequestProps {
 export interface ClubListItem {
   clubId: string;
   clubName: string;
+  clubCategory: string;
   imageUrl: string;
 }
 

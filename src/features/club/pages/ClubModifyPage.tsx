@@ -81,7 +81,7 @@ const ClubModifyPage: React.FC = () => {
       <ClubForm
         mode="edit"
         initialData={{
-          clubName: clubDetail.clubName,
+          name: clubDetail.clubName,
           description: clubDetail.description,
           image: {
             url: clubDetail.imageUrl,

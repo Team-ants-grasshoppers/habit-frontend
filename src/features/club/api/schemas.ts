@@ -6,11 +6,11 @@
  * - imgId?: 대표 이미지 ID (선택)
  */
 export interface CreateClubRequest {
-  clubName: string;
+  name: string;
   description: string;
   category: string;
   region: string;
-  imgId?: number;
+  image_id?: number;
 }
 
 /** ### 생성된 모임 ID
@@ -28,7 +28,8 @@ export type ClubDetailResponse = {
 };
 
 export type ClubListResponse = {
-  clubId: number;
-  clubName: string;
+  imgUrl: string;
+  club_id: number;
+  name: string;
   category: string;
 }[];

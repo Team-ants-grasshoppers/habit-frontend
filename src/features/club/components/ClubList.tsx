@@ -28,6 +28,7 @@ const ClubList: React.FC<CLubListType> = ({ clubListItems }) => {
         items={clubListItems.map((item) => ({
           id: item.clubId,
           name: item.clubName,
+          category: item.clubCategory,
           imageUrl: item.imageUrl,
         }))}
         routePrefix="/club"

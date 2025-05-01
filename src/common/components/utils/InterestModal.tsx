@@ -3,7 +3,7 @@
  * @description 관심사 선택 모달 (InputSelect + constants 연동)
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from '../ui/Modal';
 import InputSelect from '../ui/InputSelect';
 import { INTERESTS } from '../../../constants/interests';
@@ -19,7 +19,13 @@ interface Props {
 }
 
 export const InterestModal = ({ isOpen, selectedInterests, onConfirm, onCancel }: Props) => {
-  const [checked, setChecked] = useState<string[]>(selectedInterests);
+  const [checked, setChecked] = useState<string>(selectedInterests[0] || '');
+
+  useEffect(() => {
+    if (isOpen) {
+      setChecked(selectedInterests[0] || '');
+    }
+  }, [isOpen, selectedInterests]);
 
   return (
     <Modal isOpen={isOpen} onClose={onCancel}>

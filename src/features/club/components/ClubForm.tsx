@@ -73,10 +73,10 @@ const ClubForm: React.FC<ClubFormProps> = ({ mode, initialData, onSubmit }) => {
       {/* 모임명 */}
       <InputText
         type="text"
-        name={formData.clubName}
-        value={formData.clubName}
+        name={formData.name}
+        value={formData.name}
         label="모임명"
-        onChange={(value) => setFormData({ ...formData, clubName: value })}
+        onChange={(value) => setFormData({ ...formData, name: value })}
       />
 
       {/* 모임 카테고리 */}
@@ -101,7 +101,7 @@ const ClubForm: React.FC<ClubFormProps> = ({ mode, initialData, onSubmit }) => {
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => handleImageChange(e.target.files?.[0] || null)}
+          onChange={(e) => handleImageChange(e.target.files?.[0] || undefined)}
         />
         {formData.image.url && <img src={formData.image.url} alt="모임 이미지 미리보기" />}
       </div>

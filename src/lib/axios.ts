@@ -3,9 +3,6 @@ import axios from 'axios';
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true, // 쿠키 인증 방식에 꼭 필요
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 // 공통 에러 처리

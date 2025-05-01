@@ -30,21 +30,30 @@ import { MainTitle, TitleArea } from '../../../common/style/common.css';
 const ClubListPage: React.FC = () => {
   const { interests, regions } = useSelector((state: RootState) => state.checkboxSelection);
 
-  const [clubs, setClubs] = useState<{ clubId: string; clubName: string; imageUrl: string }[]>([]);
+  const [clubs, setClubs] = useState<
+    { clubId: string; clubName: string; clubCategory: string; imageUrl: string }[]
+  >([]);
 
   useEffect(() => {
-    const category = interests[0] && interests[0] !== '전체' ? interests[0] : '';
-    const region = regions[0] && regions[0] !== '전체' ? regions[0] : '';
+    const category = interests[0] || '전체';
+    const region = regions[0] || '전체';
+    console.log('category:', category, 'region:', region);
 
     fetchClubListApi(category, region).then((data) => {
       const mapped = data.map((club) => ({
-        clubId: club.clubId.toString(),
-        clubName: club.clubName,
-        imageUrl: '/placeholder.png', // TODO: imageUrl 서버 응답에 따라 교체
+        clubId: club.club_id.toString(),
+        clubName: club.name,
+        clubCategory: club.category,
+        imageUrl: club.imgUrl, // TODO: imageUrl 서버 응답에 따라 교체
       }));
+      console.log('mapped:', mapped);
       setClubs(mapped);
     });
   }, [interests, regions]);
+
+  useEffect(() => {
+    console.log('✅ clubs 상태 변경됨:', clubs);
+  }, [clubs]);
 
   return (
     <>

@@ -13,11 +13,11 @@ export const useClubCreate = () => {
         imgId = await uploadImage(formData.image.file);
       }
       return createClubApi({
-        clubName: formData.clubName,
+        name: formData.name,
         description: formData.description,
         category: formData.category,
         region: formData.region,
-        imgId: imgId,
+        image_id: imgId,
       });
     },
   });

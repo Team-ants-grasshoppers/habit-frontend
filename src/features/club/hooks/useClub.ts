@@ -9,10 +9,15 @@ import useImageUpload from '../../../hooks/useImageUpload';
  * - 추후 번개모임 생성 및 수정 폼과 공통 훅으로 분리 예정
  */
 export const useClubForm = (initialData?: ClubFormData) => {
-  const { imageFile, imageUrl, handleImageChange, uploadSelectedImage } = useImageUpload();
+  const {
+    imageFile,
+    imageUrl,
+    handleImageChange: rawHandleImageChange,
+    uploadSelectedImage,
+  } = useImageUpload();
   const [formData, setFormData] = useState<ClubFormData>(
     initialData || {
-      clubName: '',
+      name: '',
       description: '',
       category: '',
       region: '',
@@ -22,6 +27,16 @@ export const useClubForm = (initialData?: ClubFormData) => {
       },
     },
   );
+  const handleImageChange = (file: File | undefined) => {
+    rawHandleImageChange(file ?? null); // 원래 훅 로직 호출
+    setFormData((prev) => ({
+      ...prev,
+      image: {
+        file,
+        url: file ? URL.createObjectURL(file) : '',
+      },
+    }));
+  };
 
   return {
     formData,
@@ -42,9 +57,10 @@ export const useClubList = (category: string, region: string) => {
     select: (response): ClubList => {
       return {
         clubListItems: response.map((data) => ({
-          clubId: data.clubId.toString(),
-          clubName: data.clubName,
-          imageUrl: '/placeholder.png',
+          clubId: data.club_id.toString(),
+          clubName: data.name,
+          imageUrl: data.imgUrl,
+          clubCategory: data.category,
         })),
       };
     },
