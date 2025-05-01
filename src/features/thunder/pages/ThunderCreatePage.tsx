@@ -4,6 +4,7 @@ import { useThunderCreate } from '../hooks/useThunderCreate';
 import { ThunderFormData } from '../types';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 import ThunderForm from '../components/ThunderForm';
+import { MainTitle, TitleArea } from '../../../common/style/common.css';
 
 const ThunderCreatePage: React.FC = () => {
   const navigate = useNavigate();
@@ -20,12 +21,11 @@ const ThunderCreatePage: React.FC = () => {
   };
   return (
     <>
-      <div className="flex flex-col gap-6">
-        {/* 상단 뒤로가기 버튼 */}
-        <ButtonUnit mode="cancel" onClick={() => navigate(-1)}>
-          뒤로가기
-        </ButtonUnit>
-
+      <TitleArea>
+        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
+        <MainTitle>번개모임 생성</MainTitle>
+      </TitleArea>
+      <div>
         <ThunderForm mode="create" onSubmit={handleSubmit} />
       </div>
     </>

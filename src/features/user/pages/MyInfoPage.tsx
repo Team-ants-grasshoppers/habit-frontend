@@ -6,6 +6,8 @@ import { validateForm } from '../hooks/validateForm';
 import Modal from '../../../common/components/ui/Modal';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 import { useNavigate } from 'react-router-dom';
+import { MainTitle, TitleArea } from '../../../common/style/common.css';
+import styled from '@emotion/styled';
 
 /**
  * @description 사용자 정보 조회, 수정, 탈퇴를 처리하는 내 정보 페이지 컴포넌트
@@ -182,69 +184,106 @@ const MyInfoPage = () => {
   if (!user) return <p>로딩중...</p>;
 
   return (
-    <div>
-      {/* 프로필 이미지 미리보기 */}
-      <div style={{ textAlign: 'center' }}>
-        <img
-          src={imgPreview || '/default-profile.png'}
-          alt="프로필"
-          onClick={handleImageClick}
-          style={{ width: 100, height: 100, borderRadius: '50%', cursor: 'pointer' }}
-        />
-      </div>
-
-      {/* 사용자 정보 수정 폼 */}
-      <UserInfo
-        initialData={{
-          userId: user.user_id,
-          nickname: formState.nickname,
-          email: formState.email,
-        }}
-        onSubmit={handleSubmit}
-      />
-
-      {/* 회원 탈퇴 버튼 */}
-      <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-        <ButtonUnit mode="cancel" onClick={() => setWithdrawModalOpen(true)}>
-          회원 탈퇴
-        </ButtonUnit>
-      </div>
-
-      {/* 회원 탈퇴 모달 */}
-      <Modal isOpen={isWithdrawModalOpen} onClose={() => setWithdrawModalOpen(false)}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <p style={{ fontSize: '1.4rem', textAlign: 'center' }}>
-            정말 탈퇴하시겠습니까?
-            <br />
-            비밀번호를 입력해주세요.
-          </p>
-
-          <input
-            type="password"
-            value={withdrawPassword}
-            onChange={(e) => setWithdrawPassword(e.target.value)}
-            placeholder="비밀번호"
-            style={{
-              width: '100%',
-              padding: '1rem',
-              fontSize: '1.4rem',
-              border: '1px solid #ccc',
-              borderRadius: '8px',
-            }}
-          />
-
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <ButtonUnit mode="cancel" onClick={() => setWithdrawModalOpen(false)}>
-              취소
-            </ButtonUnit>
-            <ButtonUnit mode="confirm" onClick={handleWithdraw}>
-              확인
-            </ButtonUnit>
+    <>
+      <TitleArea>
+        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
+        <MainTitle>내 정보</MainTitle>
+      </TitleArea>
+      <UserInfoWrapper>
+        <div>
+          <div className="profile_img">
+            <img
+              src={imgPreview || '/default-profile.png'}
+              alt="프로필"
+              onClick={handleImageClick}
+            />
           </div>
+          <p>
+            <strong>아이디</strong>
+            {user.user_id}
+          </p>
         </div>
-      </Modal>
-    </div>
+
+        {/* 사용자 정보 수정 폼 */}
+        <UserInfo
+          initialData={{
+            userId: user.user_id,
+            nickname: formState.nickname,
+            email: formState.email,
+          }}
+          onSubmit={handleSubmit}
+        />
+
+        {/* 회원 탈퇴 버튼 */}
+        <div style={{ marginTop: '3rem' }}>
+          <ButtonUnit mode="text" onClick={() => setWithdrawModalOpen(true)}>
+            회원 탈퇴
+          </ButtonUnit>
+        </div>
+
+        {/* 회원 탈퇴 모달 */}
+        <Modal isOpen={isWithdrawModalOpen} onClose={() => setWithdrawModalOpen(false)}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <p style={{ fontSize: '1.4rem', textAlign: 'center' }}>
+              정말 탈퇴하시겠습니까?
+              <br />
+              비밀번호를 입력해주세요.
+            </p>
+
+            <input
+              type="password"
+              value={withdrawPassword}
+              onChange={(e) => setWithdrawPassword(e.target.value)}
+              placeholder="비밀번호"
+              style={{
+                width: '100%',
+                padding: '1rem',
+                fontSize: '1.4rem',
+                border: '1px solid #ccc',
+                borderRadius: '8px',
+              }}
+            />
+
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <ButtonUnit mode="cancel" onClick={() => setWithdrawModalOpen(false)}>
+                취소
+              </ButtonUnit>
+              <ButtonUnit mode="confirm" onClick={handleWithdraw}>
+                확인
+              </ButtonUnit>
+            </div>
+          </div>
+        </Modal>
+      </UserInfoWrapper>
+    </>
   );
 };
 
 export default MyInfoPage;
+
+const UserInfoWrapper = styled.div`
+  .profile_img {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: var(--border);
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+  }
+
+  p {
+    margin: 2rem 0;
+    strong {
+      display: inline-block;
+      min-width: 6rem;
+      margin-right: 1rem;
+    }
+  }
+`;

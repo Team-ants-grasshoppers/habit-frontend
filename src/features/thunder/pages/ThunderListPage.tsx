@@ -4,6 +4,7 @@ import ButtonUnit from '../../../common/components/ui/Buttons';
 import BaseList from '../../../common/components/ui/BaseList';
 import { useAppSelector } from '../../../store/hook';
 import { fetchThunderListApi } from '../api/thunderApi';
+import { MainTitle, TitleArea } from '../../../common/style/common.css';
 
 /**
  * ThunderListPage
@@ -85,7 +86,11 @@ const ThunderListPage: React.FC = () => {
   });
 
   return (
-    <div>
+    <>
+      <TitleArea>
+        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
+        <MainTitle>번개모임 리스트</MainTitle>
+      </TitleArea>
       {/* 상단 우측 버튼: 번개 모임 만들기 */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
         <ButtonUnit mode="base" onClick={() => navigate('/thunder/create')}>
@@ -131,7 +136,7 @@ const ThunderListPage: React.FC = () => {
           </ButtonUnit>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

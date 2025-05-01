@@ -1,5 +1,5 @@
 import axiosInstance from '../../../lib/axios';
-import { ClubListResponse, CreateClubRequest, CreateClubResponse } from './schemas';
+import { CreateClubRequest, CreateClubResponse } from './schemas';
 
 /** clubApi.ts 클럽 관련 API
  *
@@ -70,7 +70,13 @@ export const requestJoinClubApi = async (clubId: number): Promise<string> => {
 export const fetchClubListApi = async (
   category: string,
   region: string,
-): Promise<ClubListResponse> => {
+): Promise<
+  {
+    clubId: number;
+    clubName: string;
+    category: string;
+  }[]
+> => {
   const response = await axiosInstance.get(`/api/clubs?category=${category}&region=${region}`);
   return response.data.clubs;
 };

@@ -7,6 +7,7 @@ import { ClubFormData } from '../types';
 import { useClubDetail } from '../hooks/useClubDetail';
 import { useClubUpdate } from '../hooks/useClubUpdate';
 import { useClubDelete } from '../hooks/useClubDelete';
+import { MainTitle, TitleArea } from '../../../common/style/common.css';
 
 /**
  * ClubModifyPage
@@ -71,11 +72,11 @@ const ClubModifyPage: React.FC = () => {
   if (!clubDetail) return <p>모임 정보를 찾을 수 없습니다.</p>;
 
   return (
-    <div>
-      {/* 상단 뒤로가기 버튼 */}
-      <div>
-        <ButtonUnit mode="cancel" children={'X'} />
-      </div>
+    <>
+      <TitleArea>
+        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
+        <MainTitle>모임 수정</MainTitle>
+      </TitleArea>
 
       <ClubForm
         mode="edit"
@@ -96,7 +97,7 @@ const ClubModifyPage: React.FC = () => {
           모임 삭제
         </ButtonUnit>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -3,6 +3,8 @@ import Modal from '../ui/Modal';
 import InputSelect from '../ui/InputSelect';
 import ButtonUnit from '../ui/Buttons';
 import { REGIONS } from '../../../constants/regions';
+import { ModalTitle } from '../../style/common.css';
+import styled from '@emotion/styled';
 
 interface Props {
   isOpen: boolean;
@@ -24,24 +26,60 @@ export const RegionModal = ({ isOpen, selectedRegions, onConfirm, onCancel }: Pr
 
   return (
     <Modal isOpen={isOpen} onClose={onCancel}>
-      <h2>지역 선택</h2>
-      <InputSelect
-        type="radio"
-        name="regions"
-        options={REGIONS}
-        selected={[checked]}
-        onChange={(value: string[]) => setChecked(value[0])} // ✅ 문자열 단일 선택
-      />
-      <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
-        <ButtonUnit mode="cancel" onClick={onCancel}>
-          취소
-        </ButtonUnit>
-        <ButtonUnit mode="confirm" onClick={() => onConfirm([checked])}>
-          확인
-        </ButtonUnit>
+      <ModalTitle>지역 선택</ModalTitle>
+      <RegionWrapper>
+        <InputSelect
+          type="radio"
+          name="regions"
+          options={REGIONS}
+          selected={checked}
+          onChange={setChecked}
+        />
+      </RegionWrapper>
+      <div className="btn_wrap">
+        <div className="btn_cancel">
+          <ButtonUnit mode="cancel" onClick={onCancel}>
+            취소
+          </ButtonUnit>
+        </div>
+        <div className="btn_submit">
+          <ButtonUnit mode="confirm" onClick={() => onConfirm(checked)}>
+            확인
+          </ButtonUnit>
+        </div>
       </div>
     </Modal>
   );
 };
 
 export default RegionModal;
+
+const RegionWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  label {
+    display: block;
+  }
+  span {
+    padding: 1rem 4rem;
+    display: block;
+    width: 100%;
+    text-align: center;
+    border: 1px solid #fff;
+    border-radius: 1rem;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+  }
+  input:checked + span {
+    background: var(--primary);
+    border: 1px solid var(--primary);
+    color: #fff;
+  }
+  input[type='radio'] {
+    display: none;
+  }
+`;

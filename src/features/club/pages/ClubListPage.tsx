@@ -4,6 +4,7 @@ import { RootState } from '../../../store';
 import ClubList from '../components/ClubList';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 import { fetchClubListApi } from '../api/clubApi';
+import { MainTitle, TitleArea } from '../../../common/style/common.css';
 /**
  * ClubListPage
  * 관심사 및 지역 필터에 따라 클럽 목록을 조회하고 화면에 렌더링하는 페이지
@@ -55,8 +56,11 @@ const ClubListPage: React.FC = () => {
   }, [clubs]);
 
   return (
-    <div>
-      <h2>모임 리스트</h2>
+    <>
+      <TitleArea>
+        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
+        <MainTitle>모임 리스트</MainTitle>
+      </TitleArea>
       <ClubList clubListItems={clubs} />
       {/* 더보기 버튼 - 기능 없음, 위치용 */}
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
@@ -64,7 +68,7 @@ const ClubListPage: React.FC = () => {
           더보기
         </ButtonUnit>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -6,6 +6,7 @@ import { useCallback, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { AddEventButton } from './CalendarButton';
+import styled from '@emotion/styled';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -41,36 +42,50 @@ export const CalendarView = ({ events, onClickDate, onClickAdd }: Props) => {
     setCalendarValue(calendarValue);
   }, [calendarValue]);
 
-  /**
-   * 일정이 있으면 ● 마킹
-   */
-  const tileContent = ({ date, view }: { date: Date; view: string }) => {
-    const formatted = date.toLocaleDateString('sv-SE');
-    const hasEvent = events.some((e) => e.date === formatted);
-    return view === 'month' && hasEvent ? (
-      <div style={{ color: 'red', fontSize: '0.8rem' }}>●</div>
-    ) : null;
-  };
-
   const handleAddEvent = () => {
     const today = new Date().toLocaleDateString('sv-SE');
     onClickAdd(today);
   };
 
   return (
-    <div>
+    <CalendarWrapper>
+      <div className="btn_addevent">
+        <AddEventButton onClick={handleAddEvent} />
+      </div>
       <Calendar
         value={calendarValue}
         onChange={onChangeCalendar}
         onClickDay={onClickDate}
-        tileContent={tileContent}
         calendarType="gregory"
-        locale="ko-KR"
+        locale="en-US"
+        prev2Label={null}
+        next2Label={null}
+        showNeighboringMonth={false}
+        tileContent={({ date, view }) => {
+          const formatted = date.toLocaleDateString('sv-SE');
+          const hasEvent = events.some((e) => e.date === formatted);
+          return view === 'month' && hasEvent ? <Dot /> : null;
+        }}
       />
-
-      <AddEventButton onClick={handleAddEvent} />
-    </div>
+    </CalendarWrapper>
   );
 };
 
 export default CalendarView;
+
+const CalendarWrapper = styled.div`
+  position: relative;
+  .btn_addevent {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+`;
+
+const Dot = styled.div`
+  width: 6px;
+  height: 6px;
+  margin: 4px auto 0;
+  background-color: var(--primary);
+  border-radius: 50%;
+`;

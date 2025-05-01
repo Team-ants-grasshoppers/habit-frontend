@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 import { ThunderFormData } from '../types';
 import { useThunderForm } from '../hooks/useThunder';
-import InputText from '../../../common/components/ui/InputText';
+import InputText, { StyledLabel } from '../../../common/components/ui/InputText';
 import InterestModal from '../../../common/components/utils/InterestModal';
 import RegionModal from '../../../common/components/utils/RegionModal';
 import { REGIONS } from '../../../constants/regions';
 import { INTERESTS } from '../../../constants/interests';
+import { ClubFormWrapper } from '../../../common/style/common.css';
 
 /**
  * ThunderForm의 props 타입 정의
@@ -59,18 +60,35 @@ const ThunderForm: React.FC<ThunderFormProps> = ({ mode, initialData, onSubmit }
   };
 
   return (
-    <div>
+    <ClubFormWrapper>
       {/* 모임명 */}
       <InputText
         type="text"
         name={formData.thunderName}
         value={formData.thunderName}
+        label="번개모임명"
         onChange={(value) => setFormData({ ...formData, thunderName: value })}
       />
 
+      {/* 모임 카테고리 */}
+      <div>
+        <StyledLabel>카테고리</StyledLabel>
+        <ButtonUnit mode="base" onClick={() => setIsInterestModalOpen(true)}>
+          {formData.category || '카테고리 설정'}
+        </ButtonUnit>
+      </div>
+
+      {/* 지역 선택 */}
+      <div>
+        <StyledLabel>지역</StyledLabel>
+        <ButtonUnit mode="base" onClick={() => setIsRegionModalOpen(true)}>
+          {formData.region || '지역 설정'}
+        </ButtonUnit>
+      </div>
+
       {/* 이미지 업로드 */}
       <div className="flex flex-col">
-        <label>모임 이미지</label>
+        <StyledLabel>모임 이미지</StyledLabel>
         <input
           type="file"
           accept="image/*"
@@ -80,8 +98,8 @@ const ThunderForm: React.FC<ThunderFormProps> = ({ mode, initialData, onSubmit }
       </div>
 
       {/* 모임 소개 */}
-      <div>
-        <label>모임 소개</label>
+      <div className="textarea_wrap">
+        <StyledLabel>모임 소개</StyledLabel>
         <textarea
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -89,24 +107,9 @@ const ThunderForm: React.FC<ThunderFormProps> = ({ mode, initialData, onSubmit }
         />
       </div>
 
-      {/* 모임 카테고리 */}
-      <div>
-        <label>카테고리</label>
-        <ButtonUnit mode="base" onClick={() => setIsInterestModalOpen(true)}>
-          {formData.category || '카테고리 설정'}
-        </ButtonUnit>
-      </div>
-
-      {/* 지역 선택 */}
-      <div>
-        <label>지역</label>
-        <ButtonUnit mode="base" onClick={() => setIsRegionModalOpen(true)}>
-          {formData.region || '지역 설정'}
-        </ButtonUnit>
-      </div>
       {/* 날짜 선택 */}
-      <div>
-        <label>날짜</label>
+      <div className="fit_content">
+        <StyledLabel>날짜</StyledLabel>
         <input
           type="date"
           value={formData.date}
@@ -114,8 +117,8 @@ const ThunderForm: React.FC<ThunderFormProps> = ({ mode, initialData, onSubmit }
         />
       </div>
 
-      <div>
-        <label>시간</label>
+      <div className="fit_content">
+        <StyledLabel>시간</StyledLabel>
         <input
           type="time"
           value={formData.time} // 시간만
@@ -156,7 +159,7 @@ const ThunderForm: React.FC<ThunderFormProps> = ({ mode, initialData, onSubmit }
         onCancel={() => setIsRegionModalOpen(false)}
         onConfirm={handleRegionSelect}
       />
-    </div>
+    </ClubFormWrapper>
   );
 };
 

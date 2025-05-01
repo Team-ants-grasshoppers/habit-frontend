@@ -1,3 +1,5 @@
+import ButtonUnit from '../../../common/components/ui/Buttons';
+import { MainTitle, TitleArea } from '../../../common/style/common.css';
 import { useAppSelector } from '../../../store/hook';
 import RecentClubList from '../components/RecentClubsList';
 import RecentThunderList from '../components/RecentThunderList';
@@ -26,13 +28,18 @@ const RecentViewedPage = () => {
   const recentThunders = useAppSelector((state) => state.recentThunder);
 
   return (
-    <div>
+    <>
+      <TitleArea>
+        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
+        <MainTitle>최근 본 모임</MainTitle>
+      </TitleArea>
+
       <h2>최근 본 모임</h2>
       <RecentClubList clubs={recentClubs} />
 
       <h2>최근 본 번개모임</h2>
       <RecentThunderList thunders={recentThunders} />
-    </div>
+    </>
   );
 };
 

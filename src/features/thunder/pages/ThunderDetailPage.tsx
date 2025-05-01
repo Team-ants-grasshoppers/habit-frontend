@@ -5,6 +5,7 @@ import ButtonUnit from '../../../common/components/ui/Buttons';
 import ThunderDetail from '../components/ThunderDetail';
 import { useThunderDetail } from '../hooks/useThunderDetail';
 import { joinThunderApi, leaveThunderApi, banThunderMemberApi } from '../api/thunderApi';
+import { MainTitle, TitleArea } from '../../../common/style/common.css';
 
 const ThunderDetailPage: React.FC = () => {
   const navigate = useNavigate();
@@ -52,6 +53,10 @@ const ThunderDetailPage: React.FC = () => {
 
   return (
     <>
+      <TitleArea>
+        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
+        <MainTitle>번개모임명</MainTitle>
+      </TitleArea>
       <div className="flex flex-col gap-6">
         <ButtonUnit mode="cancel">뒤로가기</ButtonUnit>
         {ThunderDetailData ? (
