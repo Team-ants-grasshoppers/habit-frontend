@@ -25,7 +25,14 @@ export const useThunderDetail = (thunderId?: string, userId?: string) => {
         defaultProfile,
       );
 
-      const [date, time] = (detail.dateTime ?? '').split('T');
+      // 날짜 / 시간 분리
+      let date = '';
+      let time = '';
+      if (detail.dateTime) {
+        const [d, t] = detail.dateTime.split('T'); // 예: 2025-04-28T13:00
+        date = d;
+        time = t?.slice(0, 5) || ''; // 13:00:00 -> 13:00
+      }
 
       return {
         thunderName: detail.thunderName,

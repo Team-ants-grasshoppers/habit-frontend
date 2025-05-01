@@ -7,9 +7,6 @@
 import { useState } from 'react';
 import CalendarView from '../components/CalendarView';
 import { CalendarModal } from '../components/CalendarModal';
-import styled from '@emotion/styled';
-import { MainTitle } from '../../../common/style/common.css';
-import './calendarStyle.css';
 
 /**
  * @typedef {Object} EventData
@@ -59,11 +56,9 @@ export default function CalendarPage() {
   };
 
   return (
-    <>
-      <MainTitle>모임 캘린더</MainTitle>
-      <CalendarSection>
-        <CalendarView events={events} onClickDate={handleClickDate} onClickAdd={handleAddEvent} />
-      </CalendarSection>
+    <main>
+      <h1>모임 캘린더</h1>
+      <CalendarView events={events} onClickDate={handleClickDate} onClickAdd={handleAddEvent} />
       {modalOpen && (
         <CalendarModal
           selectedDate={selectedDate}
@@ -74,12 +69,6 @@ export default function CalendarPage() {
           onUpdateEvents={(updated) => setEvents(updated)}
         />
       )}
-    </>
+    </main>
   );
 }
-
-// 캘린더 wrapper
-const CalendarSection = styled.section`
-  padding: 2rem;
-  margin-bottom: 2rem;
-`;

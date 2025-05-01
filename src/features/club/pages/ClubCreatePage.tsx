@@ -4,7 +4,6 @@ import ButtonUnit from '../../../common/components/ui/Buttons';
 import ClubForm from '../components/ClubForm';
 import { ClubFormData } from '../types';
 import { useClubCreate } from '../hooks/useClubCreate';
-import { MainTitle, TitleArea } from '../../../common/style/common.css';
 
 /**
  * ClubCreatePage - 새로운 모임을 생성하는 페이지
@@ -31,15 +30,14 @@ const ClubCreatePage: React.FC = () => {
   };
 
   return (
-    <>
-      <TitleArea>
-        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
-        <MainTitle>모임 생성</MainTitle>
-      </TitleArea>
-      <div>
-        <ClubForm mode="create" onSubmit={handleSubmit} />
-      </div>
-    </>
+    <div className="flex flex-col gap-6">
+      {/* 상단 뒤로가기 버튼 */}
+      <ButtonUnit mode="cancel" onClick={() => navigate(-1)}>
+        뒤로가기
+      </ButtonUnit>
+
+      <ClubForm mode="create" onSubmit={handleSubmit} />
+    </div>
   );
 };
 

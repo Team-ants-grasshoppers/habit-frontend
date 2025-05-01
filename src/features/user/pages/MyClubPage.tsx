@@ -28,7 +28,6 @@ import {
 } from '../../user/hooks/useMypage';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 import { JoinedClubList, JoinedThunderList, ManagedClubList } from '../types';
-import { MainTitle, TitleArea } from '../../../common/style/common.css';
 
 const MyClubPage = () => {
   const userId = useAppSelector((state) => state.user.userId);
@@ -60,12 +59,7 @@ const MyClubPage = () => {
   }, [userId]);
 
   return (
-    <>
-      <TitleArea>
-        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
-        <MainTitle>내 클럽 관리</MainTitle>
-      </TitleArea>
-
+    <div>
       {/* 사용자 정보 */}
       <section
         style={{
@@ -94,7 +88,7 @@ const MyClubPage = () => {
 
       {/* 내가 참여 중인 번개모임 */}
       <MyJoinedThunderList thunders={joinedThunders} />
-    </>
+    </div>
   );
 };
 

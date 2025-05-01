@@ -1,6 +1,6 @@
 export const layoutTheme = {
   header: {
-    height: '6rem',
+    height: '5rem',
   },
 };
 

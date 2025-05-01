@@ -1,4 +1,4 @@
-import axiosInstance from '../../lib/axios';
+import axios from '../../lib/axios';
 
 /**
  * 이미지 업로드 API 요청 함수
@@ -16,12 +16,7 @@ const uploadImage = async (
   formData.append('media_usage_type', usageType); // 용도에 따라 달라짐
 
   try {
-    // 이미지 파일을 업로드할 서버로 POST 요청
-    const response = await axiosInstance.post('/api/upload-image', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data', // 파일 업로드 시 Content-Type 설정
-      },
-    });
+    const response = await axios.post('/api/upload-image', formData);
 
     if (typeof response.data.id === 'number') {
       return response.data.id.toString();

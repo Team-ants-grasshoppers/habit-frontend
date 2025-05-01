@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import ButtonUnit from '../../../common/components/ui/Buttons';
-import InputText, { StyledLabel } from '../../../common/components/ui/InputText';
+import InputText from '../../../common/components/ui/InputText';
 import InterestModal from '../../../common/components/utils/InterestModal';
 import RegionModal from '../../../common/components/utils/RegionModal';
 import { INTERESTS } from '../../../constants/interests';
 import { REGIONS } from '../../../constants/regions';
 import { useClubForm } from '../hooks/useClub';
 import { ClubFormData } from '../types';
-import { ClubFormWrapper } from '../../../common/style/common.css';
 
 /** ### 모임 생성/수정 폼에서 사용
  * - onNameChange: 이름 입력 핸들러
@@ -69,35 +68,18 @@ const ClubForm: React.FC<ClubFormProps> = ({ mode, initialData, onSubmit }) => {
   };
 
   return (
-    <ClubFormWrapper>
+    <div>
       {/* 모임명 */}
       <InputText
         type="text"
         name={formData.name}
         value={formData.name}
-        label="모임명"
         onChange={(value) => setFormData({ ...formData, name: value })}
       />
 
-      {/* 모임 카테고리 */}
-      <div>
-        <StyledLabel>카테고리</StyledLabel>
-        <ButtonUnit mode="base" onClick={() => setIsInterestModalOpen(true)}>
-          {formData.category || '카테고리 설정'}
-        </ButtonUnit>
-      </div>
-
-      {/* 지역 선택 */}
-      <div>
-        <StyledLabel>지역</StyledLabel>
-        <ButtonUnit mode="base" onClick={() => setIsRegionModalOpen(true)}>
-          {formData.region || '지역 설정'}
-        </ButtonUnit>
-      </div>
-
       {/* 이미지 업로드 */}
       <div className="flex flex-col">
-        <StyledLabel>모임 이미지</StyledLabel>
+        <label>모임 이미지</label>
         <input
           type="file"
           accept="image/*"
@@ -107,8 +89,8 @@ const ClubForm: React.FC<ClubFormProps> = ({ mode, initialData, onSubmit }) => {
       </div>
 
       {/* 모임 소개 */}
-      <div className="textarea_wrap">
-        <StyledLabel>모임 소개</StyledLabel>
+      <div>
+        <label>모임 소개</label>
         <textarea
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -116,9 +98,27 @@ const ClubForm: React.FC<ClubFormProps> = ({ mode, initialData, onSubmit }) => {
         />
       </div>
 
-      <ButtonUnit mode="confirm" onClick={() => onSubmit(formData)}>
-        {mode === 'create' ? '모임 생성' : '수정 완료'}
-      </ButtonUnit>
+      {/* 모임 카테고리 */}
+      <div>
+        <label>카테고리</label>
+        <ButtonUnit mode="base" onClick={() => setIsInterestModalOpen(true)}>
+          {formData.category || '카테고리 설정'}
+        </ButtonUnit>
+      </div>
+
+      {/* 지역 선택 */}
+      <div>
+        <label>지역</label>
+        <ButtonUnit mode="base" onClick={() => setIsRegionModalOpen(true)}>
+          {formData.region || '지역 설정'}
+        </ButtonUnit>
+      </div>
+
+      <div>
+        <ButtonUnit mode="confirm" onClick={() => onSubmit(formData)}>
+          {mode === 'create' ? '모임 생성' : '수정 완료'}
+        </ButtonUnit>
+      </div>
 
       {/* 관심사 모달 */}
       <InterestModal
@@ -135,7 +135,7 @@ const ClubForm: React.FC<ClubFormProps> = ({ mode, initialData, onSubmit }) => {
         onCancel={() => setIsRegionModalOpen(false)}
         onConfirm={handleRegionSelect}
       />
-    </ClubFormWrapper>
+    </div>
   );
 };
 

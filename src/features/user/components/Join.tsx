@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { joinUser } from '../hooks/useUser';
 import UserForm from './UserForm';
 import ButtonUnit from '../../../common/components/ui/Buttons';
-import { FormWrapper, MainTitle } from '../../../common/style/common.css';
 
 const Join = () => {
   const navigate = useNavigate();
@@ -33,21 +32,19 @@ const Join = () => {
   };
 
   return (
-    <>
-      <MainTitle>회원가입</MainTitle>
-      <FormWrapper>
-        <UserForm
-          mode="join"
-          serverError={apiError}
-          onSubmit={handleJoin}
-          fields={['id', 'nickname', 'email', 'password', 'confirmPassword']}
-        >
-          <ButtonUnit mode="confirm" type="submit">
-            회원가입
-          </ButtonUnit>
-        </UserForm>
-      </FormWrapper>
-    </>
+    <main>
+      <h1>회원가입</h1>
+      <UserForm
+        mode="join"
+        serverError={apiError}
+        onSubmit={handleJoin}
+        fields={['id', 'nickname', 'email', 'password', 'confirmPassword']}
+      >
+        <ButtonUnit mode="confirm" type="submit">
+          회원가입
+        </ButtonUnit>
+      </UserForm>
+    </main>
   );
 };
 

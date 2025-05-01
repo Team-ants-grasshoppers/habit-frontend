@@ -26,12 +26,6 @@ export const commonStyle = css`
     height: 4rem;
   }
 
-  textarea {
-    border: var(--border);
-    border-radius: 0.8rem;
-    padding: 1rem;
-  }
-
   .dn {
     display: none;
   }
@@ -138,36 +132,11 @@ export const input01 = styled.input`
 export const section = styled.div`
   ${sectionStyle}
 `;
-
-export const FormWrapper = styled.div`
-  max-width: 400px;
-`;
-
-export const TitleArea = styled.div`
-  ${flexStyle}
-  ${js}
-  ${alc}
-  button {
-    margin-right: 1rem;
-  }
-`;
-export const MainTitle = styled.h2`
-  font-size: 2.4rem;
-  font-weight: 500;
-  text-align: left;
-  margin: 3rem 0;
-`;
 export const sectionTitle = styled.h2`
   text-align: center;
   margin: 3rem 0;
   font-size: 2rem;
   font-weight: 500;
-`;
-export const ModalTitle = styled.h2`
-  font-size: 2rem;
-  font-weight: 500;
-  text-align: left;
-  margin-bottom: 3rem;
 `;
 export const containImg = styled.img`
   ${fullSize}
@@ -183,26 +152,4 @@ export const searchBtn = styled.button`
 `;
 export const searchBtnOrg = styled.button`
   ${iconBtn}
-`;
-
-// 모임,번개모임 생성 페이지에서 사용되는 스타일
-export const ClubFormWrapper = styled.div`
-  display: block;
-  & > div {
-    display: grid;
-    grid-template-columns: 10rem 1fr;
-    gap: 0.5rem;
-    align-items: center;
-    margin-bottom: 1rem;
-    &.textarea_wrap {
-      align-items: flex-start;
-    }
-    button {
-      max-width: 20rem;
-    }
-
-    &.fit_content {
-      grid-template-columns: 10rem min(15rem);
-    }
-  }
 `;

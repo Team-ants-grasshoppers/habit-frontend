@@ -63,7 +63,7 @@ const TextWrapper = styled.div`
   gap: 0.5rem;
 `;
 
-export const StyledLabel = styled.label`
+const StyledLabel = styled.label`
   font-size: 1.4rem;
   font-weight: bold;
 `;

@@ -34,7 +34,7 @@ export const InputSelect = ({ type, name, options, selected = [], onChange }: In
   };
 
   return (
-    <>
+    <SelectWrapper>
       {options.map((option) => (
         <Label key={option}>
           <StyledInput
@@ -48,13 +48,19 @@ export const InputSelect = ({ type, name, options, selected = [], onChange }: In
           <span>{option}</span>
         </Label>
       ))}
-    </>
+    </SelectWrapper>
   );
 };
 
 export default InputSelect;
 
 // =================== 스타일 ===================
+
+const SelectWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
 
 const Label = styled.label`
   display: flex;

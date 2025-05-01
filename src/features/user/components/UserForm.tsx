@@ -130,6 +130,7 @@ const FieldWrapper = styled.div`
 `;
 
 const ErrorMessage = styled.p`
-  color: var(--error);
+  color: red;
   font-size: 1.3rem;
+  margin-top: 0.5rem;
 `;
