@@ -9,27 +9,44 @@ export const commonStyle = css`
   input[type='number'],
   input[type='address'],
   input[type='tel'] {
-    border: var(--border);
+    border: var(--border_dark);
     color: var(--textColor);
-    border-radius: var(--radius);
+    border-radius: 1rem;
     padding: 1rem 2rem;
     background: #fff;
-    height: 4rem;
+    height: 4.2rem;
     width: 100%;
+    font-weight: 500;
   }
   button {
-    border: var(--border);
+    border: var(--border_dark);
     color: var(--textColor);
-    border-radius: var(--radius);
-    padding: 1rem 2rem;
+    border-radius: 1rem;
     background: #fff;
-    height: 4rem;
+    height: 4.2rem;
+    font-weight: bold;
+    font-size: 1.8rem;
+  }
+  .btn_shadow {
+    width: 100%;
+    button {
+      width: 100%;
+      transition: all 0.1s ease-in-out;
+      box-shadow: 3px 3px 0 0px var(--black);
+      &:hover {
+        box-shadow: -1px -1px 0 0px var(--black);
+      }
+    }
   }
 
   textarea {
-    border: var(--border);
-    border-radius: 0.8rem;
-    padding: 1rem;
+    border: var(--border_dark);
+    color: var(--textColor);
+    border-radius: 1rem;
+    padding: 1rem 2rem;
+    background: #fff;
+    font-weight: 500;
+    width: 100%;
   }
 
   .dn {
@@ -164,8 +181,8 @@ export const sectionTitle = styled.h2`
   font-weight: 500;
 `;
 export const ModalTitle = styled.h2`
-  font-size: 2rem;
-  font-weight: 500;
+  font-size: 2.2rem;
+  font-weight: bold;
   text-align: left;
   margin-bottom: 3rem;
 `;
@@ -188,17 +205,18 @@ export const searchBtnOrg = styled.button`
 // 모임,번개모임 생성 페이지에서 사용되는 스타일
 export const ClubFormWrapper = styled.div`
   display: block;
-  & > div {
+  & > div:not(.btn_shadow) {
     display: grid;
     grid-template-columns: 10rem 1fr;
     gap: 0.5rem;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     &.textarea_wrap {
       align-items: flex-start;
     }
     button {
       max-width: 20rem;
+      font-size: 1.6rem;
     }
 
     &.fit_content {

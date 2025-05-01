@@ -90,6 +90,7 @@ const TextButton = styled.button`
   border: none;
   border-radius: 0;
   font-size: 1.4rem;
+  font-weight: normal;
   padding: 0 0.2rem;
   height: fit-content;
   color: var(--textColor_dark);
@@ -98,9 +99,10 @@ const TextButton = styled.button`
 `;
 
 const ConfirmButton = styled.button`
-  background: var(--black, #000);
-  color: #fff;
-  border: none;
+  background: var(--primary);
+  &:hover {
+    box-shadow: 0 0 0.5rem var(--primary);
+  }
 `;
 
 const CancelButton = styled.button`
@@ -121,7 +123,13 @@ const GobackButton = styled.button`
 
 const MoreButton = styled.button`
   width: 100%;
-  border: 1px solid var(--black);
-  background: #fff;
-  font-size: 1.4rem;
+  border: var(--border_dark);
+  border-radius: 2rem;
+  background: var(--primary-light-yellow);
+  font-size: 1.8rem;
+  transition: all 0.1s ease-in-out;
+  box-shadow: 3px 3px 0 0px var(--black);
+  &:hover {
+    box-shadow: -1px -1px 0 0px var(--black);
+  }
 `;

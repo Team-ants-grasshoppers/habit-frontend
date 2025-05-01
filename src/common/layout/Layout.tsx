@@ -42,7 +42,7 @@ const Layout = () => {
 export default Layout;
 
 const LayoutWrapper = styled.div`
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
 `;
 

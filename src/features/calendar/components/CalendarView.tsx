@@ -77,8 +77,17 @@ const CalendarWrapper = styled.div`
   position: relative;
   .btn_addevent {
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 2rem;
+    top: 2rem;
+    button {
+      border: var(--border_dark);
+      border-radius: 2rem;
+      background: var(--primary-green);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 1.6rem;
+      padding: 0rem 1.5rem;
+    }
   }
 `;
 
@@ -86,6 +95,6 @@ const Dot = styled.div`
   width: 6px;
   height: 6px;
   margin: 4px auto 0;
-  background-color: var(--primary);
+  background-color: var(--primary-green);
   border-radius: 50%;
 `;
