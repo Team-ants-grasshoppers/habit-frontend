@@ -1,10 +1,10 @@
 export interface CreateThunderRequest {
-  thunderName: string;
+  title: string;
   description: string;
   category: string;
   region: string;
-  imgId?: number;
-  dateTime: string;
+  time: string;
+  img_id?: number;
 }
 
 /** ### 생성된 모임 ID

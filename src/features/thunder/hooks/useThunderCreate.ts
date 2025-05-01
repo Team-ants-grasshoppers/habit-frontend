@@ -13,12 +13,12 @@ export const useThunderCreate = () => {
         imgId = await uploadImage(formData.image.file);
       }
       return createThunderApi({
-        thunderName: formData.name,
+        title: formData.title,
         description: formData.description,
         category: formData.category,
         region: formData.region,
-        dateTime: formData.time,
-        imgId: imgId,
+        time: formData.time,
+        img_id: imgId,
       });
     },
   });

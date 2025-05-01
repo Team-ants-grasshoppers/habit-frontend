@@ -1,7 +1,7 @@
 import { SeparatedMembers } from '../utils/separateMembersByRole';
 
 export interface ThunderFormData {
-  name: string;
+  title: string;
   description: string;
   category: string;
   region: string;
