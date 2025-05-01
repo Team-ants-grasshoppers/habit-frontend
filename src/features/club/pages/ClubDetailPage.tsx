@@ -41,6 +41,9 @@ const ClubDetailPage: React.FC = () => {
   const { clubId } = useParams<{ clubId: string }>();
   const { user, isLoading: isAuthLoading } = useAuth();
   const userId = user?.user_id;
+  console.log('clubId:', clubId);
+  console.log('userId:', userId);
+
   const { data: clubDetail, isLoading } = useClubDetail(clubId, userId);
 
   const handleJoin = async () => {
