@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import UserForm from './UserForm';
+import { validateForm } from '../hooks/validateForm';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 import { FormWrapper } from '../../../common/style/common.css';
 
@@ -23,10 +24,18 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
     successMsg: '',
   });
 
-  const handleSubmit = async (formData: typeof formState) => {
-    const { nickname, email, password, confirmPassword } = formData;
+  const handleSubmit = async (formData: Record<string, string>) => {
+    const errors = validateForm(formData, 'edit');
+    if (Object.keys(errors).length > 0) {
+      setFormState((prev) => ({
+        ...prev,
+        apiError: '유효성 검사 실패',
+        successMsg: '',
+      }));
+      return;
+    }
 
-    if (password && password !== confirmPassword) {
+    if (formData.password && formData.password !== formData.confirmPassword) {
       setFormState((prev) => ({
         ...prev,
         apiError: '비밀번호가 일치하지 않습니다.',
@@ -36,9 +45,9 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
     }
 
     const updateData: { nickname?: string; email?: string; password?: string } = {};
-    if (nickname !== initialData.nickname) updateData.nickname = nickname;
-    if (email !== initialData.email) updateData.email = email;
-    if (password) updateData.password = password;
+    if (formData.nickname !== initialData.nickname) updateData.nickname = formData.nickname;
+    if (formData.email !== initialData.email) updateData.email = formData.email;
+    if (formData.password) updateData.password = formData.password;
 
     try {
       await onSubmit(updateData);
@@ -63,10 +72,12 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
     return (
       <div>
         <p>
-          <strong>닉네임</strong> {formState.nickname}
+          <strong>닉네임</strong>
+          {formState.nickname}
         </p>
         <p>
-          <strong>이메일</strong> {formState.email}
+          <strong>이메일</strong>
+          {formState.email}
         </p>
         <div className="btn_shadow">
           <ButtonUnit mode="confirm" onClick={() => setIsEditMode(true)}>
