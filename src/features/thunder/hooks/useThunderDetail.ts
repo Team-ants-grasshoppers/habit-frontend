@@ -25,7 +25,10 @@ export const useThunderDetail = (thunderId?: string, userId?: string) => {
         defaultProfile,
       );
 
-      const [year, month, day, hour, minute] = (detail.datetime ?? '').split('.');
+      const parts = (detail.datetime ?? '').split('-');
+      const [year, month, day, timeStr] = parts;
+      const [hour = '', minute = ''] = timeStr?.split(':') ?? [];
+
       const date = `${year}.${month}.${day}`;
       const time = `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`;
 

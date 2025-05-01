@@ -83,7 +83,11 @@ const ThunderListPage: React.FC = () => {
    * 오늘 날짜를 YYYY-MM-DD 문자열로 반환
    */
   function getToday(): string {
-    return new Date().toISOString().split('T')[0];
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
   }
 
   /**
@@ -91,10 +95,14 @@ const ThunderListPage: React.FC = () => {
    */
   const next7Days = Array.from({ length: 7 }).map((_, i) => {
     const d = new Date();
-    d.setDate(d.getDate() + i);
+    d.setDate(new Date().getDate() + i); // 오늘 기준 날짜 계산
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+
     return {
-      label: `${d.getMonth() + 1}/${d.getDate()} (${['일', '월', '화', '수', '목', '금', '토'][d.getDay()]})`,
-      value: d.toISOString().split('T')[0],
+      label: `${Number(mm)}/${Number(dd)} (${['일', '월', '화', '수', '목', '금', '토'][d.getDay()]})`,
+      value: `${yyyy}-${mm}-${dd}`, // YYYY-MM-DD
     };
   });
 
