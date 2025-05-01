@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
-import ButtonUnit from '../../../common/components/ui/Buttons';
 import ThunderDetail from '../components/ThunderDetail';
 import { useThunderDetail } from '../hooks/useThunderDetail';
 import { joinThunderApi, leaveThunderApi, banThunderMemberApi } from '../api/thunderApi';
-import { MainTitle, TitleArea } from '../../../common/style/common.css';
 import { useDispatch } from 'react-redux';
 import { addRecentThunder } from '../../../store/recentThunderSlice';
 
@@ -72,23 +70,16 @@ const ThunderDetailPage: React.FC = () => {
 
   return (
     <>
-      <TitleArea>
-        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
-        <MainTitle>번개모임명</MainTitle>
-      </TitleArea>
-      <div className="flex flex-col gap-6">
-        <ButtonUnit mode="cancel">뒤로가기</ButtonUnit>
-        {ThunderDetailData ? (
-          <ThunderDetail
-            model={ThunderDetailData}
-            onJoin={handleJoin}
-            onLeave={handleLeave}
-            onBan={handleBan}
-          />
-        ) : (
-          <p>모임 정보를 찾을 수 없습니다.</p>
-        )}
-      </div>
+      {ThunderDetailData ? (
+        <ThunderDetail
+          model={ThunderDetailData}
+          onJoin={handleJoin}
+          onLeave={handleLeave}
+          onBan={handleBan}
+        />
+      ) : (
+        <p>모임 정보를 찾을 수 없습니다.</p>
+      )}
     </>
   );
 };
