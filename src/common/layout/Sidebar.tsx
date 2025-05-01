@@ -51,30 +51,6 @@ const Sidebar: React.FC = () => {
               </StyledLink>
             </li>
           </ul>
-
-          <ul>
-            <li style={{ margin: '30px 0 10px', fontWeight: 'bold' }}>@ 확인용</li>
-            <li>
-              <StyledLink to="/club/list" active={isActive('/club/list')}>
-                모임 리스트
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/club/create" active={isActive('/club/create')}>
-                모임 생성
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/thunder/list" active={isActive('/thunder/list')}>
-                번개모임 리스트
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/thunder/create" active={isActive('/thunder/create')}>
-                번개모임 생성
-              </StyledLink>
-            </li>
-          </ul>
         </nav>
 
         <BottomButtonArea>
