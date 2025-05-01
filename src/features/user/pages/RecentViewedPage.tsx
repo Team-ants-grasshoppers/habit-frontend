@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 import { MainTitle, TitleArea } from '../../../common/style/common.css';
 import { useAppSelector } from '../../../store/hook';
@@ -34,13 +35,34 @@ const RecentViewedPage = () => {
         <MainTitle>최근 본 모임</MainTitle>
       </TitleArea>
 
-      <h2>최근 본 모임</h2>
-      <RecentClubList clubs={recentClubs} />
+      <RecentWrapper>
+        <div className="recent_club">
+          <RecentClubList clubs={recentClubs} />
+        </div>
 
-      <h2>최근 본 번개모임</h2>
-      <RecentThunderList thunders={recentThunders} />
+        <div className="recent_thunder">
+          <strong>번개모임</strong>
+          <RecentThunderList thunders={recentThunders} />
+        </div>
+      </RecentWrapper>
     </>
   );
 };
 
 export default RecentViewedPage;
+
+const RecentWrapper = styled.div`
+  & > .recent_thunder {
+    background: var(--primary-light-yellow);
+    border-radius: 3rem;
+    padding: 2rem;
+    margin: 3rem 0;
+
+    strong {
+      display: block;
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin: 1rem 0 2rem 0;
+    }
+  }
+`;
