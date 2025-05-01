@@ -144,7 +144,7 @@ const AsideWrapper = styled.div`
   width: 25%;
   max-width: 34rem;
   min-width: 24rem;
-  padding: 2rem 2rem 3rem;
+  padding: 1rem 2rem 3rem;
   height: calc(100vh - ${layoutTheme.header.height});
   overflow-y: auto;
   transition: transform 0.3s ease-in-out;
