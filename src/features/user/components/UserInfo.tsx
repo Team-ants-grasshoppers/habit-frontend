@@ -98,6 +98,9 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
         fields={['nickname', 'email', 'password', 'confirmPassword']}
         onSubmit={handleSubmit}
         serverError={formState.apiError}
+        onChange={(updatedFields: Record<string, string>) =>
+          setFormState((prev) => ({ ...prev, ...updatedFields }))
+        }
       >
         <div className="btn_shadow">
           <ButtonUnit mode="confirm" type="submit">
