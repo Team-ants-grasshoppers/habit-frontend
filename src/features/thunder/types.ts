@@ -13,11 +13,11 @@ export interface ThunderFormData {
 }
 
 export interface ThunderDetailModel extends SeparatedMembers {
-  thunderName: string;
+  title: string;
   description: string;
   category: string;
   region: string;
-  imageUrl?: string;
+  img_url?: string;
   date: string;
   time: string;
 }

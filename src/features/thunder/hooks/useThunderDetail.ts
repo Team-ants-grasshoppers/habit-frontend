@@ -25,14 +25,19 @@ export const useThunderDetail = (thunderId?: string, userId?: string) => {
         defaultProfile,
       );
 
-      const [date, time] = (detail.dateTime ?? '').split('T');
+      const parts = (detail.datetime ?? '').split('-');
+      const [year, month, day, timeStr] = parts;
+      const [hour = '', minute = ''] = timeStr?.split(':') ?? [];
+
+      const date = `${year}.${month}.${day}`;
+      const time = `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`;
 
       return {
-        thunderName: detail.thunderName,
+        title: detail.title,
         description: detail.description,
         category: detail.category,
         region: detail.region,
-        imageUrl: detail.imageUrl,
+        img_url: detail.img_url,
         date,
         time,
         admins,

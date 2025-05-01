@@ -16,7 +16,7 @@ export const useThunderUpdate = (thunderId: number) => {
         description: formData.description,
         category: formData.category,
         region: formData.region,
-        dateTime: formData.date,
+        dateTime: formData.time,
         imageId: imageId,
       });
     },
