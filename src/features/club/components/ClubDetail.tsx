@@ -3,6 +3,8 @@ import { ClubDetailModel } from '../types';
 import ClubMembers from './ClubMembers';
 import ClubRequest from './ClubRequest';
 import ButtonUnit from '../../../common/components/ui/Buttons';
+import { MainTitle, TitleArea } from '../../../common/style/common.css';
+import styled from '@emotion/styled';
 
 export interface ClubDetailProps {
   model: ClubDetailModel;
@@ -57,59 +59,145 @@ const ClubDetail: React.FC<ClubDetailProps> = ({
   onBan,
 }) => {
   return (
-    <div className="flex flex-col gap-6">
-      <div className="relative">
-        <img src={imageUrl} alt={clubName} className="w-full h-60 object-cover rounded-md" />
+    <>
+      <TitleArea>
+        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
+        <MainTitle>{clubName}</MainTitle>
+      </TitleArea>
 
-        {isAdmin && (
-          <ButtonUnit
-            mode="confirm"
-            className="absolute top-4 right-4"
-            onClick={() => {
-              // 수정 페이지 이동은 페이지단에서 처리
-            }}
-          >
-            수정하기
-          </ButtonUnit>
-        )}
-      </div>
-
-      <h2 className="text-2xl font-bold">{clubName}</h2>
-
-      <div>
-        <h3 className="text-xl font-semibold">모임 소개</h3>
-        <p className="mt-2">{description}</p>
-      </div>
-
-      <div className="flex gap-4">
-        <span className="text-sm font-semibold">{category}</span>
-        <span className="text-sm font-semibold">{region}</span>
-      </div>
-
-      {/* 가입 상태별 버튼 */}
-      {!isAdmin && !isMember && !isPending && (
-        <ButtonUnit mode="confirm" className="mt-4 w-fit self-end" onClick={onJoin}>
-          가입하기
-        </ButtonUnit>
-      )}
-
-      {isPending && (
-        <div className="mt-4 w-fit self-end text-sm font-semibold text-yellow-500">
-          가입 대기중입니다
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          {/* 가입 상태별 버튼 */}
+          {!isAdmin && !isMember && !isPending && (
+            <ButtonUnit mode="confirm" className="mt-4 w-fit self-end" onClick={onJoin}>
+              가입하기
+            </ButtonUnit>
+          )}
+          {isPending && <div>가입 대기중입니다</div>}
         </div>
-      )}
+        <div>
+          {isAdmin && (
+            <ButtonUnit
+              mode="confirm"
+              className="absolute top-4 right-4"
+              onClick={() => {
+                // 수정 페이지 이동은 페이지단에서 처리
+              }}
+            >
+              수정하기
+            </ButtonUnit>
+          )}
+        </div>
+      </div>
 
-      <ClubMembers admins={admins} members={members} isAdmin={isAdmin} onBan={onBan} />
+      <ImgArea>
+        <img src={imageUrl} alt={clubName} />
+      </ImgArea>
+
+      <TextArea>
+        <strong>{clubName} 소개</strong>
+        <p>{description}</p>
+
+        <TagArea>
+          <li>
+            <span>활동지역</span>
+            {region}
+          </li>
+          <li>
+            <span>카테고리</span>
+            {category}
+          </li>
+        </TagArea>
+      </TextArea>
+
+      <MembersArea>
+        <ClubMembers admins={admins} members={members} isAdmin={isAdmin} onBan={onBan} />
+      </MembersArea>
 
       {/* 운영자만 가입 대기자 관리 가능 */}
       {isAdmin && (
-        <div className="mt-6">
-          <h3 className="text-lg font-bold mb-2">가입 대기자 목록</h3>
+        <div>
+          <h3>가입 대기자 목록</h3>
           <ClubRequest pendingUsers={pendingUsers} onApprove={onApprove} onReject={onReject} />
         </div>
       )}
-    </div>
+    </>
   );
 };
 
 export default ClubDetail;
+
+const ImgArea = styled.div`
+  width: 100%;
+  height: 30rem;
+  overflow: hidden;
+  margin: 2rem 0;
+  img {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+    object-position: left;
+    border-radius: 0.8rem;
+  }
+`;
+
+const TextArea = styled.div`
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  strong {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: bold;
+    border-bottom: 1px solid var(--light_gray);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+  p {
+    font-size: 1.8rem;
+    margin-bottom: 3rem;
+  }
+`;
+const TagArea = styled.ul`
+  display: flex;
+  li {
+    position: relative;
+    font-size: 1.4rem;
+    margin-right: 2rem;
+    &:first-child::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -1rem;
+      width: 0.1rem;
+      height: 1rem;
+      background: var(--textColor);
+      transform: translateY(-50%);
+    }
+    span {
+      display: inline-block;
+      margin-right: 0.5rem;
+      color: var(--textColor_dark);
+    }
+  }
+`;
+
+const MembersArea = styled.div`
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: 0 2rem;
+  margin-top: 2rem;
+
+  & > div {
+    margin: 2rem 0;
+  }
+
+  h3 {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: bold;
+    border-bottom: 1px solid var(--light_gray);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+`;

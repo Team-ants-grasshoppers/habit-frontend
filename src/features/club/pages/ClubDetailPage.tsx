@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
-import ButtonUnit from '../../../common/components/ui/Buttons';
 import ClubDetail from '../components/ClubDetail';
 import { useClubDetail } from '../hooks/useClubDetail';
 import { manageClubMemberApi, requestJoinClubApi } from '../api/clubApi';
-import { MainTitle, TitleArea } from '../../../common/style/common.css';
 
 /**
  * ClubDetailPage - 클럽 상세 페이지
@@ -114,10 +112,6 @@ const ClubDetailPage: React.FC = () => {
 
   return (
     <>
-      <TitleArea>
-        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
-        <MainTitle>모임명</MainTitle>
-      </TitleArea>
       <div>
         {clubDetail ? (
           <ClubDetail

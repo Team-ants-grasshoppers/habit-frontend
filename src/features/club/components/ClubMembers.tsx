@@ -33,7 +33,7 @@ export interface ClubMemberListProps {
  */
 const ClubMembers: React.FC<ClubMemberListProps> = ({ admins, members, isAdmin, onBan }) => {
   return (
-    <div className="flex flex-col gap-8">
+    <>
       {/* 운영진 */}
       <div>
         <h3 className="text-lg font-bold mb-2">운영진</h3>
@@ -80,7 +80,7 @@ const ClubMembers: React.FC<ClubMemberListProps> = ({ admins, members, isAdmin, 
           <p className="text-sm text-gray-500">멤버가 없습니다.</p>
         )}
       </div>
-    </div>
+    </>
   );
 };
 
