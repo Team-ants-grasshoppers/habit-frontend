@@ -92,26 +92,19 @@ const Sidebar: React.FC = () => {
             <li className="btn_islogin">
               {isLogin ? (
                 <div className="btn_islogin_true">
-                  <ButtonUnit
-                    mode="base"
-                    onClick={() => {
-                      window.location.href = '/user/info';
-                    }}
-                  >
-                    <div>
-                      <img
-                        src={userProfile || '/assets/images/default_profile.png'}
-                        alt="User Profile"
-                        style={{
-                          width: '30px',
-                          height: '30px',
-                          borderRadius: '50%',
-                          marginRight: '10px',
-                        }}
-                      />
-                      <span>{nickname}</span>
-                    </div>
-                  </ButtonUnit>
+                  <StyledLink to="/user/info" active>
+                    <img
+                      src={userProfile || '/assets/images/default_profile.png'}
+                      alt="User Profile"
+                      style={{
+                        width: '30px',
+                        height: '30px',
+                        borderRadius: '50%',
+                        marginRight: '10px',
+                      }}
+                    />
+                    <span>{nickname}</span>
+                  </StyledLink>
                 </div>
               ) : (
                 <div className="btn_islogin_false">
@@ -224,15 +217,17 @@ const StyledLink = styled(Link)<{ active: boolean }>`
 `;
 
 const BottomButtonArea = styled.div`
-  .btn_islogin_true button {
+  .btn_islogin_true {
     background: var(--mauve);
     height: auto;
+    border-radius: var(--radius);
 
-    div {
+    a {
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 0.5rem 1rem;
+      color: var(--textColor);
       img {
         width: 3rem;
         height: 3rem;
