@@ -72,9 +72,10 @@ export const fetchClubListApi = async (
   region: string,
 ): Promise<
   {
-    clubId: number;
-    clubName: string;
+    club_id: number;
+    name: string;
     category: string;
+    imgUrl: string;
   }[]
 > => {
   const response = await axiosInstance.get(`/api/clubs?category=${category}&region=${region}`);
