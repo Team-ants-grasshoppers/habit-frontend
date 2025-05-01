@@ -77,7 +77,7 @@ const MyInfoPage = () => {
           nickname: res.nickname,
           email: res.email,
         }));
-        setImgPreview(`/api/images/${res.profile_media_id}`);
+        setImgPreview(res.profileImageUrl);
       } catch {
         alert('사용자 정보를 불러오지 못했습니다.');
       }

@@ -64,7 +64,7 @@ export const getMyInfo = async (): Promise<{
   nickname: string;
   email: string;
   region: string;
-  profile_media_id: string;
+  profileImageUrl: string;
 }> => {
   try {
     const res = await axios.get('/api/members/profile');
