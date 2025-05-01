@@ -8,7 +8,11 @@ const resetStyle = css`
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
   :root {
-    --primary: #f16c1e;
+    --primary: #ed7d58;
+    --primary-orange: #ed7d58;
+    --primary-green: #3b8d82;
+    --primary-yellow: #ffd46c;
+    --primary-light-yellow: #fcf7eb;
     --mauve: #e7dcda;
     --error: #e1380b;
     --black: #000;
@@ -35,11 +39,12 @@ const resetStyle = css`
     --white_20: rgba(255, 255, 255, 0.2);
     --white_10: rgba(255, 255, 255, 0.1);
 
-    --textColor: #232323;
+    --textColor: #1b1819;
     --textColor_dark: #757575;
     --textColor_light: #a1a1a1;
 
     --border: 1px solid #efefef;
+    --border_dark: 2px solid #1b1819;
     --radius: 0.8rem;
     --inputHeight: 5rem;
     --shadow: #eee 1px 1px 5px 0px;
@@ -48,6 +53,9 @@ const resetStyle = css`
   html,
   body {
     font-size: 62.5%;
+  }
+  body {
+    background: var(--primary-yellow);
   }
   #root {
     position: relative;

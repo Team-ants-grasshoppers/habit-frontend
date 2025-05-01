@@ -58,7 +58,6 @@ const ClubListPage: React.FC = () => {
   return (
     <>
       <TitleArea>
-        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
         <MainTitle>모임 리스트</MainTitle>
       </TitleArea>
       <ClubList clubListItems={clubs} />

@@ -92,16 +92,10 @@ const Sidebar: React.FC = () => {
             <li className="btn_islogin">
               {isLogin ? (
                 <div className="btn_islogin_true">
-                  <StyledLink to="/user/info" active>
+                  <StyledLink to="/user/info">
                     <img
                       src={userProfile || '/assets/images/default_profile.png'}
                       alt="User Profile"
-                      style={{
-                        width: '30px',
-                        height: '30px',
-                        borderRadius: '50%',
-                        marginRight: '10px',
-                      }}
                     />
                     <span>{nickname}</span>
                   </StyledLink>
@@ -165,7 +159,7 @@ const AsideStyle = styled.aside`
   height: 100%;
   padding: 3rem 2.5rem;
   border-radius: 3rem;
-  background-color: #fff;
+  background-color: var(--primary-light-yellow);
   box-shadow: var(--shadow);
   nav ul {
     list-style: none;
@@ -177,66 +171,66 @@ const AsideStyle = styled.aside`
     margin-bottom: 1rem;
   }
 
-  nav ul li a:hover {
-    color: var(--primary);
-  }
-
   div ul {
-    list-style: none;
-    padding: 0;
     margin: 2rem 0 0;
   }
 
   div ul li {
     margin-bottom: 1rem;
   }
-
-  li button {
-    width: 100%;
-    height: 3.5rem;
-    font-size: 14px;
-    padding: 0;
-    border-radius: 8px;
-    background-color: var(--primary);
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    &:hover {
-      background-color: #e67020;
-    }
-  }
 `;
 
-const StyledLink = styled(Link)<{ active: boolean }>`
-  color: ${({ active }) => (active ? 'var(--primary)' : 'var(--text-main)')};
-  font-weight: ${({ active }) => (active ? '500' : 'normal')};
+const StyledLink = styled(Link)<{ active?: boolean }>`
+  display: block;
+  border: var(--border_dark);
+  border-radius: 3rem;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  background: ${({ active }) => (active ? 'var(--primary-orange)' : 'var(--primary-yellow)')};
+  color: ${({ active }) => (active ? 'var(--white)' : 'var(--textColor)')};
 
   &:hover {
-    color: var(--primary);
+    color: var(--white);
+    background: var(--primary-orange);
   }
 `;
 
 const BottomButtonArea = styled.div`
+  button {
+    width: 100%;
+    height: auto;
+    font-size: 1.6rem;
+    font-weight: 500;
+    padding: 1rem 1.5rem;
+    border-radius: 3rem;
+    background: var(--primary-green);
+    color: #fff;
+    border: var(--border_dark);
+    cursor: pointer;
+  }
+
   .btn_islogin_true {
-    background: var(--mauve);
     height: auto;
     border-radius: var(--radius);
 
     a {
+    a {
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 0.5rem 1rem;
+      justify-content: flex-start;
+      padding: 0.5rem 0;
       color: var(--textColor);
+      background: none;
+      border: none;
       img {
-        width: 3rem;
-        height: 3rem;
-        border: var(--border);
+        width: 4rem;
+        height: 4rem;
+        border: var(--border_dark);
         border-radius: 50%;
         margin-right: 10px;
       }
       span {
-        font-size: 1.4rem;
+        font-size: 1.6rem;
       }
     }
   }

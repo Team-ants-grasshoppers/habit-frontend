@@ -51,6 +51,7 @@ const BaseList: React.FC<BaseListProps> = ({ items, routePrefix }) => {
           key={item.id}
           onClick={() => navigate(`${routePrefix}/${item.id}`)}
           style={{ cursor: 'pointer' }}
+          className="list_card"
         >
           {/* 카드 내부: 이미지 + 이름 */}
           <ImgArea>
@@ -58,7 +59,7 @@ const BaseList: React.FC<BaseListProps> = ({ items, routePrefix }) => {
           </ImgArea>
 
           <TextArea>
-            <span>{item.category}</span>
+            <span>#{item.category}</span>
             <p>{item.name}</p>
           </TextArea>
 
@@ -100,12 +101,18 @@ const CardContainer = styled.div`
   @media (max-width: 686px) {
     grid-template-columns: repeat(1, 1fr);
   }
+
+  .list_card {
+    padding: 1rem 1rem 2rem 1rem;
+    border-radius: 1rem;
+    background: var(--white);
+  }
 `;
 
 const ImgArea = styled.div`
   width: 100%;
   aspect-ratio: 1.5/1;
-  border-radius: 0.8rem;
+  border-radius: 1.5rem;
   overflow: hidden;
   img {
     width: 100%;
@@ -119,10 +126,14 @@ const TextArea = styled.div`
   padding: 0 0.5rem;
   span {
     display: inline-block;
-    font-size: 1.3rem;
-    background: var(--mauve);
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--white);
+    background: var(--primary-orange);
     padding: 0.5rem 1.5rem;
-    border-radius: 0.5rem;
+    border-radius: 2rem;
+    border: var(--border_dark);
   }
   p {
     font-size: 1.6rem;
