@@ -22,11 +22,11 @@ export interface ThunderDetailProps {
  */
 const ThunderDetail: React.FC<ThunderDetailProps> = ({
   model: {
-    thunderName,
+    title,
     description,
     category,
     region,
-    imageUrl,
+    img_url,
     date,
     time,
     admins,
@@ -41,7 +41,7 @@ const ThunderDetail: React.FC<ThunderDetailProps> = ({
   return (
     <div className="flex flex-col gap-6">
       <div className="relative">
-        <img src={imageUrl} alt={thunderName} className="w-full h-60 object-cover rounded-md" />
+        <img src={img_url} alt={title} className="w-full h-60 object-cover rounded-md" />
 
         {isAdmin && (
           <ButtonUnit
@@ -56,7 +56,7 @@ const ThunderDetail: React.FC<ThunderDetailProps> = ({
         )}
       </div>
 
-      <h2 className="text-2xl font-bold">{thunderName}</h2>
+      <h2 className="text-2xl font-bold">{title}</h2>
 
       <div>
         <h3 className="text-xl font-semibold">번개모임 소개</h3>
