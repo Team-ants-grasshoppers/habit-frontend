@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -5,6 +6,7 @@ interface BaseListItem {
   id: string;
   name: string;
   imageUrl: string;
+  category?: string;
   extraButtons?: React.ReactNode;
 }
 
@@ -43,21 +45,22 @@ const BaseList: React.FC<BaseListProps> = ({ items, routePrefix }) => {
   if (!items || items.length === 0) return null;
 
   return (
-    <div>
+    <CardContainer>
       {items.map((item) => (
         <div
           key={item.id}
           onClick={() => navigate(`${routePrefix}/${item.id}`)}
-          style={{
-            position: 'relative',
-            border: '1px solid #ccc',
-            padding: '10px',
-            marginBottom: '10px',
-          }}
+          style={{ cursor: 'pointer' }}
         >
           {/* 카드 내부: 이미지 + 이름 */}
-          <img src={item.imageUrl || '/vite.svg'} />
-          <p>{item.name}</p>
+          <ImgArea>
+            <img src={item.imageUrl || '/vite.svg'} />
+          </ImgArea>
+
+          <TextArea>
+            <span>{item.category}</span>
+            <p>{item.name}</p>
+          </TextArea>
 
           {/* 카드 바깥쪽에 띄우는 버튼 */}
           {item.extraButtons && (
@@ -77,8 +80,53 @@ const BaseList: React.FC<BaseListProps> = ({ items, routePrefix }) => {
           )}
         </div>
       ))}
-    </div>
+    </CardContainer>
   );
 };
 
 export default BaseList;
+
+const CardContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem 1.5rem;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 686px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+`;
+
+const ImgArea = styled.div`
+  width: 100%;
+  aspect-ratio: 1.5/1;
+  border-radius: 0.8rem;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+`;
+const TextArea = styled.div`
+  margin-top: 1rem;
+  padding: 0 0.5rem;
+  span {
+    display: inline-block;
+    font-size: 1.3rem;
+    background: var(--mauve);
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+  }
+  p {
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-top: 1rem;
+  }
+`;
