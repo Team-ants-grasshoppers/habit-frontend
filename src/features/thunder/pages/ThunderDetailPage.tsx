@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import ThunderDetail from '../components/ThunderDetail';
 import { useThunderDetail } from '../hooks/useThunderDetail';
 import { joinThunderApi, leaveThunderApi, banThunderMemberApi } from '../api/thunderApi';
+import { useDispatch } from 'react-redux';
+import { addRecentThunder } from '../../../store/recentThunderSlice';
 
 const ThunderDetailPage: React.FC = () => {
   const navigate = useNavigate();
@@ -11,6 +13,23 @@ const ThunderDetailPage: React.FC = () => {
   const { user, isLoading: isAuthLoading } = useAuth();
   const userId = user?.user_id;
   const { data: ThunderDetailData, isLoading } = useThunderDetail(thunderId, userId);
+  const dispatch = useDispatch();
+
+  // ThunderDetailData가 있을 때 최근 본 번개모임에 추가
+  useEffect(() => {
+    if (ThunderDetailData?.id) {
+      dispatch(
+        addRecentThunder({
+          id: ThunderDetailData.id, // ✅ Thunder 타입에 맞게 id
+          name: ThunderDetailData.title,
+          imageUrl: ThunderDetailData.img_url,
+          region: '',
+          time: '',
+        }),
+      );
+    }
+    console.log('ThunderDetailData:', ThunderDetailData?.id);
+  }, [ThunderDetailData, dispatch]);
 
   const handleJoin = async () => {
     if (!user) {

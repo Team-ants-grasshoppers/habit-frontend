@@ -29,7 +29,7 @@ const RecentClubList = ({ clubs }: { clubs: Club[] }) => {
     id: club.id,
     imageUrl: club.imageUrl,
     name: club.name,
-    extraElement: (
+    extraButtons: (
       <button
         onClick={() => dispatch(removeRecentClub(club.id))}
         style={{ padding: '4px 8px', fontSize: '12px' }}

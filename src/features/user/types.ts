@@ -41,7 +41,7 @@ export interface Club {
 export interface Thunder {
   id: string;
   name: string;
-  imageUrl: string;
+  imageUrl: string | undefined;
   region: string;
   time: string;
 }

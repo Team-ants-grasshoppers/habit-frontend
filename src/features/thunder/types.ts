@@ -13,6 +13,7 @@ export interface ThunderFormData {
 }
 
 export interface ThunderDetailModel extends SeparatedMembers {
+  id: string;
   title: string;
   description: string;
   category: string;
