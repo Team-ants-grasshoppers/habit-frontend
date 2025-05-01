@@ -25,6 +25,7 @@ export interface ClubFormData {
  * - description: 클럽 소개
  */
 export interface ClubDetailModel extends SeparatedMembers {
+  clubId: number;
   imageUrl?: string;
   clubName: string;
   description: string;

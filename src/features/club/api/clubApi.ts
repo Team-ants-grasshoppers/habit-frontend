@@ -1,5 +1,5 @@
 import axiosInstance from '../../../lib/axios';
-import { CreateClubRequest, CreateClubResponse } from './schemas';
+import { ClubDetailResponse, CreateClubRequest, CreateClubResponse } from './schemas';
 
 /** clubApi.ts 클럽 관련 API
  *
@@ -40,7 +40,7 @@ export const deleteClubApi = async (clubId: number): Promise<string> => {
 };
 
 /** [API] 모임 상세 정보 */
-export const fetchClubDetailApi = async (clubId: number) => {
+export const fetchClubDetailApi = async (clubId: number): Promise<ClubDetailResponse> => {
   const response = await axiosInstance.get(`/api/clubs/${clubId}`);
   return response.data;
 };

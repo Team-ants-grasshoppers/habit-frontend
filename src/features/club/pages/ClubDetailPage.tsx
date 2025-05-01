@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import ButtonUnit from '../../../common/components/ui/Buttons';
@@ -41,7 +41,14 @@ const ClubDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { clubId } = useParams<{ clubId: string }>();
   const { user, isLoading: isAuthLoading } = useAuth();
-  const { data: clubDetail, isLoading } = useClubDetail(clubId);
+  const userId = user?.user_id;
+  const { data: clubDetail, isLoading, refetch } = useClubDetail(clubId, userId);
+
+  useEffect(() => {
+    if (userId) {
+      refetch();
+    }
+  }, [userId]);
   console.log('✅ 클럽 상세정보:', clubDetail);
   const handleJoin = async () => {
     if (!user) {

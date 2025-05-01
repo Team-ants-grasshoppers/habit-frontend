@@ -20,11 +20,12 @@ export interface CreateClubResponse {
 }
 
 export type ClubDetailResponse = {
-  clubName: string;
+  club_id: number;
+  name: string;
   description: string;
   category: string;
   region: string;
-  imageUrl: string;
+  imgUrl: string[];
 };
 
 export type ClubListResponse = {
