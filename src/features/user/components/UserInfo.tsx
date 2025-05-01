@@ -24,8 +24,8 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
     successMsg: '',
   });
 
-  const handleSubmit = async (formData: Record<string, string>) => {
-    const errors = validateForm(formData, 'edit');
+  const handleSubmit = async () => {
+    const errors = validateForm(formState, 'edit');
     if (Object.keys(errors).length > 0) {
       setFormState((prev) => ({
         ...prev,
@@ -35,7 +35,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
       return;
     }
 
-    if (formData.password && formData.password !== formData.confirmPassword) {
+    if (formState.password && formState.password !== formState.confirmPassword) {
       setFormState((prev) => ({
         ...prev,
         apiError: '비밀번호가 일치하지 않습니다.',
@@ -45,9 +45,9 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
     }
 
     const updateData: { nickname?: string; email?: string; password?: string } = {};
-    if (formData.nickname !== initialData.nickname) updateData.nickname = formData.nickname;
-    if (formData.email !== initialData.email) updateData.email = formData.email;
-    if (formData.password) updateData.password = formData.password;
+    if (formState.nickname !== initialData.nickname) updateData.nickname = formState.nickname;
+    if (formState.email !== initialData.email) updateData.email = formState.email;
+    if (formState.password) updateData.password = formState.password;
 
     try {
       await onSubmit(updateData);
@@ -96,8 +96,6 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
       <UserForm
         mode="edit"
         fields={['nickname', 'email', 'password', 'confirmPassword']}
-        formState={formState}
-        setFormState={setFormState}
         onSubmit={handleSubmit}
         serverError={formState.apiError}
       >
