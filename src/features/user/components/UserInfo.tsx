@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import UserForm from './UserForm';
-import { validateForm } from '../hooks/validateForm';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 import { FormWrapper } from '../../../common/style/common.css';
 
@@ -24,18 +23,10 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
     successMsg: '',
   });
 
-  const handleSubmit = async () => {
-    const errors = validateForm(formState, 'edit');
-    if (Object.keys(errors).length > 0) {
-      setFormState((prev) => ({
-        ...prev,
-        apiError: '유효성 검사 실패',
-        successMsg: '',
-      }));
-      return;
-    }
+  const handleSubmit = async (formData: typeof formState) => {
+    const { nickname, email, password, confirmPassword } = formData;
 
-    if (formState.password && formState.password !== formState.confirmPassword) {
+    if (password && password !== confirmPassword) {
       setFormState((prev) => ({
         ...prev,
         apiError: '비밀번호가 일치하지 않습니다.',
@@ -44,15 +35,10 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
       return;
     }
 
-    const updateData = {
-      id: initialData.userId,
-      nickname: formState.nickname || initialData.nickname,
-      email: formState.email || initialData.email,
-      password: formState.password || '',
-      profile_image: '', // 필요 시 상위에서 prop으로 전달받아 사용
-      region: '서울',
-      interest: '운동',
-    };
+    const updateData: { nickname?: string; email?: string; password?: string } = {};
+    if (nickname !== initialData.nickname) updateData.nickname = nickname;
+    if (email !== initialData.email) updateData.email = email;
+    if (password) updateData.password = password;
 
     try {
       await onSubmit(updateData);
@@ -77,12 +63,10 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
     return (
       <div>
         <p>
-          <strong>닉네임</strong>
-          {formState.nickname}
+          <strong>닉네임</strong> {formState.nickname}
         </p>
         <p>
-          <strong>이메일</strong>
-          {formState.email}
+          <strong>이메일</strong> {formState.email}
         </p>
         <div className="btn_shadow">
           <ButtonUnit mode="confirm" onClick={() => setIsEditMode(true)}>
@@ -101,6 +85,8 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
       <UserForm
         mode="edit"
         fields={['nickname', 'email', 'password', 'confirmPassword']}
+        formState={formState}
+        setFormState={setFormState}
         onSubmit={handleSubmit}
         serverError={formState.apiError}
       >
