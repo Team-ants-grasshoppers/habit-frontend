@@ -36,7 +36,7 @@ const Sidebar: React.FC = () => {
         <nav>
           <ul>
             <li>
-              <StyledLink to="/clubs" active={isActive('/clubs')}>
+              <StyledLink to="/user/club" active={isActive('/user/club')}>
                 내 모임
               </StyledLink>
             </li>
@@ -46,7 +46,7 @@ const Sidebar: React.FC = () => {
               </StyledLink>
             </li>
             <li>
-              <StyledLink to="/recent" active={isActive('/recent')}>
+              <StyledLink to="/user/recent" active={isActive('/user/recent')}>
                 최근 본 모임
               </StyledLink>
             </li>
@@ -54,26 +54,6 @@ const Sidebar: React.FC = () => {
 
           <ul>
             <li style={{ margin: '30px 0 10px', fontWeight: 'bold' }}>@ 확인용</li>
-            <li>
-              <StyledLink to="/user/club" active={isActive('/user/club')}>
-                내 모임 X
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/user/recent" active={isActive('/user/recent')}>
-                최근 본 모임 X
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/calendar" active={isActive('/calendar')}>
-                일정
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/user/info" active={isActive('/user/info')}>
-                내 정보
-              </StyledLink>
-            </li>
             <li>
               <StyledLink to="/club/list" active={isActive('/club/list')}>
                 모임 리스트
