@@ -19,7 +19,7 @@ const ThunderDetailPage: React.FC = () => {
 
   // ThunderDetailData가 있을 때 최근 본 번개모임에 추가
   useEffect(() => {
-    if (ThunderDetailData) {
+    if (ThunderDetailData?.id) {
       dispatch(
         addRecentThunder({
           id: ThunderDetailData.id, // ✅ Thunder 타입에 맞게 id

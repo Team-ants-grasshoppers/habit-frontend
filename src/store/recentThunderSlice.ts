@@ -34,6 +34,7 @@ const recentThundersSlice = createSlice({
   initialState,
   reducers: {
     addRecentThunder: (state, action: PayloadAction<Thunder>) => {
+      if (!action.payload.id) return state;
       const filtered = state.filter((t) => t.id !== action.payload.id);
       const updated = [action.payload, ...filtered].slice(0, 10);
       saveToLocalStorage(STORAGEKEY, updated);
