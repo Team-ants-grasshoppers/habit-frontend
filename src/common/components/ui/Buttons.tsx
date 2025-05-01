@@ -5,7 +5,7 @@ import { HTMLAttributes, ReactNode } from 'react';
 /**
  * Button 스타일 타입
  */
-type ButtonMode = 'base' | 'confirm' | 'cancel' | 'more' | 'text';
+type ButtonMode = 'base' | 'confirm' | 'cancel' | 'more' | 'text' | 'goback';
 
 /**
  * ButtonUnit props 타입
@@ -46,7 +46,7 @@ const ButtonUnit = ({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (mode === 'cancel') {
+    if (mode === 'cancel' || mode === 'goback') {
       if (isModal && onCloseModal) {
         onCloseModal();
       } else {
@@ -65,11 +65,13 @@ const ButtonUnit = ({
       ? ConfirmButton
       : mode === 'cancel'
         ? CancelButton
-        : mode === 'more'
-          ? MoreButton
-          : mode === 'text'
-            ? TextButton
-            : BaseButton;
+        : mode === 'goback'
+          ? GobackButton
+          : mode === 'more'
+            ? MoreButton
+            : mode === 'text'
+              ? TextButton
+              : BaseButton;
 
   return (
     <ButtonComponent onClick={handleClick} {...rest}>
@@ -107,6 +109,14 @@ const CancelButton = styled.button`
     opacity: 0.4;
     cursor: not-allowed;
   }
+`;
+
+const GobackButton = styled.button`
+  background: url('/icons/left.png') no-repeat center / contain;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  font-size: 0;
 `;
 
 const MoreButton = styled.button`

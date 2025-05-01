@@ -45,7 +45,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
       <ModalContent>
         {children}
         <CloseButton onClick={onClose} aria-label="모달 닫기">
-          ×
+          <img src="/icons/close.png" alt="닫기 아이콘" />
         </CloseButton>
       </ModalContent>
     </ModalBackdrop>
@@ -59,7 +59,8 @@ export default Modal;
 const ModalBackdrop = styled.div`
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px); /* ✨ 블러 추가 */
   z-index: 999;
 `;
 
@@ -67,22 +68,56 @@ const ModalContent = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 80%;
-  max-width: 60rem;
-  min-width: 32rem;
-  padding: 2rem;
-  background: white;
-  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  min-width: 300px;
+  padding: 2.5rem;
+  background: #ffffff;
+  border-radius: 16px;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* ✨ 더 부드러운 그림자 */
+  animation: fadeIn 0.3s ease;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -48%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .btn_wrap {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 3rem;
+    button {
+      width: 100%;
+    }
+  }
 `;
 
 const CloseButton = styled.button`
+  width: 2rem;
+  height: 2rem;
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 1.2rem;
+  right: 1.2rem;
   background: transparent;
-  font-size: 2rem;
+  color: var(--text-main);
+  font-size: 1.8rem;
   border: none;
   cursor: pointer;
+  transition: color 0.2s;
+  padding: 0;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: filter 0.2s;
+  }
 `;

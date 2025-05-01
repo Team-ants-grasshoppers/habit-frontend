@@ -5,6 +5,7 @@ interface UserState {
   userId: string | null;
   nickname: string | null;
   email: string | null;
+  userProfile: string | null;
 }
 
 const initialState: UserState = {
@@ -12,6 +13,7 @@ const initialState: UserState = {
   userId: null,
   nickname: null,
   email: null,
+  userProfile: null,
 };
 
 const userSlice = createSlice({
@@ -20,18 +22,25 @@ const userSlice = createSlice({
   reducers: {
     loginSuccess: (
       state,
-      action: PayloadAction<{ userId: string; nickname: string; email: string }>,
+      action: PayloadAction<{
+        userId: string;
+        nickname: string;
+        email: string;
+        userProfile: string | null;
+      }>,
     ) => {
       state.isLogin = true;
       state.userId = action.payload.userId;
       state.nickname = action.payload.nickname;
       state.email = action.payload.email;
+      state.userProfile = action.payload.userProfile || null;
     },
     logout: (state) => {
       state.isLogin = false;
       state.userId = null;
       state.nickname = null;
       state.email = null;
+      state.userProfile = null;
     },
   },
 });

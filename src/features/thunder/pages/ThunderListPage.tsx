@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchThunderList } from '../api/thunderApi';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 import BaseList from '../../../common/components/ui/BaseList';
 import { useAppSelector } from '../../../store/hook';
+import { fetchThunderListApi } from '../api/thunderApi';
+import { MainTitle, TitleArea } from '../../../common/style/common.css';
 
 /**
  * ThunderListPage
@@ -38,7 +39,11 @@ const ThunderListPage: React.FC = () => {
     if (selectedRegions.length === 0 || selectedInterests.length === 0) return;
 
     const fetchData = async () => {
-      const result = await fetchThunderList(selectedInterests[0], selectedRegions[0], selectedDate);
+      const result = await fetchThunderListApi(
+        selectedInterests[0],
+        selectedRegions[0],
+        selectedDate,
+      );
       setThunderList(result);
       setVisibleCount(6); // 초기값 리셋
     };
@@ -81,7 +86,11 @@ const ThunderListPage: React.FC = () => {
   });
 
   return (
-    <div>
+    <>
+      <TitleArea>
+        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
+        <MainTitle>번개모임 리스트</MainTitle>
+      </TitleArea>
       {/* 상단 우측 버튼: 번개 모임 만들기 */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
         <ButtonUnit mode="base" onClick={() => navigate('/thunder/create')}>
@@ -127,7 +136,7 @@ const ThunderListPage: React.FC = () => {
           </ButtonUnit>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

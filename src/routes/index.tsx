@@ -11,8 +11,8 @@ import ThunderCreatePage from '../features/thunder/pages/ThunderCreatePage';
 import ThunderDetailPage from '../features/thunder/pages/ThunderDetailPage';
 import ThunderModifyPage from '../features/thunder/pages/ThunderModifyPage';
 import MyInfoPage from '../features/user/pages/MyInfoPage';
-import RecentPage from '../features/user/pages/RecentPage';
 import MyClubPage from '../features/user/pages/MyClubPage';
+import RecentViewedPage from '../features/user/pages/RecentViewedPage';
 
 const AppRoutes = () => {
   return (
@@ -21,12 +21,12 @@ const AppRoutes = () => {
         <Route path="calendar" element={<CalendarPage />} />
         <Route path="join" element={<Join />} />
         <Route path="user/info" element={<MyInfoPage />} />
-        <Route path="user/recent" element={<RecentPage />} />
+        <Route path="user/recent" element={<RecentViewedPage />} />
         <Route path="user/club" element={<MyClubPage />} />
 
         {/* Club 관련 라우트 추가 */}
         <Route path="club/create" element={<ClubCreatePage />} />
-        <Route path="club/list" element={<ClubListPage />} />
+        <Route index element={<ClubListPage />} />
         <Route path="club/:clubId" element={<ClubDetailPage />} />
         <Route path="club/:clubId/edit" element={<ClubModifyPage />} />
 

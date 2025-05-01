@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import UserForm from './UserForm';
 import { validateForm } from '../hooks/validateForm';
 import ButtonUnit from '../../../common/components/ui/Buttons';
+import { FormWrapper } from '../../../common/style/common.css';
 
 interface UserInfoProps {
   initialData: {
@@ -13,6 +14,7 @@ interface UserInfoProps {
 }
 
 const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
+  const [isEditMode, setIsEditMode] = useState(false);
   const [formState, setFormState] = useState({
     nickname: initialData.nickname,
     email: initialData.email,
@@ -53,7 +55,10 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
         ...prev,
         apiError: '',
         successMsg: '정보가 성공적으로 수정되었습니다!',
+        password: '',
+        confirmPassword: '',
       }));
+      setIsEditMode(false);
     } catch (error: any) {
       setFormState((prev) => ({
         ...prev,
@@ -63,8 +68,26 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
     }
   };
 
+  if (!isEditMode) {
+    return (
+      <div>
+        <p>
+          <strong>닉네임</strong>
+          {formState.nickname}
+        </p>
+        <p>
+          <strong>이메일</strong>
+          {formState.email}
+        </p>
+        <ButtonUnit mode="confirm" onClick={() => setIsEditMode(true)}>
+          수정
+        </ButtonUnit>
+      </div>
+    );
+  }
+
   return (
-    <div>
+    <FormWrapper>
       {formState.apiError && <p style={{ color: 'red' }}>{formState.apiError}</p>}
       {formState.successMsg && <p style={{ color: 'green' }}>{formState.successMsg}</p>}
 
@@ -78,7 +101,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
           수정 완료
         </ButtonUnit>
       </UserForm>
-    </div>
+    </FormWrapper>
   );
 };
 

@@ -10,6 +10,7 @@ const resetStyle = css`
   :root {
     --primary: #f16c1e;
     --mauve: #e7dcda;
+    --error: #e1380b;
     --black: #000;
     --white: #fff;
     --light_gray: #efefef;
@@ -39,7 +40,7 @@ const resetStyle = css`
     --textColor_light: #a1a1a1;
 
     --border: 1px solid #efefef;
-    --radius: 0.3rem;
+    --radius: 0.8rem;
     --inputHeight: 5rem;
     --shadow: #eee 1px 1px 5px 0px;
   }
