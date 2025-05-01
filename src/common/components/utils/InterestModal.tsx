@@ -35,8 +35,8 @@ export const InterestModal = ({ isOpen, selectedInterests, onConfirm, onCancel }
           type="radio"
           name="interests"
           options={INTERESTS} // ✅ constants 연결
-          selected={checked}
-          onChange={setChecked}
+          selected={[checked]}
+          onChange={(value: string[]) => setChecked(value[0])} // ✅ 문자열 단일 선택
         />
       </InterestWrapper>
       <div className="btn_wrap">
@@ -46,7 +46,7 @@ export const InterestModal = ({ isOpen, selectedInterests, onConfirm, onCancel }
           </ButtonUnit>
         </div>
         <div className="btn_submit">
-          <ButtonUnit mode="confirm" onClick={() => onConfirm(checked)}>
+          <ButtonUnit mode="confirm" onClick={() => onConfirm([checked])}>
             확인
           </ButtonUnit>
         </div>

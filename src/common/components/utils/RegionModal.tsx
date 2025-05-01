@@ -32,8 +32,8 @@ export const RegionModal = ({ isOpen, selectedRegions, onConfirm, onCancel }: Pr
           type="radio"
           name="regions"
           options={REGIONS}
-          selected={checked}
-          onChange={setChecked}
+          selected={[checked]}
+          onChange={(value: string[]) => setChecked(value[0])} // ✅ 문자열 단일 선택
         />
       </RegionWrapper>
       <div className="btn_wrap">
@@ -43,7 +43,7 @@ export const RegionModal = ({ isOpen, selectedRegions, onConfirm, onCancel }: Pr
           </ButtonUnit>
         </div>
         <div className="btn_submit">
-          <ButtonUnit mode="confirm" onClick={() => onConfirm(checked)}>
+          <ButtonUnit mode="confirm" onClick={() => onConfirm([checked])}>
             확인
           </ButtonUnit>
         </div>
