@@ -34,18 +34,26 @@ const ThunderListPage: React.FC = () => {
 
   /**
    * 필터 조건이 변경되면 API 요청하여 리스트 재조회
+   * TODO: formatDateForApi 함수는 추후 공통 유틸로 분리할 수 있음
    */
   useEffect(() => {
     if (selectedRegions.length === 0 || selectedInterests.length === 0) return;
 
     const fetchData = async () => {
+      // 🔧 날짜 포맷 변경 (예: 2025.5.1)
+      const formatDateForApi = (dateStr: string): string => {
+        const [year, month, day] = dateStr.split('-');
+        return `${year}.${Number(month)}.${Number(day)}`;
+      };
+      const formattedDate = formatDateForApi(selectedDate);
+
       const result = await fetchThunderListApi(
         selectedInterests[0],
         selectedRegions[0],
-        selectedDate,
+        formattedDate,
       );
       setThunderList(result);
-      setVisibleCount(6); // 초기값 리셋
+      setVisibleCount(6);
     };
 
     fetchData();
