@@ -5,6 +5,7 @@ import BaseList from '../../../common/components/ui/BaseList';
 import { useAppSelector } from '../../../store/hook';
 import { fetchThunderListApi } from '../api/thunderApi';
 import { MainTitle, TitleArea } from '../../../common/style/common.css';
+import styled from '@emotion/styled';
 
 /**
  * ThunderListPage
@@ -107,43 +108,39 @@ const ThunderListPage: React.FC = () => {
   });
 
   return (
-    <>
-      <TitleArea>
-        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
-        <MainTitle>번개모임 리스트</MainTitle>
-      </TitleArea>
-      {/* 상단 우측 버튼: 번개 모임 만들기 */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-        <ButtonUnit mode="base" onClick={() => navigate('/thunder/create')}>
-          번개 모임 만들기
-        </ButtonUnit>
+    <ThunderListWrapper>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <TitleArea>
+          <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
+          <MainTitle>번개모임 리스트</MainTitle>
+        </TitleArea>
+        <div className="btn_shadow">
+          <ButtonUnit mode="base" onClick={() => navigate('/thunder/create')}>
+            번개 모임 만들기
+          </ButtonUnit>
+        </div>
       </div>
 
       {/* 날짜 선택 버튼 리스트 */}
-      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' }}>
+      <DateButtonWrapper>
         {next7Days.map((d) => (
           <button
             key={d.value}
             onClick={() => handleDateClick(d.value)}
-            style={{
-              padding: '0.5rem 1rem',
-              borderRadius: '8px',
-              backgroundColor: selectedDate === d.value ? '#555' : '#eee',
-              color: selectedDate === d.value ? '#fff' : '#000',
-              border: 'none',
-              cursor: 'pointer',
-            }}
+            className={selectedDate === d.value ? 'selected' : ''}
           >
             {d.label}
           </button>
         ))}
-      </div>
+      </DateButtonWrapper>
 
       {/* 번개 모임 리스트 출력 */}
       <BaseList
         items={thunderList.slice(0, visibleCount).map((item) => ({
           id: String(item.thunder_id),
           name: item.title,
+          date: item.date,
+          category: item.category,
           imageUrl: item.imgUrl || '/default-image.png',
         }))}
         routePrefix="/thunder"
@@ -157,8 +154,38 @@ const ThunderListPage: React.FC = () => {
           </ButtonUnit>
         </div>
       )}
-    </>
+    </ThunderListWrapper>
   );
 };
 
 export default ThunderListPage;
+
+const ThunderListWrapper = styled.div`
+  .btn_shadow {
+    width: auto;
+    button {
+      border-radius: 2rem;
+      padding: 0.5rem 1.5rem;
+    }
+  }
+`;
+
+const DateButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem 0;
+  gap: 0.5rem;
+
+  button {
+    height: auto;
+    padding: 0.8rem 1rem;
+    border: 0;
+    background: var(--primary-light-yellow);
+    &.selected {
+      border: var(--border_dark);
+      background: var(--primary-green);
+      color: var(--white);
+    }
+  }
+`;

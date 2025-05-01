@@ -129,14 +129,14 @@ const ClubDetail: React.FC<ClubDetailProps> = ({
 
 export default ClubDetail;
 
-const DetailWrapper = styled.div`
+export const DetailWrapper = styled.div`
   background: var(--primary-light-yellow);
   margin: 3rem 0;
   padding: 1rem 2rem 3rem 2rem;
   border-radius: 3rem;
 `;
 
-const ButtonArea = styled.div`
+export const ButtonArea = styled.div`
   margin: 1rem 0;
 
   .btn_shadow {
@@ -150,7 +150,7 @@ const ButtonArea = styled.div`
   }
 `;
 
-const ImgArea = styled.div`
+export const ImgArea = styled.div`
   width: 100%;
   height: 30rem;
   overflow: hidden;
@@ -164,7 +164,7 @@ const ImgArea = styled.div`
   }
 `;
 
-const TextArea = styled.div`
+export const TextArea = styled.div`
   border: var(--border_dark);
   border-radius: var(--radius);
   padding: 2rem;
@@ -181,7 +181,7 @@ const TextArea = styled.div`
     margin-bottom: 3rem;
   }
 `;
-const TagArea = styled.ul`
+export const TagArea = styled.ul`
   display: flex;
   li {
     position: relative;
@@ -205,7 +205,7 @@ const TagArea = styled.ul`
   }
 `;
 
-const MembersArea = styled.div`
+export const MembersArea = styled.div`
   border: var(--border_dark);
   border-radius: var(--radius);
   padding: 0 2rem;

@@ -2,6 +2,14 @@ import React from 'react';
 import ThunderMembers from './ThunderMembers';
 import { ThunderDetailModel } from '../types';
 import ButtonUnit from '../../../common/components/ui/Buttons';
+import {
+  ButtonArea,
+  DetailWrapper,
+  ImgArea,
+  TagArea,
+  TextArea,
+} from '../../club/components/ClubDetail';
+import { MainTitle, TitleArea } from '../../../common/style/common.css';
 
 export interface ThunderDetailProps {
   model: ThunderDetailModel;
@@ -39,58 +47,66 @@ const ThunderDetail: React.FC<ThunderDetailProps> = ({
   onBan,
 }) => {
   return (
-    <div className="flex flex-col gap-6">
-      <div className="relative">
+    <DetailWrapper>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <TitleArea>
+          <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
+          <MainTitle>{title}</MainTitle>
+        </TitleArea>
+
+        <ButtonArea>
+          <div className="btn_shadow">
+            {isAdmin && (
+              <ButtonUnit
+                mode="confirm"
+                className="absolute top-4 right-4"
+                onClick={() => {
+                  // 수정 페이지 이동은 페이지단에서 처리
+                }}
+              >
+                수정하기
+              </ButtonUnit>
+            )}
+
+            {!isAdmin && !isMember && (
+              <ButtonUnit mode="confirm" className="mt-4 w-fit self-end" onClick={onJoin}>
+                가입하기
+              </ButtonUnit>
+            )}
+
+            {!isAdmin && isMember && (
+              <ButtonUnit mode="confirm" className="mt-4 w-fit self-end" onClick={onLeave}>
+                탈퇴하기
+              </ButtonUnit>
+            )}
+          </div>
+        </ButtonArea>
+      </div>
+
+      <ImgArea>
         <img src={img_url} alt={title} className="w-full h-60 object-cover rounded-md" />
+      </ImgArea>
 
-        {isAdmin && (
-          <ButtonUnit
-            mode="confirm"
-            className="absolute top-4 right-4"
-            onClick={() => {
-              // 수정 페이지 이동은 페이지단에서 처리
-            }}
-          >
-            수정하기
-          </ButtonUnit>
-        )}
-      </div>
+      <TextArea>
+        <strong>
+          모임 날짜 (시간) : {date} ({time})
+        </strong>
+        <p>{description}</p>
 
-      <h2 className="text-2xl font-bold">{title}</h2>
-
-      <div>
-        <h3 className="text-xl font-semibold">번개모임 소개</h3>
-        <p className="mt-2">{description}</p>
-      </div>
-      <div>
-        <h3 className="text-xl font-semibold">모임 카테고리</h3>
-        <p className="mt-2">{category}</p>
-      </div>
-      <div>
-        <h3 className="text-xl font-semibold">모임 지역</h3>
-        <p className="mt-2">{region}</p>
-      </div>
-      <div>
-        <p className="text-gray-600">날짜: {date}</p>
-        <p className="text-gray-600">시간: {time}</p>
-      </div>
-
-      {/* 가입 상태별 버튼 */}
-      {!isAdmin && !isMember && (
-        <ButtonUnit mode="confirm" className="mt-4 w-fit self-end" onClick={onJoin}>
-          가입하기
-        </ButtonUnit>
-      )}
-
-      {/* 가입 상태별 버튼 */}
-      {!isAdmin && isMember && (
-        <ButtonUnit mode="confirm" className="mt-4 w-fit self-end" onClick={onLeave}>
-          탈퇴하기
-        </ButtonUnit>
-      )}
+        <TagArea>
+          <li>
+            <span>활동지역</span>
+            {region}
+          </li>
+          <li>
+            <span>카테고리</span>
+            {category}
+          </li>
+        </TagArea>
+      </TextArea>
 
       <ThunderMembers admins={admins} members={members} isAdmin={isAdmin} onBan={onBan} />
-    </div>
+    </DetailWrapper>
   );
 };
 
