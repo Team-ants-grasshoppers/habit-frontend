@@ -33,7 +33,7 @@ export const useThunderDetail = (thunderId?: string, userId?: string) => {
       const time = `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`;
 
       return {
-        id: String(detail.id),
+        id: thunderId || '',
         title: detail.title,
         description: detail.description,
         category: detail.category,
