@@ -92,7 +92,7 @@ const ThunderForm: React.FC<ThunderFormProps> = ({ mode, initialData, onSubmit }
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => handleImageChange(e.target.files?.[0] || null)}
+          onChange={(e) => handleImageChange(e.target.files?.[0] || undefined)}
         />
         {formData.image.url && <img src={formData.image.url} alt="모임 이미지 미리보기" />}
       </div>
