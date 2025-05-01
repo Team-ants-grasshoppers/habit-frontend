@@ -36,7 +36,7 @@ export const InterestModal = ({ isOpen, selectedInterests, onConfirm, onCancel }
           name="interests"
           options={INTERESTS} // ✅ constants 연결
           selected={[checked]}
-          onChange={(value: string[]) => setChecked(value[0])} // ✅ 문자열 단일 선택
+          onChange={(value) => setChecked(value[0])} // ✅ 문자열 단일 선택
         />
       </InterestWrapper>
       <div className="btn_wrap">

@@ -33,7 +33,7 @@ export const RegionModal = ({ isOpen, selectedRegions, onConfirm, onCancel }: Pr
           name="regions"
           options={REGIONS}
           selected={[checked]}
-          onChange={(value: string[]) => setChecked(value[0])} // ✅ 문자열 단일 선택
+          onChange={(value) => setChecked(value[0])} // ✅ 문자열 단일 선택
         />
       </RegionWrapper>
       <div className="btn_wrap">
