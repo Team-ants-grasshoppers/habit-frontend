@@ -20,7 +20,6 @@ const HeaderStyle = styled.header`
   ${jb}
   ${alc}
   height: ${layoutTheme.header.height};
-  background-color: #ffffff;
   padding: 0 4rem;
 `;
 

@@ -152,8 +152,8 @@ export const TitleArea = styled.div`
   }
 `;
 export const MainTitle = styled.h2`
-  font-size: 2.4rem;
-  font-weight: 500;
+  font-size: 2.6rem;
+  font-weight: 700;
   text-align: left;
   margin: 3rem 0;
 `;
