@@ -40,20 +40,25 @@ const ThunderListPage: React.FC = () => {
     if (selectedRegions.length === 0 || selectedInterests.length === 0) return;
 
     const fetchData = async () => {
-      // 🔧 날짜 포맷 변경 (예: 2025.5.1)
       const formatDateForApi = (dateStr: string): string => {
         const [year, month, day] = dateStr.split('-');
         return `${year}.${Number(month)}.${Number(day)}`;
       };
       const formattedDate = formatDateForApi(selectedDate);
 
-      const result = await fetchThunderListApi(
-        selectedInterests[0],
-        selectedRegions[0],
-        formattedDate,
-      );
-      setThunderList(result);
-      setVisibleCount(6);
+      try {
+        const result = await fetchThunderListApi(
+          selectedInterests[0],
+          selectedRegions[0],
+          formattedDate,
+        );
+        setThunderList(result);
+      } catch (err) {
+        console.warn('🔥 번개 리스트 요청 실패:', err);
+        setThunderList([]); // 🔥 실패 시 리스트 초기화
+      } finally {
+        setVisibleCount(6); // 항상 초기화
+      }
     };
 
     fetchData();
