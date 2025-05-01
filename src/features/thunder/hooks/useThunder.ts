@@ -9,14 +9,18 @@ import { fetchThunderListApi } from '../api/thunderApi';
  * - 추후 번개모임 생성 및 수정 폼과 공통 훅으로 분리 예정
  */
 export const useThunderForm = (initialData?: ThunderFormData) => {
-  const { imageFile, imageUrl, handleImageChange, uploadSelectedImage } = useImageUpload();
+  const {
+    imageFile,
+    imageUrl,
+    handleImageChange: rawHandleImageChange,
+    uploadSelectedImage,
+  } = useImageUpload();
   const [formData, setFormData] = useState<ThunderFormData>(
     initialData || {
-      thunderName: '',
+      title: '',
       description: '',
       category: '',
       region: '',
-      date: '',
       time: '',
       image: {
         url: undefined,
@@ -24,6 +28,16 @@ export const useThunderForm = (initialData?: ThunderFormData) => {
       },
     },
   );
+  const handleImageChange = (file: File | undefined) => {
+    rawHandleImageChange(file ?? null); // 원래 훅 로직 호출
+    setFormData((prev) => ({
+      ...prev,
+      image: {
+        file,
+        url: file ? URL.createObjectURL(file) : '',
+      },
+    }));
+  };
 
   return {
     formData,

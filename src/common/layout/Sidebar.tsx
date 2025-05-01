@@ -211,7 +211,9 @@ const BottomButtonArea = styled.div`
 
   .btn_islogin_true {
     height: auto;
+    border-radius: var(--radius);
 
+    a {
     a {
       display: flex;
       align-items: center;
