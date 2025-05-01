@@ -30,7 +30,7 @@ const RecentThunderList = ({ thunders }: { thunders: Thunder[] }) => {
     id: thunder.id,
     imageUrl: thunder.imageUrl || '',
     name: `${thunder.name}\n${thunder.region} ・ ${thunder.time}`,
-    extraElement: (
+    extraButtons: (
       <button
         onClick={() => dispatch(removeRecentThunder(thunder.id))}
         style={{ padding: '4px 8px', fontSize: '12px' }}
