@@ -44,10 +44,15 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
       return;
     }
 
-    const updateData: { nickname?: string; email?: string; password?: string } = {};
-    if (formState.nickname !== initialData.nickname) updateData.nickname = formState.nickname;
-    if (formState.email !== initialData.email) updateData.email = formState.email;
-    if (formState.password) updateData.password = formState.password;
+    const updateData = {
+      id: initialData.userId,
+      nickname: formState.nickname || initialData.nickname,
+      email: formState.email || initialData.email,
+      password: formState.password || '',
+      profile_image: '', // 필요 시 상위에서 prop으로 전달받아 사용
+      region: '서울',
+      interest: '운동',
+    };
 
     try {
       await onSubmit(updateData);
