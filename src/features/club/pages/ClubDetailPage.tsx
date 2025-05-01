@@ -4,6 +4,8 @@ import { useAuth } from '../../../hooks/useAuth';
 import ClubDetail from '../components/ClubDetail';
 import { useClubDetail } from '../hooks/useClubDetail';
 import { manageClubMemberApi, requestJoinClubApi } from '../api/clubApi';
+import { addRecentClub } from '../../../store/recentClubSlice';
+import { useAppDispatch } from '../../../store/hook';
 
 /**
  * ClubDetailPage - 클럽 상세 페이지
@@ -41,6 +43,19 @@ const ClubDetailPage: React.FC = () => {
   const { user, isLoading: isAuthLoading } = useAuth();
   const userId = user?.user_id;
   const { data: clubDetail, isLoading, refetch } = useClubDetail(clubId, userId);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (clubDetail) {
+      dispatch(
+        addRecentClub({
+          id: String(clubId), // 또는 clubDetail.clubId 로 쓸 수도 있음
+          name: clubDetail.clubName,
+          imageUrl: clubDetail.imageUrl || '',
+        }),
+      );
+    }
+  }, [clubDetail, dispatch]);
 
   useEffect(() => {
     if (userId) {
