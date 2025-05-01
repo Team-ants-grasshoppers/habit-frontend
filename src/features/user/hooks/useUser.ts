@@ -84,10 +84,13 @@ export const getMyInfo = async (): Promise<{
  * @throws 비밀번호 불일치, 닉네임 중복 등의 에러 메시지
  */
 export const updateMyInfo = async (data: {
-  nickname?: string;
-  profile_image?: string;
-  password?: string;
+  nickname: string;
+  profile_image: string;
+  password: string;
   id: string;
+  email: string;
+  region: string;
+  interest: string;
 }): Promise<{
   message: string;
 }> => {

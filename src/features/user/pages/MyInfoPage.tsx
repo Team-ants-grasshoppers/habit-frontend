@@ -112,12 +112,20 @@ const MyInfoPage = () => {
 
     const updateData: {
       id: string;
-      nickname?: string;
-      email?: string;
-      password?: string;
-      profile_image?: string;
+      nickname: string;
+      email: string;
+      password: string;
+      profile_image: string;
+      region: string;
+      interest: string;
     } = {
       id: user.user_id,
+      nickname: formState.nickname || user.nickname,
+      email: formState.email || user.email,
+      password: formState.password || '',
+      profile_image: profileImageId || user.profile_media_id || '',
+      region: '', // Provide default or user-provided value
+      interest: '', // Provide default or user-provided value
     };
 
     if (formState.nickname !== user.nickname) updateData.nickname = formState.nickname;
