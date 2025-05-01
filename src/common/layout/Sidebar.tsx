@@ -14,7 +14,10 @@ import { setInterests, setRegions } from '../components/ui/hooks/checkboxSelecti
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
-  const userState = useSelector((state: RootState) => state.user);
+  // const userState = useSelector((state: RootState) => state.user);
+  const isLogin = useSelector((state: RootState) => state.user.isLogin);
+  const nickname = useSelector((state: RootState) => state.user.nickname);
+  const userProfile = useSelector((state: RootState) => state.user.userProfile);
 
   const [isInterestOpen, setInterestOpen] = useState(false);
   const [isRegionOpen, setRegionOpen] = useState(false);
@@ -25,13 +28,15 @@ const Sidebar: React.FC = () => {
 
   const isActive = (path: string) => location.pathname.startsWith(path);
 
+  console.log('사이드바 로그인 상태 확인 :', isLogin);
+
   return (
     <AsideWrapper>
       <AsideStyle>
         <nav>
           <ul>
             <li>
-              <StyledLink to="/clubs" active={isActive('/clubs')}>
+              <StyledLink to="/user/club" active={isActive('/user/club')}>
                 내 모임
               </StyledLink>
             </li>
@@ -41,7 +46,7 @@ const Sidebar: React.FC = () => {
               </StyledLink>
             </li>
             <li>
-              <StyledLink to="/recent" active={isActive('/recent')}>
+              <StyledLink to="/user/recent" active={isActive('/user/recent')}>
                 최근 본 모임
               </StyledLink>
             </li>
@@ -49,26 +54,6 @@ const Sidebar: React.FC = () => {
 
           <ul>
             <li style={{ margin: '30px 0 10px', fontWeight: 'bold' }}>@ 확인용</li>
-            <li>
-              <StyledLink to="/user/club" active={isActive('/user/club')}>
-                내 모임 X
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/user/recent" active={isActive('/user/recent')}>
-                최근 본 모임 X
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/calendar" active={isActive('/calendar')}>
-                일정
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/user/info" active={isActive('/user/info')}>
-                내 정보
-              </StyledLink>
-            </li>
             <li>
               <StyledLink to="/club/list" active={isActive('/club/list')}>
                 모임 리스트
@@ -92,48 +77,52 @@ const Sidebar: React.FC = () => {
           </ul>
         </nav>
 
-        <div>
+        <BottomButtonArea>
           <ul>
             <li>
               <ButtonUnit mode="base" onClick={() => setInterestOpen(true)}>
-                관심사 설정
+                관심사 : {interests.length > 0 ? interests[0] : '설정하기'}
               </ButtonUnit>
             </li>
             <li>
-              <button onClick={() => setRegionOpen(true)}>지역 설정</button>
-            </li>
-            <li>
-              <ButtonUnit
-                mode="base"
-                onClick={() => {
-                  if (userState.isLogin) {
-                    window.location.href = '/user/info';
-                  } else {
-                    setLoginOpen(true);
-                  }
-                }}
-              >
-                {userState.isLogin ? (
-                  <div>
-                    <img
-                      src={userState.userProfile || '/assets/images/default_profile.png'}
-                      alt="User Profile"
-                      style={{
-                        width: '30px',
-                        height: '30px',
-                        borderRadius: '50%',
-                        marginRight: '10px',
-                      }}
-                    />
-                    {userState.nickname}
-                  </div>
-                ) : (
-                  '로그인'
-                )}
+              <ButtonUnit mode="base" onClick={() => setRegionOpen(true)}>
+                지역 : {regions.length > 0 ? regions[0] : '설정하기'}
               </ButtonUnit>
+            </li>
+            <li className="btn_islogin">
+              {isLogin ? (
+                <div className="btn_islogin_true">
+                  <ButtonUnit
+                    mode="base"
+                    onClick={() => {
+                      window.location.href = '/user/info';
+                    }}
+                  >
+                    <div>
+                      <img
+                        src={userProfile || '/assets/images/default_profile.png'}
+                        alt="User Profile"
+                        style={{
+                          width: '30px',
+                          height: '30px',
+                          borderRadius: '50%',
+                          marginRight: '10px',
+                        }}
+                      />
+                      <span>{nickname}</span>
+                    </div>
+                  </ButtonUnit>
+                </div>
+              ) : (
+                <div className="btn_islogin_false">
+                  <ButtonUnit mode="base" onClick={() => setLoginOpen(true)}>
+                    로그인
+                  </ButtonUnit>
+                </div>
+              )}
             </li>
           </ul>
-        </div>
+        </BottomButtonArea>
 
         {/* 관심사 모달 */}
         <InterestModal
@@ -231,5 +220,29 @@ const StyledLink = styled(Link)<{ active: boolean }>`
 
   &:hover {
     color: var(--primary);
+  }
+`;
+
+const BottomButtonArea = styled.div`
+  .btn_islogin_true button {
+    background: var(--mauve);
+    height: auto;
+
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1rem;
+      img {
+        width: 3rem;
+        height: 3rem;
+        border: var(--border);
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      span {
+        font-size: 1.4rem;
+      }
+    }
   }
 `;
