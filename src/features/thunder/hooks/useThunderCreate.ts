@@ -9,16 +9,17 @@ export const useThunderCreate = () => {
   const mutation = useMutation({
     mutationFn: async (formData: ThunderFormData) => {
       let imgId: number | undefined;
+      console.log('[Mutation] image.file:', formData.image.file);
       if (formData.image.file) {
         imgId = await uploadImage(formData.image.file);
       }
       return createThunderApi({
-        thunderName: formData.thunderName,
+        title: formData.title,
         description: formData.description,
         category: formData.category,
         region: formData.region,
-        dateTime: formData.date,
-        imgId: imgId,
+        time: formData.time,
+        img_id: imgId,
       });
     },
   });

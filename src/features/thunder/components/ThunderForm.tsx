@@ -64,10 +64,10 @@ const ThunderForm: React.FC<ThunderFormProps> = ({ mode, initialData, onSubmit }
       {/* 모임명 */}
       <InputText
         type="text"
-        name={formData.thunderName}
-        value={formData.thunderName}
+        name={formData.title}
+        value={formData.title}
         label="번개모임명"
-        onChange={(value) => setFormData({ ...formData, thunderName: value })}
+        onChange={(value) => setFormData({ ...formData, title: value })}
       />
 
       {/* 모임 카테고리 */}
@@ -112,22 +112,28 @@ const ThunderForm: React.FC<ThunderFormProps> = ({ mode, initialData, onSubmit }
         <StyledLabel>날짜</StyledLabel>
         <input
           type="date"
-          value={formData.date}
-          onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+          value={formData.time?.split('T')[0] || ''}
+          onChange={(e) => {
+            const date = e.target.value;
+            const timePart = formData.time?.split('T')[1] || '00:00';
+            const combined = `${date}T${timePart}`;
+            setFormData({ ...formData, time: combined });
+          }}
         />
       </div>
 
+      {/* 시간 선택 */}
       <div className="fit_content">
         <StyledLabel>시간</StyledLabel>
         <input
           type="time"
-          value={formData.time} // 시간만
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              time: e.target.value, // 시간 값만 업데이트
-            })
-          }
+          value={formData.time?.split('T')[1] || ''}
+          onChange={(e) => {
+            const time = e.target.value;
+            const datePart = formData.time?.split('T')[0] || new Date().toISOString().split('T')[0];
+            const combined = `${datePart}T${time}`;
+            setFormData({ ...formData, time: combined });
+          }}
         />
       </div>
       {/* 제출 버튼 */}

@@ -1,11 +1,10 @@
 import { SeparatedMembers } from '../utils/separateMembersByRole';
 
 export interface ThunderFormData {
-  thunderName: string;
+  title: string;
   description: string;
   category: string;
   region: string;
-  date: string;
   time: string;
   image: {
     url?: string;
