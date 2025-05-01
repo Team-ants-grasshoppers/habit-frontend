@@ -20,12 +20,13 @@ const HeaderStyle = styled.header`
   ${jb}
   ${alc}
   height: ${layoutTheme.header.height};
-  padding: 0 4rem;
+  padding: 0 2rem;
 `;
 
 // 로고 스타일
 const Logo = styled(Link)`
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--primary);
+  position: relative;
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--primary-orange);
 `;

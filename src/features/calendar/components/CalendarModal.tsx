@@ -6,6 +6,7 @@ import { useState } from 'react';
 import Modal from '../../../common/components/ui/Modal';
 import ButtonUnit from '../../../common/components/ui/Buttons';
 import styled from '@emotion/styled';
+import { ModalTitle } from '../../../common/style/common.css';
 
 interface Event {
   date: string;
@@ -78,9 +79,7 @@ export const CalendarModal = ({
 
   return (
     <Modal isOpen={true} onClose={onClose}>
-      <h2 style={{ marginBottom: '1rem' }}>
-        {mode === 'view' ? `📅 ${selectedDate} 일정` : '일정 추가'}
-      </h2>
+      <ModalTitle>{mode === 'view' ? `📅 ${selectedDate}` : '일정 추가'}</ModalTitle>
 
       {mode === 'view' ? (
         <>
@@ -98,7 +97,7 @@ export const CalendarModal = ({
                       >
                         수정
                       </ButtonUnit>
-                      <ButtonUnit mode="cancel" onClick={() => handleDelete(events.indexOf(event))}>
+                      <ButtonUnit mode="text" onClick={() => handleDelete(events.indexOf(event))}>
                         삭제
                       </ButtonUnit>
                     </ButtonRow>
@@ -109,9 +108,11 @@ export const CalendarModal = ({
               <p>등록된 일정이 없습니다.</p>
             )}
           </EventWrapper>
-          <ButtonUnit mode="confirm" onClick={() => setMode('add')}>
-            + 일정 추가
-          </ButtonUnit>
+          <div className="btn_shadow">
+            <ButtonUnit mode="confirm" onClick={() => setMode('add')}>
+              + 일정 추가
+            </ButtonUnit>
+          </div>
         </>
       ) : (
         <>
@@ -130,14 +131,18 @@ export const CalendarModal = ({
             <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
           </FormGroup>
 
-          <ButtonRow>
-            <ButtonUnit mode="cancel" onClick={() => setMode('view')}>
-              취소
-            </ButtonUnit>
-            <ButtonUnit mode="confirm" onClick={handleSubmit}>
-              {mode === 'edit' ? '수정 완료' : '등록'}
-            </ButtonUnit>
-          </ButtonRow>
+          <div className="btn_wrap btn_shadow">
+            <div className="btn_cancel">
+              <ButtonUnit mode="cancel" onClick={() => setMode('view')}>
+                취소
+              </ButtonUnit>
+            </div>
+            <div className="btn_submit">
+              <ButtonUnit mode="confirm" onClick={handleSubmit}>
+                {mode === 'edit' ? '수정 완료' : '등록'}
+              </ButtonUnit>
+            </div>
+          </div>
         </>
       )}
     </Modal>
@@ -148,40 +153,36 @@ const EventWrapper = styled.div`
   padding: 3rem 0;
 `;
 const EventCard = styled.li`
-  background: #f9f9f9;
-  padding: 1rem;
+  background: var(--primary-light-yellow);
+  padding: 1rem 1.5rem;
   border-radius: 8px;
   margin-bottom: 1rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 
   strong {
     display: block;
-    font-size: 1.6rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-    padding: 0.5rem;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding: 1rem;
     border-bottom: 1px solid #ddd;
   }
   p {
-    font-size: 1.4rem;
-    padding: 0 0.5rem;
+    font-size: 1.8rem;
+    padding: 0 1rem;
   }
 `;
 
 const FormGroup = styled.label`
   display: block;
-  margin-bottom: 1rem;
-  font-weight: 500;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: bold;
 
-  input,
-  textarea {
+  textarea,
+  input {
     display: block;
-    width: 100%;
     margin-top: 0.5rem;
-    padding: 0.6rem 0.8rem;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
   }
 `;
 

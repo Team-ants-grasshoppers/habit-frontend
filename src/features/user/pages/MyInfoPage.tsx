@@ -198,7 +198,7 @@ const MyInfoPage = () => {
               onClick={handleImageClick}
             />
           </div>
-          <p>
+          <p className="id_wrpper">
             <strong>아이디</strong>
             {user.user_id}
           </p>
@@ -244,7 +244,10 @@ const MyInfoPage = () => {
               }}
             />
 
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div
+              className="btn_shadow"
+              style={{ display: 'flex', justifyContent: 'space-between' }}
+            >
               <ButtonUnit mode="cancel" onClick={() => setWithdrawModalOpen(false)}>
                 취소
               </ButtonUnit>
@@ -280,10 +283,13 @@ const UserInfoWrapper = styled.div`
 
   p {
     margin: 2rem 0;
+    font-size: 1.8rem;
+    font-weight: 600;
     strong {
       display: inline-block;
       min-width: 6rem;
       margin-right: 1rem;
+      font-size: 1.6rem;
     }
   }
 `;

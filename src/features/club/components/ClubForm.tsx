@@ -116,9 +116,11 @@ const ClubForm: React.FC<ClubFormProps> = ({ mode, initialData, onSubmit }) => {
         />
       </div>
 
-      <ButtonUnit mode="confirm" onClick={() => onSubmit(formData)}>
-        {mode === 'create' ? '모임 생성' : '수정 완료'}
-      </ButtonUnit>
+      <div className="btn_shadow">
+        <ButtonUnit mode="confirm" onClick={() => onSubmit(formData)}>
+          {mode === 'create' ? '모임 생성' : '수정 완료'}
+        </ButtonUnit>
+      </div>
 
       {/* 관심사 모달 */}
       <InterestModal

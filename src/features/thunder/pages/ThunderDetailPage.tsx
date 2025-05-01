@@ -17,7 +17,7 @@ const ThunderDetailPage: React.FC = () => {
   const handleJoin = async () => {
     if (!user) {
       alert('로그인이 필요합니다!');
-      navigate('/login');
+      navigate('/');
       return;
     }
 

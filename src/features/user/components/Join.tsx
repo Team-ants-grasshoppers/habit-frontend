@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { joinUser } from '../hooks/useUser';
 import UserForm from './UserForm';
 import ButtonUnit from '../../../common/components/ui/Buttons';
-import { FormWrapper, MainTitle } from '../../../common/style/common.css';
+import { FormWrapper, MainTitle, TitleArea } from '../../../common/style/common.css';
 
 const Join = () => {
   const navigate = useNavigate();
@@ -34,7 +34,10 @@ const Join = () => {
 
   return (
     <>
-      <MainTitle>회원가입</MainTitle>
+      <TitleArea>
+        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
+        <MainTitle>회원가입</MainTitle>
+      </TitleArea>
       <FormWrapper>
         <UserForm
           mode="join"
@@ -42,9 +45,11 @@ const Join = () => {
           onSubmit={handleJoin}
           fields={['id', 'nickname', 'email', 'password', 'confirmPassword']}
         >
-          <ButtonUnit mode="confirm" type="submit">
-            회원가입
-          </ButtonUnit>
+          <div className="btn_shadow">
+            <ButtonUnit mode="confirm" type="submit">
+              회원가입
+            </ButtonUnit>
+          </div>
         </UserForm>
       </FormWrapper>
     </>

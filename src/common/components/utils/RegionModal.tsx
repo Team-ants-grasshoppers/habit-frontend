@@ -36,7 +36,7 @@ export const RegionModal = ({ isOpen, selectedRegions, onConfirm, onCancel }: Pr
           onChange={(value) => setChecked(value[0])}
         />
       </RegionWrapper>
-      <div className="btn_wrap">
+      <div className="btn_wrap btn_shadow">
         <div className="btn_cancel">
           <ButtonUnit mode="cancel" onClick={onCancel}>
             취소
@@ -65,13 +65,15 @@ const RegionWrapper = styled.div`
     padding: 1rem 4rem;
     display: block;
     width: 100%;
+    font-weight: 600;
     text-align: center;
     border: 1px solid #fff;
     border-radius: 1rem;
     transition: all 0.2s ease-in-out;
     &:hover {
-      color: var(--primary);
-      border: 1px solid var(--primary);
+      // color: var(--primary);
+      // border: 1px solid var(--primary-light-yellow);
+      background: var(--primary-light-yellow);
     }
   }
   input:checked + span {

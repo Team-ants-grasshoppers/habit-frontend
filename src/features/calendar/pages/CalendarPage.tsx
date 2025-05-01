@@ -8,8 +8,9 @@ import { useState } from 'react';
 import CalendarView from '../components/CalendarView';
 import { CalendarModal } from '../components/CalendarModal';
 import styled from '@emotion/styled';
-import { MainTitle } from '../../../common/style/common.css';
+import { MainTitle, TitleArea } from '../../../common/style/common.css';
 import './calendarStyle.css';
+import ButtonUnit from '../../../common/components/ui/Buttons';
 
 /**
  * @typedef {Object} EventData
@@ -60,7 +61,10 @@ export default function CalendarPage() {
 
   return (
     <>
-      <MainTitle>모임 캘린더</MainTitle>
+      <TitleArea>
+        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
+        <MainTitle>모임 캘린더</MainTitle>
+      </TitleArea>
       <CalendarSection>
         <CalendarView events={events} onClickDate={handleClickDate} onClickAdd={handleAddEvent} />
       </CalendarSection>

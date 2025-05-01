@@ -103,41 +103,59 @@ const CardContainer = styled.div`
   }
 
   .list_card {
-    padding: 1rem 1rem 2rem 1rem;
-    border-radius: 1rem;
-    background: var(--white);
+    position: relative;
+    border-radius: 3rem;
+    overflow: hidden;
+    aspect-ratio: 1.3 / 1;
+
+    &:hover {
+      img {
+        transform: scale(1.1);
+      }
+    }
   }
 `;
 
 const ImgArea = styled.div`
+  position: relative;
   width: 100%;
-  aspect-ratio: 1.5/1;
-  border-radius: 1.5rem;
-  overflow: hidden;
+  height: 100%;
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
+    transition: transform 0.3s ease-in-out;
   }
 `;
 const TextArea = styled.div`
-  margin-top: 1rem;
-  padding: 0 0.5rem;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 1.5rem;
+  background: rgba(0, 0, 0, 0.5);
   span {
     display: inline-block;
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     font-weight: 600;
     line-height: 1.1;
     color: var(--white);
+    border: var(--border_dark);
     background: var(--primary-orange);
-    padding: 0.5rem 1.5rem;
+    padding: 0.4rem 1.4rem 0.5rem;
     border-radius: 2rem;
     border: var(--border_dark);
   }
   p {
-    font-size: 1.6rem;
-    font-weight: 500;
-    margin-top: 1rem;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-top: 2rem;
+    color: var(--white);
   }
 `;

@@ -72,10 +72,11 @@ const ModalContent = styled.div`
   max-width: 500px;
   min-width: 300px;
   padding: 2.5rem;
+  border: var(--border_dark);
+  box-shadow: 3px 3px 0 0px var(--black);
   background: #ffffff;
   border-radius: 16px;
   transform: translate(-50%, -50%);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* ✨ 더 부드러운 그림자 */
   animation: fadeIn 0.3s ease;
 
   @keyframes fadeIn {
@@ -102,8 +103,8 @@ const ModalContent = styled.div`
 `;
 
 const CloseButton = styled.button`
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
   position: absolute;
   top: 1.2rem;
   right: 1.2rem;

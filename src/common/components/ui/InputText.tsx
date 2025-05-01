@@ -96,6 +96,6 @@ const StyledInput = styled.input<{ inputType: InputTextType }>`
 
   &:focus {
     outline: none;
-    border-color: var(--black);
+    border-color: var(--primary-orange);
   }
 `;

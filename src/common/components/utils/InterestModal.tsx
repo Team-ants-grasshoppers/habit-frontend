@@ -39,7 +39,7 @@ export const InterestModal = ({ isOpen, selectedInterests, onConfirm, onCancel }
           onChange={(value) => setChecked(value[0])} // ✅ 단일 선택을 위해 string 타입 사용
         />
       </InterestWrapper>
-      <div className="btn_wrap">
+      <div className="btn_wrap btn_shadow">
         <div className="btn_cancel">
           <ButtonUnit mode="cancel" onClick={onCancel}>
             취소
@@ -64,17 +64,18 @@ const InterestWrapper = styled.div`
 
   span {
     padding: 1rem 4rem;
-    border: 1px solid #ccc;
+    border: var(--border_dark);
     border-radius: 1rem;
+    font-weight: 600;
     transition: all 0.2s ease-in-out;
     &:hover {
       color: var(--primary);
-      border: 1px solid var(--primary);
+      border: 2px solid var(--primary);
     }
   }
   input:checked + span {
     background: var(--primary);
-    border: 1px solid var(--primary);
+    border: 2px solid var(--primary);
     color: #fff;
   }
   input[type='radio'] {
