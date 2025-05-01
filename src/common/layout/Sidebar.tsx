@@ -214,7 +214,6 @@ const BottomButtonArea = styled.div`
     border-radius: var(--radius);
 
     a {
-    a {
       display: flex;
       align-items: center;
       justify-content: flex-start;

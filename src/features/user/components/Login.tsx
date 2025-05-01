@@ -6,6 +6,7 @@ import { loginUser, getMyInfo } from '../hooks/useUser';
 import { useAppDispatch } from '../../../store/hook';
 import { loginSuccess } from '../hooks/userSlice';
 import ButtonUnit from '../../../common/components/ui/Buttons';
+import styled from '@emotion/styled';
 
 interface LoginProps {
   isOpen: boolean;
@@ -45,34 +46,58 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <UserForm
-        mode="login"
-        fields={['id', 'password']}
-        onSubmit={handleLogin}
-        serverError={apiError}
-      >
-        <ButtonUnit mode="confirm" type="submit">
-          로그인
-        </ButtonUnit>
-      </UserForm>
-
-      <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'space-between' }}>
-        <ButtonUnit mode="text" onClick={() => navigate('/FindIdPassword')}>
-          id/pw 찾기
-        </ButtonUnit>
-        <ButtonUnit
-          mode="base"
-          onClick={() => {
-            onClose();
-            navigate('/join');
-          }}
+    <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <UserForm
+          mode="login"
+          fields={['id', 'password']}
+          onSubmit={handleLogin}
+          serverError={apiError}
         >
-          회원가입
-        </ButtonUnit>
-      </div>
-    </Modal>
+          <div className="btn_shadow">
+            <ButtonUnit mode="confirm" type="submit">
+              로그인
+            </ButtonUnit>
+          </div>
+        </UserForm>
+
+        <LoginBtnWrapper>
+          <ButtonUnit mode="base" onClick={() => navigate('/FindIdPassword')}>
+            id/pw 찾기
+          </ButtonUnit>
+          <ButtonUnit
+            mode="base"
+            onClick={() => {
+              onClose();
+              navigate('/join');
+            }}
+          >
+            회원가입
+          </ButtonUnit>
+        </LoginBtnWrapper>
+      </Modal>
+    </>
   );
 };
 
 export default Login;
+
+const LoginBtnWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+
+  button {
+    border: 0;
+    font-size: 1.6rem;
+    line-height: 1.2;
+    border-radius: 0;
+    padding: 0 0.2rem;
+    height: auto;
+    border-bottom: 2px solid #fff;
+    &:hover {
+      border-bottom: var(--border_dark);
+    }
+  }
+`;

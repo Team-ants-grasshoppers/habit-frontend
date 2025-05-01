@@ -79,9 +79,11 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
           <strong>이메일</strong>
           {formState.email}
         </p>
-        <ButtonUnit mode="confirm" onClick={() => setIsEditMode(true)}>
-          수정
-        </ButtonUnit>
+        <div className="btn_shadow">
+          <ButtonUnit mode="confirm" onClick={() => setIsEditMode(true)}>
+            수정
+          </ButtonUnit>
+        </div>
       </div>
     );
   }
@@ -97,9 +99,11 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
         onSubmit={handleSubmit}
         serverError={formState.apiError}
       >
-        <ButtonUnit mode="confirm" type="submit">
-          수정 완료
-        </ButtonUnit>
+        <div className="btn_shadow">
+          <ButtonUnit mode="confirm" type="submit">
+            수정 완료
+          </ButtonUnit>
+        </div>
       </UserForm>
     </FormWrapper>
   );

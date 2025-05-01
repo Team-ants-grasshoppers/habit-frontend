@@ -59,35 +59,37 @@ const ClubDetail: React.FC<ClubDetailProps> = ({
   onBan,
 }) => {
   return (
-    <>
-      <TitleArea>
-        <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
-        <MainTitle>{clubName}</MainTitle>
-      </TitleArea>
-
+    <DetailWrapper>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div>
-          {/* 가입 상태별 버튼 */}
-          {!isAdmin && !isMember && !isPending && (
-            <ButtonUnit mode="confirm" className="mt-4 w-fit self-end" onClick={onJoin}>
-              가입하기
-            </ButtonUnit>
-          )}
-          {isPending && <div>가입 대기중입니다</div>}
-        </div>
-        <div>
-          {isAdmin && (
-            <ButtonUnit
-              mode="confirm"
-              className="absolute top-4 right-4"
-              onClick={() => {
-                // 수정 페이지 이동은 페이지단에서 처리
-              }}
-            >
-              수정하기
-            </ButtonUnit>
-          )}
-        </div>
+        <TitleArea>
+          <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
+          <MainTitle>{clubName}</MainTitle>
+        </TitleArea>
+
+        <ButtonArea>
+          <div className="btn_shadow">
+            {/* 가입 상태별 버튼 */}
+            {!isAdmin && !isMember && !isPending && (
+              <ButtonUnit mode="confirm" className="mt-4 w-fit self-end" onClick={onJoin}>
+                가입하기
+              </ButtonUnit>
+            )}
+
+            {isPending && <p>가입 대기중입니다</p>}
+
+            {isAdmin && (
+              <ButtonUnit
+                mode="confirm"
+                className="absolute top-4 right-4"
+                onClick={() => {
+                  // 수정 페이지 이동은 페이지단에서 처리
+                }}
+              >
+                수정하기
+              </ButtonUnit>
+            )}
+          </div>
+        </ButtonArea>
       </div>
 
       <ImgArea>
@@ -121,11 +123,32 @@ const ClubDetail: React.FC<ClubDetailProps> = ({
           <ClubRequest pendingUsers={pendingUsers} onApprove={onApprove} onReject={onReject} />
         </div>
       )}
-    </>
+    </DetailWrapper>
   );
 };
 
 export default ClubDetail;
+
+const DetailWrapper = styled.div`
+  background: var(--primary-light-yellow);
+  margin: 3rem 0;
+  padding: 1rem 2rem 3rem 2rem;
+  border-radius: 3rem;
+`;
+
+const ButtonArea = styled.div`
+  margin: 1rem 0;
+
+  .btn_shadow {
+    width: auto;
+  }
+  button {
+    padding: 0 3rem;
+    border-radius: 2rem;
+    background: var(--primary-green);
+    color: #fff;
+  }
+`;
 
 const ImgArea = styled.div`
   width: 100%;
@@ -142,7 +165,7 @@ const ImgArea = styled.div`
 `;
 
 const TextArea = styled.div`
-  border: var(--border);
+  border: var(--border_dark);
   border-radius: var(--radius);
   padding: 2rem;
   strong {
@@ -183,7 +206,7 @@ const TagArea = styled.ul`
 `;
 
 const MembersArea = styled.div`
-  border: var(--border);
+  border: var(--border_dark);
   border-radius: var(--radius);
   padding: 0 2rem;
   margin-top: 2rem;
