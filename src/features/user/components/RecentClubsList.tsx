@@ -28,6 +28,7 @@ const RecentClubList = ({ clubs }: { clubs: Club[] }) => {
   const items = clubs.map((club) => ({
     id: club.id,
     imageUrl: club.imageUrl,
+    category: club.category,
     name: club.name,
     extraButtons: (
       <button

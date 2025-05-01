@@ -35,6 +35,7 @@ export interface Club {
   id: string;
   name: string;
   imageUrl: string;
+  category: string;
 }
 
 // 번개모임(썬더) 타입
@@ -43,5 +44,6 @@ export interface Thunder {
   name: string;
   imageUrl: string | undefined;
   region: string;
+  category: string;
   time: string;
 }
