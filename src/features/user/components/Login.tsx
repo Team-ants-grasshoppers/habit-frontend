@@ -35,7 +35,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
           userId: profile.user_id,
           nickname: profile.nickname,
           email: profile.email,
-          userProfile: profile.profile_media_id || null,
+          userProfile: profile.profileImageUrl || null,
         }),
       );
       setApiError('');
