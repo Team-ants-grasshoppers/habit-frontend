@@ -5,6 +5,7 @@ interface BaseListItem {
   id: string;
   name: string;
   imageUrl: string;
+  category?: string;
   extraButtons?: React.ReactNode;
 }
 
@@ -57,6 +58,11 @@ const BaseList: React.FC<BaseListProps> = ({ items, routePrefix }) => {
         >
           {/* 카드 내부: 이미지 + 이름 */}
           <img src={item.imageUrl || '/vite.svg'} />
+
+          <div>
+            <span>{item.category}</span>
+          </div>
+
           <p>{item.name}</p>
 
           {/* 카드 바깥쪽에 띄우는 버튼 */}
