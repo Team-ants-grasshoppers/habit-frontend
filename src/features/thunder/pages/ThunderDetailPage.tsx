@@ -30,7 +30,7 @@ const ThunderDetailPage: React.FC = () => {
         }),
       );
     }
-    console.log('ThunderDetailData:', ThunderDetailData);
+    console.log('ThunderDetailData:', ThunderDetailData?.id);
   }, [ThunderDetailData, dispatch]);
 
   const handleJoin = async () => {
