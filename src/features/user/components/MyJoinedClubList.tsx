@@ -1,9 +1,9 @@
 import React from 'react';
 import BaseList from '../../../common/components/ui/BaseList';
-import { Club } from '../types';
+import { JoinedClubList } from '../types';
 
 interface MyJoinedClubListProps {
-  clubs: Club[];
+  clubs: JoinedClubList;
 }
 
 /**
