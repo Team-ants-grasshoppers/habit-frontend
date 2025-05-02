@@ -64,7 +64,7 @@ export const UserForm = ({
 
   const handleChange = (field: string, value: string) => {
     const newState = { ...formState, [field]: value };
-    setFormState((prev) => ({ ...prev, [field]: value }));
+    setFormState(newState);
     setFormErrors((prev) => ({ ...prev, [field]: '' })); // 입력할 때 해당 필드 에러 제거
     onChange?.(newState);
   };

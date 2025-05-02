@@ -11,6 +11,7 @@ interface UserInfoProps {
     email: string;
   };
   onSubmit: (data: { nickname?: string; email?: string; password?: string }) => Promise<any>;
+  onChange: (updated: Record<string, string>) => void;
 }
 
 const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
@@ -98,9 +99,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
         fields={['nickname', 'email', 'password', 'confirmPassword']}
         onSubmit={handleSubmit}
         serverError={formState.apiError}
-        onChange={(updatedFields: Record<string, string>) =>
-          setFormState((prev) => ({ ...prev, ...updatedFields }))
-        }
+        onChange={(updated) => setFormState((prev) => ({ ...prev, ...updated }))}
       >
         <div className="btn_shadow">
           <ButtonUnit mode="confirm" type="submit">

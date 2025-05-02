@@ -9,16 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import { MainTitle, TitleArea } from '../../../common/style/common.css';
 import styled from '@emotion/styled';
 
-/**
- * @description 사용자 정보 조회, 수정, 탈퇴를 처리하는 내 정보 페이지 컴포넌트
- */
 const MyInfoPage = () => {
   const navigate = useNavigate();
 
-  /**
-   * @state user
-   * @description 서버에서 불러온 현재 로그인 사용자 정보
-   */
   const [user, setUser] = useState<{
     user_id: string;
     nickname: string;
@@ -26,10 +19,6 @@ const MyInfoPage = () => {
     profile_media_id?: string;
   } | null>(null);
 
-  /**
-   * @state formState
-   * @description 사용자 정보 수정용 입력 필드 상태
-   */
   const [formState, setFormState] = useState({
     nickname: '',
     email: '',
@@ -39,34 +28,11 @@ const MyInfoPage = () => {
     successMsg: '',
   });
 
-  /**
-   * @state profileImageId
-   * @description 서버에서 업로드된 이미지의 ID (수정 요청 시 전달됨)
-   */
   const [profileImageId, setProfileImageId] = useState<string | null>(null);
-
-  /**
-   * @state imgPreview
-   * @description 프로필 이미지 미리보기용 URL
-   */
   const [imgPreview, setImgPreview] = useState<string | null>(null);
-
-  /**
-   * @state isWithdrawModalOpen
-   * @description 회원 탈퇴 모달 표시 여부
-   */
   const [isWithdrawModalOpen, setWithdrawModalOpen] = useState(false);
-
-  /**
-   * @state withdrawPassword
-   * @description 회원 탈퇴 시 입력되는 비밀번호
-   */
   const [withdrawPassword, setWithdrawPassword] = useState('');
 
-  /**
-   * @function useEffect
-   * @description 컴포넌트 마운트 시 사용자 정보 요청
-   */
   useEffect(() => {
     (async () => {
       try {
@@ -84,10 +50,6 @@ const MyInfoPage = () => {
     })();
   }, []);
 
-  /**
-   * @function handleSubmit
-   * @description 사용자 정보 수정 요청 핸들러
-   */
   const handleSubmit = async () => {
     const errors = validateForm(formState, 'edit');
     if (Object.keys(errors).length > 0) {
@@ -124,12 +86,10 @@ const MyInfoPage = () => {
       email: formState.email || user.email,
       password: formState.password || '',
       profile_image: profileImageId || user.profile_media_id || '',
-      region: '', // Provide default or user-provided value
-      interest: '', // Provide default or user-provided value
+      region: '서울', // ✅ 고정
+      interest: '운동', // ✅ 고정
     };
 
-    if (formState.nickname !== user.nickname) updateData.nickname = formState.nickname;
-    if (formState.email !== user.email) updateData.email = formState.email;
     if (formState.password) updateData.password = formState.password;
     if (profileImageId) updateData.profile_image = profileImageId;
 
@@ -139,6 +99,8 @@ const MyInfoPage = () => {
         ...prev,
         apiError: '',
         successMsg: '정보가 성공적으로 수정되었습니다!',
+        password: '',
+        confirmPassword: '',
       }));
     } catch (error: any) {
       setFormState((prev) => ({
@@ -149,10 +111,6 @@ const MyInfoPage = () => {
     }
   };
 
-  /**
-   * @function handleImageClick
-   * @description 이미지 클릭 시 파일 선택 및 서버 업로드 처리
-   */
   const handleImageClick = async () => {
     const input = document.createElement('input');
     input.type = 'file';
@@ -174,10 +132,6 @@ const MyInfoPage = () => {
     input.click();
   };
 
-  /**
-   * @function handleWithdraw
-   * @description 회원 탈퇴 요청 및 후속 처리
-   */
   const handleWithdraw = async () => {
     if (!user) return;
     try {
@@ -197,6 +151,7 @@ const MyInfoPage = () => {
         <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
         <MainTitle>내 정보</MainTitle>
       </TitleArea>
+
       <UserInfoWrapper>
         <div>
           <div className="profile_img">
@@ -212,7 +167,6 @@ const MyInfoPage = () => {
           </p>
         </div>
 
-        {/* 사용자 정보 수정 폼 */}
         <UserInfo
           initialData={{
             userId: user.user_id,
@@ -220,16 +174,15 @@ const MyInfoPage = () => {
             email: formState.email,
           }}
           onSubmit={handleSubmit}
+          onChange={(updated) => setFormState((prev) => ({ ...prev, ...updated, successMsg: '' }))}
         />
 
-        {/* 회원 탈퇴 버튼 */}
         <div style={{ marginTop: '3rem' }}>
           <ButtonUnit mode="text" onClick={() => setWithdrawModalOpen(true)}>
             회원 탈퇴
           </ButtonUnit>
         </div>
 
-        {/* 회원 탈퇴 모달 */}
         <Modal isOpen={isWithdrawModalOpen} onClose={() => setWithdrawModalOpen(false)}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <p style={{ fontSize: '1.4rem', textAlign: 'center' }}>
@@ -293,6 +246,7 @@ const UserInfoWrapper = styled.div`
     margin: 2rem 0;
     font-size: 1.8rem;
     font-weight: 600;
+
     strong {
       display: inline-block;
       min-width: 6rem;
