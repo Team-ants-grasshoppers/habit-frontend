@@ -69,11 +69,14 @@ const Sidebar: React.FC = () => {
               {isLogin ? (
                 <div className="btn_islogin_true">
                   <StyledLink to="/user/info">
-                    <img
-                      src={userProfile || '/assets/images/default_profile.png'}
-                      alt="User Profile"
-                    />
-                    <span>{nickname}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <img
+                        src={userProfile || '/assets/images/default_profile.png'}
+                        alt="User Profile"
+                        style={{ width: '48px', height: '48px', borderRadius: '50%' }}
+                      />
+                      <span style={{ fontSize: '18px', fontWeight: 'bold' }}>{nickname}</span>
+                    </div>
                   </StyledLink>
                 </div>
               ) : (

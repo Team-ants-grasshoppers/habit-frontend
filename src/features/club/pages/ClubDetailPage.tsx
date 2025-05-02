@@ -52,6 +52,7 @@ const ClubDetailPage: React.FC = () => {
           id: String(clubId), // 또는 clubDetail.clubId 로 쓸 수도 있음
           name: clubDetail.clubName,
           imageUrl: clubDetail.imageUrl || '',
+          category: clubDetail.category,
         }),
       );
     }
@@ -124,7 +125,12 @@ const ClubDetailPage: React.FC = () => {
   };
 
   if (isLoading || isAuthLoading) return <p>로딩 중...</p>;
-
+  console.log('✅ isAdmin:', clubDetail?.isAdmin);
+  console.log('✅ 현재 로그인한 userId:', userId);
+  console.log(
+    '✅ admins:',
+    clubDetail?.admins.map((a) => a.userId),
+  );
   return (
     <>
       <div>

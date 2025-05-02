@@ -37,11 +37,11 @@ const ThunderMembers: React.FC<ThunderMembersProps> = ({ admins, members, onBan,
           <div className="flex flex-wrap gap-4">
             {admins.map((admin) => (
               <div key={admin.userId} className="flex flex-col items-center w-24">
-                <img
-                  src={admin.profileImageUrl}
+                {/* <img
+                  src={'/placeholder-image-url'} // TODO: 실제 이미지 URL로 변경
                   alt={admin.nickname}
                   className="w-16 h-16 rounded-full object-cover"
-                />
+                /> */}
                 <span className="text-sm font-medium mt-1">{admin.nickname}</span>
               </div>
             ))}
@@ -58,11 +58,11 @@ const ThunderMembers: React.FC<ThunderMembersProps> = ({ admins, members, onBan,
           <div className="flex flex-wrap gap-4">
             {members.map((member) => (
               <div key={member.userId} className="flex flex-col items-center w-24">
-                <img
-                  src={member.profileImageUrl}
+                {/* <img
+                  src={'/placeholder-image-url'} // TODO: 실제 이미지 URL로 변경
                   alt={member.nickname}
                   className="w-16 h-16 rounded-full object-cover"
-                />
+                /> */}
                 <span className="text-sm">{member.nickname}</span>
                 {isAdmin && onBan && (
                   <ButtonUnit mode="base" onClick={() => onBan(member.userId)}>

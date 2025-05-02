@@ -53,6 +53,9 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
           fields={['id', 'password']}
           onSubmit={handleLogin}
           serverError={apiError}
+          onChange={function (formState: Record<string, string>): void {
+            throw new Error('Function not implemented.');
+          }}
         >
           <div className="btn_shadow">
             <ButtonUnit mode="confirm" type="submit">

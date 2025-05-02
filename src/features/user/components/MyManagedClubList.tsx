@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import BaseList from '../../../common/components/ui/BaseList';
-import { Club } from '../types';
+import { ManagedClubList } from '../types';
 
 interface MyManagedClubListProps {
-  clubs: Club[];
+  clubs: ManagedClubList;
 }
 
 /**

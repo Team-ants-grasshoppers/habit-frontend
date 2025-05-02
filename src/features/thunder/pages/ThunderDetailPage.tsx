@@ -24,6 +24,7 @@ const ThunderDetailPage: React.FC = () => {
           name: ThunderDetailData.title,
           imageUrl: ThunderDetailData.img_url,
           region: '',
+          category: ThunderDetailData.category,
           time: '',
         }),
       );
