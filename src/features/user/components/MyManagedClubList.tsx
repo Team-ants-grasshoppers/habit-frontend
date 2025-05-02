@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import BaseList from '../../../common/components/ui/BaseList';
 import { ManagedClubList } from '../types';
+import { MainTitle } from '../../../common/style/common.css';
+import ButtonUnit from '../../../common/components/ui/Buttons';
 
 interface MyManagedClubListProps {
   clubs: ManagedClubList;
@@ -28,24 +30,23 @@ const MyManagedClubList: React.FC<MyManagedClubListProps> = ({ clubs }) => {
   }));
 
   return (
-    <section>
-      <h3>내가 운영 중인 모임</h3>
-      <BaseList items={items} routePrefix="/club" />
-
-      {/* 모임 만들기 카드 */}
-      <div
-        onClick={() => navigate('/club/create')}
-        style={{
-          border: '1px dashed #aaa',
-          padding: '20px',
-          textAlign: 'center',
-          marginTop: '12px',
-          cursor: 'pointer',
-        }}
-      >
-        + 모임 만들기
+    <>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <MainTitle>내가 운영 중인 모임</MainTitle>
+        {/* 모임 만들기 카드 */}
+        <div
+          className="btn_shadow"
+          style={{
+            width: 'auto',
+          }}
+        >
+          <ButtonUnit mode="base" onClick={() => navigate('/club/create')}>
+            + 모임 만들기
+          </ButtonUnit>
+        </div>
       </div>
-    </section>
+      <BaseList items={items} routePrefix="/club" />
+    </>
   );
 };
 

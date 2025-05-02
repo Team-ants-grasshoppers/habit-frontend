@@ -1,6 +1,7 @@
 import React from 'react';
 import BaseList from '../../../common/components/ui/BaseList';
 import { JoinedThunderItem } from '../types';
+import { MainTitle } from '../../../common/style/common.css';
 
 interface MyJoinedThunderListProps {
   thunders: JoinedThunderItem[];
@@ -26,10 +27,10 @@ const MyJoinedThunderList: React.FC<MyJoinedThunderListProps> = ({ thunders }) =
   }));
 
   return (
-    <section>
-      <h3>내가 참여한 번개모임</h3>
+    <>
+      <MainTitle>내가 참여한 번개모임</MainTitle>
       <BaseList items={items} routePrefix="/thunder" />
-    </section>
+    </>
   );
 };
 
