@@ -1,6 +1,7 @@
 import React from 'react';
 import BaseList from '../../../common/components/ui/BaseList';
 import { JoinedClubList } from '../types';
+import { MainTitle } from '../../../common/style/common.css';
 
 interface MyJoinedClubListProps {
   clubs: JoinedClubList;
@@ -26,10 +27,10 @@ const MyJoinedClubList: React.FC<MyJoinedClubListProps> = ({ clubs }) => {
   }));
 
   return (
-    <section>
-      <h3>내가 참여한 모임</h3>
+    <>
+      <MainTitle>내가 참여한 모임</MainTitle>
       <BaseList items={items} routePrefix="/club" />
-    </section>
+    </>
   );
 };
 

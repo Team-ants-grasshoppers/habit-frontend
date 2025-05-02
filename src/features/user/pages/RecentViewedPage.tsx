@@ -41,7 +41,7 @@ const RecentViewedPage = () => {
         </div>
 
         <div className="recent_thunder">
-          <strong>번개모임</strong>
+          <strong>⚡️번개모임</strong>
           <RecentThunderList thunders={recentThunders} />
         </div>
       </RecentWrapper>
