@@ -44,6 +44,9 @@ const Join = () => {
           serverError={apiError}
           onSubmit={handleJoin}
           fields={['id', 'nickname', 'email', 'password', 'confirmPassword']}
+          onChange={function (formState: Record<string, string>): void {
+            throw new Error('Function not implemented.');
+          }}
         >
           <div className="btn_shadow">
             <ButtonUnit mode="confirm" type="submit">

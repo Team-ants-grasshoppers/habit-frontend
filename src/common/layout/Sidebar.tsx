@@ -51,30 +51,6 @@ const Sidebar: React.FC = () => {
               </StyledLink>
             </li>
           </ul>
-
-          <ul>
-            <li style={{ margin: '30px 0 10px', fontWeight: 'bold' }}>@ 확인용</li>
-            <li>
-              <StyledLink to="/club/list" active={isActive('/club/list')}>
-                모임 리스트
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/club/create" active={isActive('/club/create')}>
-                모임 생성
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/thunder/list" active={isActive('/thunder/list')}>
-                번개모임 리스트
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/thunder/create" active={isActive('/thunder/create')}>
-                번개모임 생성
-              </StyledLink>
-            </li>
-          </ul>
         </nav>
 
         <BottomButtonArea>
@@ -93,11 +69,14 @@ const Sidebar: React.FC = () => {
               {isLogin ? (
                 <div className="btn_islogin_true">
                   <StyledLink to="/user/info">
-                    <img
-                      src={userProfile || '/assets/images/default_profile.png'}
-                      alt="User Profile"
-                    />
-                    <span>{nickname}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <img
+                        src={userProfile || '/assets/images/default_profile.png'}
+                        alt="User Profile"
+                        style={{ width: '48px', height: '48px', borderRadius: '50%' }}
+                      />
+                      <span style={{ fontSize: '18px', fontWeight: 'bold' }}>{nickname}</span>
+                    </div>
                   </StyledLink>
                 </div>
               ) : (
