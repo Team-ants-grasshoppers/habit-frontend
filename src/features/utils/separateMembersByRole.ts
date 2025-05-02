@@ -10,7 +10,7 @@ export interface FormattedMember {
 }
 
 export interface Member {
-  memberId: number;
+  member_id: number;
   nickname: string;
   role: 'admin' | 'member' | 'pending';
 }
@@ -26,7 +26,7 @@ export interface SeparatedMembers {
 
 export const separateMembersByRole = (memberList: Member[], userId: string): SeparatedMembers => {
   const format = (m: Member): FormattedMember => ({
-    userId: String(m.memberId),
+    userId: String(m.member_id),
     nickname: m.nickname,
   });
 
