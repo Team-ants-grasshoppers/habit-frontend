@@ -1,6 +1,7 @@
 export interface MyPageItem {
   id: string;
   name: string;
+  category: string;
   imageUrl: string;
 }
 
@@ -9,6 +10,7 @@ export type MyPageList = MyPageItem[];
 export interface JoinedClubItem {
   id: string;
   name: string;
+  category: string;
   imageUrl: string;
 }
 
@@ -17,6 +19,7 @@ export type JoinedClubList = JoinedClubItem[];
 export interface ManagedClubItem {
   id: string;
   name: string;
+  category: string;
   imageUrl: string;
 }
 
