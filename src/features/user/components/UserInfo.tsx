@@ -14,7 +14,7 @@ interface UserInfoProps {
   onChange: (updated: Record<string, string>) => void;
 }
 
-const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
+const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit, onChange }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [formState, setFormState] = useState({
     nickname: initialData.nickname,
@@ -99,7 +99,10 @@ const UserInfo: React.FC<UserInfoProps> = ({ initialData, onSubmit }) => {
         fields={['nickname', 'email', 'password', 'confirmPassword']}
         onSubmit={handleSubmit}
         serverError={formState.apiError}
-        onChange={(updated) => setFormState((prev) => ({ ...prev, ...updated }))}
+        onChange={(updated) => {
+          setFormState((prev) => ({ ...prev, ...updated }));
+          onChange(updated); // ✅ 상위(MyInfoPage)로 전달도 반드시 필요
+        }}
       >
         <div className="btn_shadow">
           <ButtonUnit mode="confirm" type="submit">
