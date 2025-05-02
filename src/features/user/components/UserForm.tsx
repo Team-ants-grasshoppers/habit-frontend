@@ -12,6 +12,7 @@ interface UserFormProps {
   mode: 'login' | 'join' | 'edit';
   fields: ('id' | 'nickname' | 'email' | 'password' | 'confirmPassword')[];
   onSubmit: (formData: Record<string, string>) => void;
+  onChange: (formState: Record<string, string>) => void;
   readonly?: boolean;
   children?: React.ReactNode;
   serverError?: string;
@@ -53,6 +54,7 @@ export const UserForm = ({
   mode,
   fields,
   onSubmit,
+  onChange,
   serverError,
   readonly = false,
   children,
@@ -61,8 +63,10 @@ export const UserForm = ({
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const handleChange = (field: string, value: string) => {
-    setFormState((prev) => ({ ...prev, [field]: value }));
+    const newState = { ...formState, [field]: value };
+    setFormState(newState);
     setFormErrors((prev) => ({ ...prev, [field]: '' })); // 입력할 때 해당 필드 에러 제거
+    onChange?.(newState);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
