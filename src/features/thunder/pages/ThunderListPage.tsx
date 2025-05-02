@@ -175,9 +175,10 @@ const DateButtonWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: 2rem 0;
-  gap: 0.5rem;
+  gap: 1rem;
 
   button {
+    flex: 1;
     height: auto;
     padding: 0.8rem 1rem;
     border: 0;

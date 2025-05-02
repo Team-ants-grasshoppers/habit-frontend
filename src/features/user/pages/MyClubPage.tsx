@@ -63,7 +63,7 @@ const MyClubPage = () => {
     <>
       <TitleArea>
         <ButtonUnit mode="goback">뒤로가기</ButtonUnit>
-        <MainTitle>내 클럽 관리</MainTitle>
+        <MainTitle>내 모임 관리</MainTitle>
       </TitleArea>
 
       {/* 사용자 정보 */}
@@ -83,7 +83,6 @@ const MyClubPage = () => {
           />
           <span style={{ fontSize: '18px', fontWeight: 'bold' }}>{nickname}</span>
         </div>
-        <ButtonUnit mode="cancel">✕</ButtonUnit>
       </section>
 
       {/* 내가 참여 중인 모임 */}
